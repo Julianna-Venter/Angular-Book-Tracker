@@ -1,0 +1,39 @@
+<app-background />
+
+<div
+  class="w-full h-lvh overflow-hidden flex flex-col justify-center items-center text-grey"
+>
+  <div class="h-1/2 w-full p-16">
+    <h1 class="font-bold text-3xl mb-10">LOG IN</h1>
+    <form
+      [formGroup]="loginForm"
+      (ngSubmit)="onSubmit()"
+      class="flex flex-col gap-5"
+    >
+      <div class="flex flex-col gap-1">
+        <label for="username">Username: </label>
+        <input
+          id="username"
+          type="text"
+          formControlName="username"
+          class="bg-transparent border-b-[1px] border-grey/60 h-8"
+        />
+      </div>
+      <div class="flex flex-col gap-1">
+        <label for="password">Password: </label>
+        <input
+          id="password"
+          type="password"
+          formControlName="password"
+          class="bg-transparent border-b-[1px] border-grey/60 h-8"
+        />
+      </div>
+      <button
+        type="submit"
+        class="w-fit bg-green text-white font-bold px-5 py-1 rounded-md self-end"
+      >
+        Login
+      </button>
+    </form>
+  </div>
+</div>
