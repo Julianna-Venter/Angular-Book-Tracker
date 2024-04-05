@@ -12,12 +12,21 @@ export const routes: Routes = [
     component: HomeComponent,
     children: [
       {
-        path: 'book/:slug',
+        path: 'summaries',
+        component: BookPageComponent,
+      },
+      {
+        path: 'book',
         component: BookPageComponent,
       },
       {
         path: 'profile',
         component: ProfileStatsComponent,
+      },
+      {
+        path: '',
+        redirectTo: 'summaries',
+        pathMatch: 'full',
       },
     ],
   },
@@ -29,7 +38,6 @@ export const routes: Routes = [
     path: 'signup',
     component: SignUpComponent,
   },
-
   {
     path: '',
     redirectTo: 'login',
