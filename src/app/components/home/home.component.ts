@@ -3,6 +3,7 @@ import { RouterOutlet } from '@angular/router';
 import { NgIconComponent, provideIcons } from '@ng-icons/core';
 import {
   heroChartPie,
+  heroChevronDoubleLeft,
   heroHome,
   heroMagnifyingGlass,
   heroPlus,
@@ -23,6 +24,7 @@ import { heroChartPieSolid, heroHomeSolid } from '@ng-icons/heroicons/solid';
       heroChartPieSolid,
       heroChartPie,
       heroMagnifyingGlass,
+      heroChevronDoubleLeft,
     }),
   ],
 })
