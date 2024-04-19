@@ -14,15 +14,15 @@ export const routes: Routes = [
     component: HomeComponent,
     children: [
       {
-        path: 'summaries',
+        path: '',
         component: SummariesComponent,
       },
       {
-        path: 'summaries/book-list/:id',
+        path: 'book-list/:id',
         component: BookListComponent,
       },
       {
-        path: 'summaries/book-list/:id/book/:id',
+        path: 'book-list/:id/book/:id',
         component: BookPageComponent,
       },
       {
