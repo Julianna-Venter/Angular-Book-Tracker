@@ -1,0 +1,4 @@
+@if (authService.currentUserSig()) {
+{{ authService.currentUserSig()?.username }}
+<p>Log out here</p>
+}

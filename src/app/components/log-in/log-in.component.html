@@ -16,10 +16,10 @@
             <ng-icon name="heroUser" size="22" class="text-grey/60"></ng-icon>
           </div>
           <input
-            id="username"
+            id="email"
             type="text"
-            formControlName="username"
-            placeholder="Username"
+            formControlName="email"
+            placeholder="Email"
             class="bg-transparent border-b-[1px] border-grey/60 h-8 w-full pl-2"
           />
         </div>
@@ -33,6 +33,7 @@
               class="text-grey/60"
             ></ng-icon>
           </div>
+          <!-- view password toggle -->
           <input
             id="password"
             type="password"
@@ -46,7 +47,6 @@
         <button
           type="submit"
           class="bg-green text-white font-bold px-5 py-2 rounded-3xl self-center w-full mt-4"
-          routerLink="/home"
         >
           Login
         </button>
@@ -56,6 +56,9 @@
             Sign Up
           </button>
         </div>
+        @if (errorMessage) {
+        <div class="text-red-500 text-center">{{ errorMessage }}</div>
+        }
       </div>
     </form>
   </div>
