@@ -1,4 +1,5 @@
 import { Routes } from '@angular/router';
+import { authGuard } from './auth/auth.guard';
 import { BookListComponent } from './components/home/book-list/book-list.component';
 import { BookPageComponent } from './components/home/book-page/book-page.component';
 import { HomeComponent } from './components/home/home.component';
@@ -11,6 +12,7 @@ import { SignUpComponent } from './components/sign-up/sign-up.component';
 export const routes: Routes = [
   {
     path: 'home',
+    canActivate: [authGuard],
     component: HomeComponent,
     children: [
       {
