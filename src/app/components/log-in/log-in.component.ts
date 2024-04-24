@@ -2,7 +2,12 @@ import { Component, inject } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { Router, RouterLink } from '@angular/router';
 import { NgIconComponent, provideIcons } from '@ng-icons/core';
-import { heroLockClosed, heroUser } from '@ng-icons/heroicons/outline';
+import {
+  heroEye,
+  heroEyeSlash,
+  heroLockClosed,
+  heroUser,
+} from '@ng-icons/heroicons/outline';
 import { AuthService } from '../../services/auth.service';
 import { BackgroundComponent } from '../shared-components/background/background.component';
 
@@ -17,11 +22,14 @@ import { BackgroundComponent } from '../shared-components/background/background.
   ],
   templateUrl: './log-in.component.html',
   styleUrl: './log-in.component.scss',
-  viewProviders: [provideIcons({ heroUser, heroLockClosed })],
+  viewProviders: [
+    provideIcons({ heroUser, heroLockClosed, heroEye, heroEyeSlash }),
+  ],
 })
 export class LogInComponent {
   authService = inject(AuthService);
   router = inject(Router);
+  showPassword: boolean = true;
 
   loginForm = new FormGroup({
     email: new FormControl(''),
@@ -45,5 +53,9 @@ export class LogInComponent {
           this.errorMessage = error.code;
         },
       });
+  }
+
+  togglePassword() {
+    this.showPassword = !this.showPassword;
   }
 }

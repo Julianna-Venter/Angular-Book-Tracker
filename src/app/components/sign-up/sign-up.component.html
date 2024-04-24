@@ -21,8 +21,15 @@
             formControlName="username"
             placeholder="Username"
             class="bg-transparent border-b-[1px] border-grey/60 h-8 w-full pl-2"
+            formControlName="username"
           />
         </div>
+        @if (signupForm.hasError('username') &&
+        signupForm.get('username')?.touched) {
+        <div class="text-red-500 text-center text-xs">
+          Username must be between 8 and 24 characters.
+        </div>
+        }
       </div>
       <div class="flex flex-col gap-1">
         <div class="flex items-end w-full">
@@ -31,13 +38,18 @@
           </div>
           <input
             id="email"
-            type="text"
+            type="email"
             formControlName="email"
             placeholder="Email"
             class="bg-transparent border-b-[1px] border-grey/60 h-8 w-full pl-2"
           />
         </div>
       </div>
+      @if (signupForm.hasError('email') && signupForm.get('email')?.touched) {
+      <div class="text-red-500 text-center text-xs">
+        Email is required and must be a valid email address.
+      </div>
+      }
       <div class="flex flex-col gap-1">
         <div class="flex items-end w-full">
           <div class="border-b-[1px] border-grey/60 pl-1">
@@ -49,13 +61,27 @@
           </div>
           <input
             id="password"
-            type="password"
+            type="{{ showPassword ? 'password' : 'text' }}"
             formControlName="password"
             placeholder="Password"
             class="bg-transparent border-b-[1px] border-grey/60 h-8 w-full pl-2"
           />
+          <div class="border-b-[1px] border-grey/60 pl-1">
+            <ng-icon
+              name="{{ showPassword ? 'heroEye' : 'heroEyeSlash' }}"
+              size="22"
+              class="text-grey/60"
+              (click)="togglePassword()"
+            ></ng-icon>
+          </div>
         </div>
       </div>
+      @if (signupForm.hasError('password') &&
+      signupForm.get('password')?.touched) {
+      <div class="text-red-500 text-center">
+        Password is required and must be between 8 and 24 characters.
+      </div>
+      }
       <div class="flex flex-col gap-1">
         <div class="flex items-end w-full">
           <div class="border-b-[1px] border-grey/60 pl-1">
@@ -67,13 +93,25 @@
           </div>
           <input
             id="confirmPassword"
-            type="password"
+            type="{{ showPasswordConfirm ? 'password' : 'text' }}"
             formControlName="password"
             placeholder="Confirm Password"
             class="bg-transparent border-b-[1px] border-grey/60 h-8 w-full pl-2"
           />
+          <div class="border-b-[1px] border-grey/60 pl-1">
+            <ng-icon
+              name="{{ showPasswordConfirm ? 'heroEye' : 'heroEyeSlash' }}"
+              size="22"
+              class="text-grey/60"
+              (click)="togglePasswordConfirm()"
+            ></ng-icon>
+          </div>
         </div>
       </div>
+      @if (signupForm.hasError('confirmPassword') &&
+      signupForm.get('confirmPassword')?.touched) {
+      <div class="text-red-500 text-center">Passwords do not match</div>
+      }
       <div class="flex flex-col gap-2">
         <button
           type="submit"

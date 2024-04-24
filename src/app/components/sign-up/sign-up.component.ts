@@ -1,14 +1,23 @@
 import { Component, inject } from '@angular/core';
-import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
+import {
+  FormControl,
+  FormGroup,
+  ReactiveFormsModule,
+  Validators,
+} from '@angular/forms';
 import { Router, RouterLink } from '@angular/router';
 import { NgIconComponent, provideIcons } from '@ng-icons/core';
 import {
   heroCheckBadge,
+  heroEye,
+  heroEyeSlash,
   heroLockClosed,
   heroUser,
 } from '@ng-icons/heroicons/outline';
 import { AuthService } from '../../services/auth.service';
+import { confirmPasswordValidator } from '../../shared/compare-validator.directive';
 import { BackgroundComponent } from '../shared-components/background/background.component';
+
 @Component({
   selector: 'app-sign-up',
   standalone: true,
@@ -20,17 +29,42 @@ import { BackgroundComponent } from '../shared-components/background/background.
   ],
   templateUrl: './sign-up.component.html',
   styleUrl: './sign-up.component.scss',
-  viewProviders: [provideIcons({ heroUser, heroLockClosed, heroCheckBadge })],
+  viewProviders: [
+    provideIcons({
+      heroUser,
+      heroLockClosed,
+      heroCheckBadge,
+      heroEye,
+      heroEyeSlash,
+    }),
+  ],
 })
 export class SignUpComponent {
   authService = inject(AuthService);
   router = inject(Router);
 
+  username: string = '';
+  email: string = '';
+  password: string = '';
+  confirmPassword: string = '';
+  showPassword: boolean = true;
+  showPasswordConfirm: boolean = true;
+
   signupForm = new FormGroup({
-    username: new FormControl(''),
-    email: new FormControl(''),
-    password: new FormControl(''),
-    confirmPassword: new FormControl(''),
+    username: new FormControl(this.username, [
+      Validators.required,
+      Validators.minLength(3),
+      Validators.maxLength(24),
+    ]),
+    email: new FormControl(this.email, [Validators.required, Validators.email]),
+    password: new FormControl(this.password, [
+      Validators.required,
+      Validators.minLength(8),
+    ]),
+    confirmPassword: new FormControl(this.confirmPassword, [
+      Validators.required,
+      confirmPasswordValidator('password', 'confirmPassword'),
+    ]),
   });
 
   errorMessage: string | null = null;
@@ -48,12 +82,20 @@ export class SignUpComponent {
       )
       .subscribe({
         next: () => {
-          this.router.navigate(['/home']);
+          console.log('User created');
+          // this.router.navigate(['/home']);
         },
         error: (error) => {
           this.errorMessage = error.code;
         },
       });
+  }
+
+  togglePassword() {
+    this.showPassword = !this.showPassword;
+  }
+  togglePasswordConfirm() {
+    this.showPasswordConfirm = !this.showPasswordConfirm;
   }
 
   //API for the searching:
