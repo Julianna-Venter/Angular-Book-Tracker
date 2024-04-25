@@ -8,7 +8,6 @@ import { UsersFirebaseService } from '../services/users-firebase.service';
 export const authGuard: CanActivateFn = (route, state) => {
   const authService = inject(AuthService);
   const router = inject(Router);
-  const usersFirebaseService = inject(UsersFirebaseService);
 
   authService.user$.pipe(take(1)).subscribe((user) => {
     if (user) {
