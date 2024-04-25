@@ -3,11 +3,11 @@ import {
   Auth,
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
+  signOut,
   updateProfile,
   user,
-  signOut,
 } from '@angular/fire/auth';
-import { Observable, from } from 'rxjs';
+import { Observable, Subject, from } from 'rxjs';
 import { AuthUser } from '../interfaces/authInterface';
 
 @Injectable({
@@ -17,6 +17,7 @@ export class AuthService {
   firebaseAuth = inject(Auth);
   user$ = user(this.firebaseAuth);
   currentUserSig = signal<AuthUser | null | undefined>(undefined);
+  isUserSet$ = new Subject<boolean>();
 
   register(
     email: string,

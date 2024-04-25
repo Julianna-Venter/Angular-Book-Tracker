@@ -1,13 +1,14 @@
 import { Injectable, inject } from '@angular/core';
 import {
   Firestore,
+  addDoc,
   collection,
   collectionData,
-  doc,
-  setDoc,
+  query,
+  where,
 } from '@angular/fire/firestore';
-import { Observable, map, switchMap } from 'rxjs';
-import { BookList, ProfileStats, User } from '../interfaces/booksInterfaces';
+import { Observable } from 'rxjs';
+import { FirestoreUser } from '../interfaces/booksInterfaces';
 
 @Injectable({
   providedIn: 'root',
@@ -16,8 +17,8 @@ export class UsersFirebaseService {
   firestore = inject(Firestore);
   usersCollection = collection(this.firestore, 'users');
 
-  addUser(username: string, email: string) {
-    setDoc(doc(this.firestore, 'users', email), {
+  async addUser(username: string, email: string) {
+    const docRef = await addDoc(collection(this.firestore, 'users'), {
       username,
       email,
       booklist: {
@@ -32,68 +33,14 @@ export class UsersFirebaseService {
     });
   }
 
-  getUsers(): Observable<User[]> {
-    return collectionData(this.usersCollection, {
-      idField: 'id',
-    }) as Observable<User[]>;
-  }
-
-  getBookList(userId: string): Observable<BookList[]> {
-    const booklistCollection = collection(
-      this.firestore,
-      `users/${userId}/booklist`
+  getUser(userEmail: string): Observable<FirestoreUser[]> {
+    const q = query(
+      collection(this.firestore, 'users'),
+      where('email', '==', userEmail)
     );
-    return collectionData(booklistCollection, {
-      idField: 'id',
-    }) as Observable<BookList[]>;
-  }
 
-  getProfileStats(userId: string): Observable<ProfileStats[]> {
-    const statsCollection = collection(
-      this.firestore,
-      `users/${userId}/profilestats`
-    );
-    return collectionData(statsCollection, {
-      idField: 'id',
-    }) as Observable<ProfileStats[]>;
-  }
+    console.log('q: ', userEmail);
 
-  // getCompleteUserData(
-  //   userId: string
-  // ): Observable<{ CompleteUserData: CompleteUserData }> {
-  //   return this.getUsers().pipe(
-  //     switchMap((users) => {
-  //       const user = users.find((user) => user.id === userId) as User;
-  //       return forkJoin({
-  //         bookList: this.getBookList(user.id),
-  //         profileStats: this.getProfileStats(user.id),
-  //       }).pipe(
-  //         map(({ bookList, profileStats }) => ({
-  //           CompleteUserData: {
-  //             user,
-  //             bookList,
-  //             profileStats,
-  //           },
-  //         })),
-  //         catchError((error) => {
-  //           console.error('Error getting complete user data:', error);
-  //           return [];
-  //         })
-  //       );
-  //     })
-  //   );
-  // }
-
-  getCompleteUserData(
-    userId: string
-  ): Observable<{ user: User; bookList: BookList[] }> {
-    return this.getUsers().pipe(
-      switchMap((users) => {
-        const user = users.find((user) => user.id === userId) as User;
-        return this.getBookList(user.id).pipe(
-          map((bookList) => ({ user, bookList }))
-        );
-      })
-    );
+    return collectionData(q, { idField: 'id' }) as Observable<FirestoreUser[]>;
   }
 }

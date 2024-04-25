@@ -34,5 +34,8 @@
     </div>
   </div>
   <app-log-out />
+  @if (currentUserData) {
+  <div>{{ currentUserData.username }}</div>
+  }
   <router-outlet />
 </div>

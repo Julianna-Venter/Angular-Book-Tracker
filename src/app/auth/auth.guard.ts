@@ -3,10 +3,12 @@ import { CanActivateFn, Router } from '@angular/router';
 import { AuthService } from '../services/auth.service';
 
 import { take } from 'rxjs/operators';
+import { UsersFirebaseService } from '../services/users-firebase.service';
 
 export const authGuard: CanActivateFn = (route, state) => {
   const authService = inject(AuthService);
   const router = inject(Router);
+  const usersFirebaseService = inject(UsersFirebaseService);
 
   authService.user$.pipe(take(1)).subscribe((user) => {
     if (user) {
@@ -18,15 +20,13 @@ export const authGuard: CanActivateFn = (route, state) => {
       authService.currentUserSig.set(null);
     }
 
-    console.log('app: ', authService.currentUserSig());
-
     if (!user) {
-      console.log('Not logged in');
-      console.log('Credentials: ', authService.currentUserSig());
       router.navigate(['/login']);
+      return false;
     } else {
-      console.log('Logged in');
       router.navigate(['/home']);
+      authService.isUserSet$.next(true);
+      return true;
     }
   });
 
