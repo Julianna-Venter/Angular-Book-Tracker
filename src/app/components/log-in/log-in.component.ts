@@ -1,5 +1,10 @@
 import { Component, inject } from '@angular/core';
-import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
+import {
+  FormControl,
+  FormGroup,
+  ReactiveFormsModule,
+  Validators,
+} from '@angular/forms';
 import { Router, RouterLink } from '@angular/router';
 import { NgIconComponent, provideIcons } from '@ng-icons/core';
 import {
@@ -32,8 +37,8 @@ export class LogInComponent {
   showPassword: boolean = true;
 
   loginForm = new FormGroup({
-    email: new FormControl(''),
-    password: new FormControl(''),
+    email: new FormControl('', [Validators.required]),
+    password: new FormControl('', [Validators.required]),
   });
 
   errorMessage: string | null = null;
@@ -50,7 +55,8 @@ export class LogInComponent {
           this.router.navigate(['/home']);
         },
         error: (error) => {
-          this.errorMessage = error.code;
+          this.errorMessage =
+            "This email and password combination doesn't exist. Please try again.";
         },
       });
   }

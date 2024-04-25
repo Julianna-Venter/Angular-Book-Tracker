@@ -16,6 +16,7 @@ import {
   heroUser,
 } from '@ng-icons/heroicons/outline';
 import { AuthService } from '../../services/auth.service';
+import { UsersFirebaseService } from '../../services/users-firebase.service';
 import { confirmationValidator } from '../../shared/compare-validator.directive';
 import { BackgroundComponent } from '../shared-components/background/background.component';
 
@@ -61,7 +62,7 @@ export class SignUpComponent {
         '',
         [
           Validators.required,
-          Validators.minLength(3),
+          Validators.minLength(4),
           Validators.maxLength(24),
         ],
       ],
@@ -79,6 +80,7 @@ export class SignUpComponent {
   }
 
   errorMessage: string | null = null;
+  usersFirebaseService = inject(UsersFirebaseService);
 
   onSubmit(): void {
     if (this.signupForm.valid) {
@@ -94,7 +96,7 @@ export class SignUpComponent {
         )
         .subscribe({
           next: () => {
-            console.log('User created');
+            this.usersFirebaseService.addUser(rawForm.username, rawForm.email);
             this.router.navigate(['/home']);
           },
           error: (error) => {
@@ -104,7 +106,6 @@ export class SignUpComponent {
     } else {
       Object.entries(this.signupForm.controls).forEach(([key, control]) => {
         if (control.invalid) {
-          console.log('Invalid control:', key); // Log the key of the control
           control.markAsDirty();
           control.updateValueAndValidity({ onlySelf: true });
         }

@@ -3,7 +3,7 @@
 <div
   class="w-full h-lvh overflow-hidden flex flex-col justify-center items-center text-grey"
 >
-  <div class="h-1/2 w-full p-16 mb-10">
+  <div class="h-1/2 w-full p-16 mb-10 flex flex-col">
     <h1 class="font-bold text-3xl mb-10">SIGN UP</h1>
     <form
       [formGroup]="signupForm"
@@ -24,10 +24,10 @@
             formControlName="username"
           />
         </div>
-        @if (signupForm.hasError('username') &&
+        @if (signupForm.get('username')?.errors &&
         signupForm.get('username')?.touched) {
         <div class="text-red-500 text-center text-xs">
-          Username must be between 8 and 24 characters.
+          Username must be between 4 and 24 characters.
         </div>
         }
       </div>
@@ -44,12 +44,13 @@
             class="bg-transparent border-b-[1px] border-grey/60 h-8 w-full pl-2"
           />
         </div>
+        @if (signupForm.get('email')?.errors &&
+        signupForm.get('email')?.touched) {
+        <div class="text-red-500 text-center text-xs">
+          Email must be a valid email address.
+        </div>
+        }
       </div>
-      @if (signupForm.hasError('email') && signupForm.get('email')?.touched) {
-      <div class="text-red-500 text-center text-xs">
-        Email is required and must be a valid email address.
-      </div>
-      }
       <div class="flex flex-col gap-1">
         <div class="flex items-end w-full">
           <div class="border-b-[1px] border-grey/60 pl-1">
@@ -75,13 +76,14 @@
             ></ng-icon>
           </div>
         </div>
+        @if (signupForm.get('password')?.errors &&
+        signupForm.get('password')?.touched) {
+        <div class="text-red-500 text-center text-xs">
+          Password must be between 8 and 24 characters, contain at least one
+          capital letter, and one special character.
+        </div>
+        }
       </div>
-      @if (signupForm.hasError('password') &&
-      signupForm.get('password')?.touched) {
-      <div class="text-red-500 text-center">
-        Password is required and must be between 8 and 24 characters.
-      </div>
-      }
       <div class="flex flex-col gap-1">
         <div class="flex items-end w-full">
           <div class="border-b-[1px] border-grey/60 pl-1">
@@ -107,27 +109,31 @@
             ></ng-icon>
           </div>
         </div>
+        @if (signupForm.get('confirmPassword')?.errors &&
+        signupForm.get('confirmPassword')?.touched) {
+        <div class="text-red-500 text-center text-xs">
+          Passwords do not match
+        </div>
+        }
       </div>
-      @if (signupForm.hasError('confirmPassword') &&
-      signupForm.get('confirmPassword')?.touched) {
-      <div class="text-red-500 text-center">Passwords do not match</div>
-      }
+
       <div class="flex flex-col gap-2">
         <button
           type="submit"
           class="bg-green text-white font-bold px-5 py-2 rounded-3xl self-center w-full mt-4"
+          [class.bg-green]="signupForm.valid"
+          [class.bg-gray-400]="!signupForm.valid"
         >
           Create Account
         </button>
-        <div class="flex gap-2 self-center text-sm">
-          <span>Already have an account?</span>
-          <button class="font-bold underline" routerLink="/login">Login</button>
-        </div>
-        <!-- validation -->
         @if (errorMessage) {
         <div class="text-red-500 text-center">{{ errorMessage }}</div>
         }
       </div>
     </form>
+    <div class="flex gap-2 self-center text-sm mt-5">
+      <span>Already have an account?</span>
+      <button class="font-bold underline" routerLink="/login">Login</button>
+    </div>
   </div>
 </div>

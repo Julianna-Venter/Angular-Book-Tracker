@@ -1,5 +1,11 @@
 import { Injectable, inject } from '@angular/core';
-import { Firestore, collection, collectionData } from '@angular/fire/firestore';
+import {
+  Firestore,
+  collection,
+  collectionData,
+  doc,
+  setDoc,
+} from '@angular/fire/firestore';
 import { Observable, map, switchMap } from 'rxjs';
 import { BookList, ProfileStats, User } from '../interfaces/booksInterfaces';
 
@@ -9,6 +15,22 @@ import { BookList, ProfileStats, User } from '../interfaces/booksInterfaces';
 export class UsersFirebaseService {
   firestore = inject(Firestore);
   usersCollection = collection(this.firestore, 'users');
+
+  addUser(username: string, email: string) {
+    setDoc(doc(this.firestore, 'users', email), {
+      username,
+      email,
+      booklist: {
+        current: [],
+        dnf: [],
+        read: [],
+        tbr: [],
+      },
+      profilestats: {
+        stats: [],
+      },
+    });
+  }
 
   getUsers(): Observable<User[]> {
     return collectionData(this.usersCollection, {
