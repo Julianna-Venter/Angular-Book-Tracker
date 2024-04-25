@@ -59,8 +59,8 @@ export class HomeComponent implements OnInit, OnDestroy {
       .subscribe((user) => {
         if (user) {
           this.currentUserData = user[0];
+          //will remove this later, this is just for testing
           console.log('user from home: ', this.currentUserData);
-          // Handle user data here
         }
       });
   }

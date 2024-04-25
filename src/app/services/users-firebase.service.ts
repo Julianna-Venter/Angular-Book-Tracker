@@ -39,8 +39,6 @@ export class UsersFirebaseService {
       where('email', '==', userEmail)
     );
 
-    console.log('q: ', userEmail);
-
     return collectionData(q, { idField: 'id' }) as Observable<FirestoreUser[]>;
   }
 }
