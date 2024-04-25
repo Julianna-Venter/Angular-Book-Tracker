@@ -1,16 +1,16 @@
 import { AbstractControl, ValidationErrors, ValidatorFn } from '@angular/forms';
 
 /** the initial password and the confirmed password has to match */
-export function confirmPasswordValidator(
-  initPassword: string,
-  confirmPassword: string
-): ValidatorFn {
-  return (control: AbstractControl): ValidationErrors | null => {
-    const password = control.get(initPassword)?.value;
-    const confirm = control.get(confirmPassword)?.value;
+export const confirmationValidator: ValidatorFn = (
+  control: AbstractControl
+): ValidationErrors | null => {
+  const password = control.parent?.get('password');
+  const confirmPassword = control.value;
 
-    console.log('console:', password, confirm);
-
-    return password === confirm ? null : { confirmPassword: true };
-  };
-}
+  if (!confirmPassword) {
+    return { required: true };
+  } else if (password && confirmPassword !== password.value) {
+    return { confirm: true };
+  }
+  return null;
+};

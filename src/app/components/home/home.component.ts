@@ -10,11 +10,12 @@ import {
 } from '@ng-icons/heroicons/outline';
 import { heroChartPieSolid, heroHomeSolid } from '@ng-icons/heroicons/solid';
 import { UsersFirebaseService } from '../../services/users-firebase.service';
+import { LogOutComponent } from './profile-stats/log-out/log-out.component';
 
 @Component({
   selector: 'app-home',
   standalone: true,
-  imports: [NgIconComponent, RouterOutlet],
+  imports: [NgIconComponent, RouterOutlet, LogOutComponent],
   templateUrl: './home.component.html',
   styleUrl: './home.component.scss',
   viewProviders: [

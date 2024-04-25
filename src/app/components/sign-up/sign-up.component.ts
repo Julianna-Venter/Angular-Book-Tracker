@@ -2,6 +2,7 @@ import { Component, inject } from '@angular/core';
 import {
   FormControl,
   FormGroup,
+  NonNullableFormBuilder,
   ReactiveFormsModule,
   Validators,
 } from '@angular/forms';
@@ -15,7 +16,7 @@ import {
   heroUser,
 } from '@ng-icons/heroicons/outline';
 import { AuthService } from '../../services/auth.service';
-import { confirmPasswordValidator } from '../../shared/compare-validator.directive';
+import { confirmationValidator } from '../../shared/compare-validator.directive';
 import { BackgroundComponent } from '../shared-components/background/background.component';
 
 @Component({
@@ -43,52 +44,72 @@ export class SignUpComponent {
   authService = inject(AuthService);
   router = inject(Router);
 
-  username: string = '';
-  email: string = '';
-  password: string = '';
-  confirmPassword: string = '';
   showPassword: boolean = true;
   showPasswordConfirm: boolean = true;
+  passwordRegex = /^(?=.*[A-Z])(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]+$/;
 
-  signupForm = new FormGroup({
-    username: new FormControl(this.username, [
-      Validators.required,
-      Validators.minLength(3),
-      Validators.maxLength(24),
-    ]),
-    email: new FormControl(this.email, [Validators.required, Validators.email]),
-    password: new FormControl(this.password, [
-      Validators.required,
-      Validators.minLength(8),
-    ]),
-    confirmPassword: new FormControl(this.confirmPassword, [
-      Validators.required,
-      confirmPasswordValidator('password', 'confirmPassword'),
-    ]),
-  });
+  signupForm: FormGroup<{
+    username: FormControl<string>;
+    email: FormControl<string>;
+    password: FormControl<string>;
+    confirmPassword: FormControl<string>;
+  }>;
+
+  constructor(private fb: NonNullableFormBuilder) {
+    this.signupForm = this.fb.group({
+      username: [
+        '',
+        [
+          Validators.required,
+          Validators.minLength(3),
+          Validators.maxLength(24),
+        ],
+      ],
+      email: ['', [Validators.required, Validators.email]],
+      password: [
+        '',
+        [
+          Validators.required,
+          Validators.minLength(8),
+          Validators.pattern(this.passwordRegex),
+        ],
+      ],
+      confirmPassword: ['', [Validators.required, confirmationValidator]], // Use the imported custom validator
+    });
+  }
 
   errorMessage: string | null = null;
 
-  onSubmit() {
-    // TODO: when this is implememted you need to have a spinner to indicate that the form is being submitted
-    console.warn(this.signupForm.value);
-    const rawForm = this.signupForm.getRawValue();
+  onSubmit(): void {
+    if (this.signupForm.valid) {
+      //   // TODO: when this is implememted you need to have a spinner to indicate that the form is being submitted
+      console.warn(this.signupForm.value);
+      const rawForm = this.signupForm.getRawValue();
 
-    this.authService
-      .register(
-        rawForm.email ?? '',
-        rawForm.username ?? '',
-        rawForm.password ?? ''
-      )
-      .subscribe({
-        next: () => {
-          console.log('User created');
-          // this.router.navigate(['/home']);
-        },
-        error: (error) => {
-          this.errorMessage = error.code;
-        },
+      this.authService
+        .register(
+          rawForm.email ?? '',
+          rawForm.username ?? '',
+          rawForm.password ?? ''
+        )
+        .subscribe({
+          next: () => {
+            console.log('User created');
+            this.router.navigate(['/home']);
+          },
+          error: (error) => {
+            this.errorMessage = error.code;
+          },
+        });
+    } else {
+      Object.entries(this.signupForm.controls).forEach(([key, control]) => {
+        if (control.invalid) {
+          console.log('Invalid control:', key); // Log the key of the control
+          control.markAsDirty();
+          control.updateValueAndValidity({ onlySelf: true });
+        }
       });
+    }
   }
 
   togglePassword() {
