@@ -3,7 +3,6 @@ import { CanActivateFn, Router } from '@angular/router';
 import { AuthService } from '../services/auth.service';
 
 import { take } from 'rxjs/operators';
-import { UsersFirebaseService } from '../services/users-firebase.service';
 
 export const authGuard: CanActivateFn = (route, state) => {
   const authService = inject(AuthService);
@@ -12,6 +11,7 @@ export const authGuard: CanActivateFn = (route, state) => {
   authService.user$.pipe(take(1)).subscribe((user) => {
     if (user) {
       authService.currentUserSig.set({
+        //! is added because it is pretty much guaranteed that the user is logged in at this point
         email: user.email!,
         username: user.displayName!,
       });
