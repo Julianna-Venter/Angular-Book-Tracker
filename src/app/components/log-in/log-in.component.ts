@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component, OnDestroy, inject } from '@angular/core';
 import {
   FormControl,
   FormGroup,
@@ -31,7 +31,7 @@ import { BackgroundComponent } from '../shared-components/background/background.
     provideIcons({ heroUser, heroLockClosed, heroEye, heroEyeSlash }),
   ],
 })
-export class LogInComponent {
+export class LogInComponent implements OnDestroy {
   authService = inject(AuthService);
   router = inject(Router);
   showPassword: boolean = true;
@@ -61,7 +61,15 @@ export class LogInComponent {
       });
   }
 
+  ngOnDestroy() {
+    //clean up the subscription
+  }
+
   togglePassword() {
     this.showPassword = !this.showPassword;
   }
 }
+
+// onSubmit(username: string, password: string) {
+//   store.dispatch(login({ username: username, password: password }));
+// }

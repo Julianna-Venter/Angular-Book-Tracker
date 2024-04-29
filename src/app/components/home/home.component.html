@@ -1,5 +1,5 @@
-<div class="w-full h-lvh px-8 pb-5 overflow-y-scroll">
-  <div class="w-full h-fit flex justify-center py-5 gap-2">
+<div class="w-full h-lvh overflow-y-scroll relative">
+  <div class="w-full h-fit flex justify-center py-5 gap-2 z-20 absolute">
     <div
       class="bg-white w-fit h-fit px-3 py-3 flex gap-5 rounded-full shadow-4xl"
     >
@@ -7,18 +7,38 @@
         <ng-icon
           name="heroChevronDoubleLeft"
           size="30"
-          class="text-grey"
+          class="text-grey hover:text-dark-orange"
         ></ng-icon>
       </div>
     </div>
     <div
       class="bg-white w-fit h-fit px-5 py-3 flex gap-5 rounded-full shadow-4xl"
     >
-      <div class="flex justify-center items-center">
-        <ng-icon name="{{ homeIcon }}" size="30" class="text-grey"></ng-icon>
+      <div
+        class="flex justify-center items-center"
+        routerLink="/home"
+        (click)="changeActive('home')"
+      >
+        <ng-icon
+          name="{{ homeIcon }}"
+          size="30"
+          class="{{
+            !home ? 'text-grey' : 'text-sky-500'
+          }} hover:text-dark-orange"
+        ></ng-icon>
       </div>
-      <div class="flex justify-center items-center">
-        <ng-icon name="{{ pieIcon }}" size="30" class="text-grey"></ng-icon>
+      <div
+        class="flex justify-center items-center"
+        routerLink="profile"
+        (click)="changeActive('stats')"
+      >
+        <ng-icon
+          name="{{ pieIcon }}"
+          size="30"
+          class="{{
+            !stats ? 'text-grey' : 'text-sky-500'
+          }} hover:text-dark-orange"
+        ></ng-icon>
       </div>
     </div>
     <div
@@ -28,14 +48,18 @@
         <ng-icon
           name="heroMagnifyingGlass"
           size="30"
-          class="text-grey"
+          class="text-grey hover:text-dark-orange"
         ></ng-icon>
       </div>
     </div>
   </div>
-  <app-log-out />
-  @if (currentUserData) {
+  <!-- <app-log-out /> -->
+  <!-- @if (currentUserData) {
   <div>{{ currentUserData.username }}</div>
-  }
+  } -->
+  <!-- @for (book of books$ | async; track book.id) {
+  <p>BookInfo</p>
+  <div>{{ book }}</div>
+  } -->
   <router-outlet />
 </div>

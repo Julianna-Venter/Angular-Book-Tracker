@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component, OnDestroy, inject } from '@angular/core';
 import {
   FormControl,
   FormGroup,
@@ -41,7 +41,7 @@ import { BackgroundComponent } from '../shared-components/background/background.
     }),
   ],
 })
-export class SignUpComponent {
+export class SignUpComponent implements OnDestroy {
   authService = inject(AuthService);
   router = inject(Router);
 
@@ -113,15 +113,14 @@ export class SignUpComponent {
     }
   }
 
+  ngOnDestroy() {
+    // Clean up the subscription when the component is destroyed
+  }
+
   togglePassword() {
     this.showPassword = !this.showPassword;
   }
   togglePasswordConfirm() {
     this.showPasswordConfirm = !this.showPasswordConfirm;
   }
-
-  //API for the searching:
-  //https://openlibrary.org/search.json?q=harry+potter
-  //API for the cover image, using the cover key
-  //https://covers.openlibrary.org/b/olid/OL21058613M.jpg
 }

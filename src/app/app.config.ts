@@ -3,11 +3,15 @@ import { initializeApp, provideFirebaseApp } from '@angular/fire/app';
 import { getAuth, provideAuth } from '@angular/fire/auth';
 import { getFirestore, provideFirestore } from '@angular/fire/firestore';
 import { provideRouter } from '@angular/router';
-import { FIRESTORE_API_KEY } from '../../environments/firestore-api-key';
+import { provideState, provideStore } from '@ngrx/store';
+import { API_KEYS } from '../../environments/api-keys';
 import { routes } from './app.routes';
+import { booksReducer, featureKey } from './store/reducer';
+import { provideEffects } from '@ngrx/effects';
+import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 
 const firebaseConfig = {
-  apiKey: FIRESTORE_API_KEY.apiKey,
+  apiKey: API_KEYS.firestore,
   authDomain: 'angular-book-tracker-686b9.firebaseapp.com',
   projectId: 'angular-book-tracker-686b9',
   storageBucket: 'angular-book-tracker-686b9.appspot.com',
@@ -23,5 +27,8 @@ export const appConfig: ApplicationConfig = {
       provideFirestore(() => getFirestore()),
       provideAuth(() => getAuth()),
     ]),
+    provideStore(),
+    provideState({ name: featureKey, reducer: booksReducer }),
+    provideEffects(), provideAnimationsAsync('noop'),
   ],
 };

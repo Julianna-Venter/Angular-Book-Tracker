@@ -1,5 +1,6 @@
+import { AsyncPipe } from '@angular/common';
 import { Component, OnDestroy, OnInit, inject } from '@angular/core';
-import { RouterOutlet } from '@angular/router';
+import { Router, RouterLink, RouterOutlet } from '@angular/router';
 import { NgIconComponent, provideIcons } from '@ng-icons/core';
 import {
   heroChartPie,
@@ -9,16 +10,26 @@ import {
   heroPlus,
 } from '@ng-icons/heroicons/outline';
 import { heroChartPieSolid, heroHomeSolid } from '@ng-icons/heroicons/solid';
+import { Store } from '@ngrx/store';
 import { Subscription, of, switchMap } from 'rxjs';
 import { FirestoreUser } from '../../interfaces/booksInterfaces';
 import { AuthService } from '../../services/auth.service';
 import { UsersFirebaseService } from '../../services/users-firebase.service';
+import { getBooksAction } from '../../store/actions';
+import { BooksState } from '../../store/reducer';
+import { selectBooks } from '../../store/selectors';
 import { LogOutComponent } from './profile-stats/log-out/log-out.component';
 
 @Component({
   selector: 'app-home',
   standalone: true,
-  imports: [NgIconComponent, RouterOutlet, LogOutComponent],
+  imports: [
+    NgIconComponent,
+    RouterOutlet,
+    LogOutComponent,
+    AsyncPipe,
+    RouterLink,
+  ],
   templateUrl: './home.component.html',
   styleUrl: './home.component.scss',
   viewProviders: [
@@ -39,9 +50,40 @@ export class HomeComponent implements OnInit, OnDestroy {
 
   currentUserSubscription: Subscription | undefined;
   usersFirebaseService = inject(UsersFirebaseService);
+  router = inject(Router);
   currentUserData: FirestoreUser | null = null;
+  home = false;
+  stats = false;
 
-  constructor(private authService: AuthService) {}
+  books$ = this.store.select(selectBooks);
+  query = 'Harry Potter';
+
+  constructor(
+    private authService: AuthService,
+    private store: Store<BooksState>
+  ) {
+    this.store.dispatch(getBooksAction({ query: this.query }));
+    if (this.router.url === '/home') {
+      this.home = true;
+      this.stats = false;
+    } else if (this.router.url === '/home/profile') {
+      this.home = false;
+      this.stats = true;
+    } else {
+      this.home = false;
+      this.stats = false;
+    }
+  }
+
+  changeActive(click: string) {
+    if (click === 'home') {
+      this.home = true;
+      this.stats = false;
+    } else if (click === 'stats') {
+      this.home = false;
+      this.stats = true;
+    }
+  }
 
   ngOnInit() {
     this.currentUserSubscription = this.authService.isUserSet$
@@ -63,6 +105,10 @@ export class HomeComponent implements OnInit, OnDestroy {
           console.log('user from home: ', this.currentUserData);
         }
       });
+
+    this.books$.subscribe((books) => {
+      console.log('books from home: ', books);
+    });
   }
 
   ngOnDestroy() {

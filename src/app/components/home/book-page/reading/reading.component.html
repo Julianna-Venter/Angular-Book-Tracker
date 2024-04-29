@@ -1,1 +1,178 @@
-<p>reading works!</p>
+<div class="px-10 pb-10">
+  <h1 class="py-5 text-3xl font-bold uppercase">Reading review.</h1>
+  <div class="flex flex-col justify-center items-center gap-10">
+    <div class="rating rating-lg rating-half">
+      <input type="radio" name="rating-10" class="rating-hidden" />
+      <input
+        type="radio"
+        name="rating-10"
+        class="bg-green-500 mask mask-star-2 mask-half-1"
+        checked
+      />
+      <input
+        type="radio"
+        name="rating-10"
+        class="bg-green-500 mask mask-star-2 mask-half-2"
+      />
+      <input
+        type="radio"
+        name="rating-10"
+        class="bg-green-500 mask mask-star-2 mask-half-1"
+      />
+      <input
+        type="radio"
+        name="rating-10"
+        class="bg-green-500 mask mask-star-2 mask-half-2"
+      />
+      <input
+        type="radio"
+        name="rating-10"
+        class="bg-green-500 mask mask-star-2 mask-half-1"
+      />
+      <input
+        type="radio"
+        name="rating-10"
+        class="bg-green-500 mask mask-star-2 mask-half-2"
+      />
+      <input
+        type="radio"
+        name="rating-10"
+        class="bg-green-500 mask mask-star-2 mask-half-1"
+      />
+      <input
+        type="radio"
+        name="rating-10"
+        class="bg-green-500 mask mask-star-2 mask-half-2"
+      />
+      <input
+        type="radio"
+        name="rating-10"
+        class="bg-green-500 mask mask-star-2 mask-half-1"
+      />
+      <input
+        type="radio"
+        name="rating-10"
+        class="bg-green-500 mask mask-star-2 mask-half-2"
+      />
+    </div>
+    <div class="w-full">
+      <h2 class="text-xl font-bold uppercase">Pace</h2>
+      <div>
+        <input
+          type="range"
+          min="0"
+          max="100"
+          value="25"
+          class="range range-sm"
+          step="25"
+        />
+        <div class="w-full flex justify-between text-md px-2">
+          <span>Slow</span>
+          <span>fast</span>
+        </div>
+      </div>
+    </div>
+    <app-dnf />
+    <div class="w-full">
+      <h2 class="text-xl font-bold uppercase">Moods</h2>
+      <div class="flex flex-col gap-8">
+        <div>
+          <input
+            type="range"
+            min="0"
+            max="100"
+            value="25"
+            class="range range-sm"
+            step="25"
+          />
+          <div class="w-full flex justify-between text-md px-2">
+            <span>Character Driven</span>
+            <span>Plot Driven</span>
+          </div>
+        </div>
+        <div>
+          <input
+            type="range"
+            min="0"
+            max="100"
+            value="25"
+            class="range range-sm"
+            step="25"
+          />
+          <div class="w-full flex justify-between text-md px-2">
+            <span>Tense</span>
+            <span>Light Hearted</span>
+          </div>
+        </div>
+        <div>
+          <input
+            type="range"
+            min="0"
+            max="100"
+            value="25"
+            class="range range-sm"
+            step="25"
+          />
+          <div class="w-full flex justify-between text-md px-2">
+            <span>Dark</span>
+            <span>Light</span>
+          </div>
+        </div>
+        <div>
+          <input
+            type="range"
+            min="0"
+            max="100"
+            value="25"
+            class="range range-sm"
+            step="25"
+          />
+          <div class="w-full flex justify-between text-md px-2">
+            <span>Informative</span>
+            <span>Fun</span>
+          </div>
+        </div>
+        <div>
+          <input
+            type="range"
+            min="0"
+            max="100"
+            value="25"
+            class="range range-sm"
+            step="25"
+          />
+          <div class="w-full flex justify-between text-md px-2">
+            <span>Adventurous</span>
+            <span>Grounded</span>
+          </div>
+        </div>
+        <div>
+          <input
+            type="range"
+            min="0"
+            max="100"
+            value="25"
+            class="range range-sm"
+            step="25"
+          />
+          <div class="w-full flex justify-between text-md px-2">
+            <span>Reflective</span>
+            <span>Casual</span>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="w-full">
+      <h2 class="text-xl font-bold uppercase">Comments</h2>
+      <textarea
+        class="textarea textarea-bordered w-full bg-grey/10"
+        placeholder="Bio"
+      ></textarea>
+    </div>
+    <button
+      class="text-xl font-bold text-white uppercase bg-green hover:bg-blue rounded-full py-2 px-5"
+    >
+      Complete Review
+    </button>
+  </div>
+</div>

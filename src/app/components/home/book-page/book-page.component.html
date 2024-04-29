@@ -1,44 +1,89 @@
-<div class="w-full h-full absolute top-0 left-0 -z-10">
+<div class="w-full h-full absolute top-0 left-0 z-10">
   <div
-    class="w-full h-[55%] pb-10 bg-dark-orange rounded-b-3xl flex justify-center items-end"
+    class="w-full h-full bg-grey flex justify-between items-center pt-28 flex-col gap-5 overflow-y-auto"
   >
     <div
-      class="bg-blue h-[350px] w-[40px] rounded-l-box border-r-2 border-white"
-    ></div>
-    <img
-      [src]="bookTitle"
-      alt="Book Cover"
-      class="rounded-r-box h-[350px] w-[223px]"
-    />
-  </div>
-  <div>
-    <h1>Title</h1>
-    <p>Author</p>
-    <p>Published Date</p>
-    <div>
-      <span>Pages</span>
-      <span>Language</span>
+      class="h-full w-full flex flex-col justify-center items-center gap-5 px-10"
+    >
+      <img
+        [src]="bookTitle"
+        alt="Book Cover"
+        class="rounded-box border border-background-white/30 h-[314px] w-[210px]"
+      />
+      <h1 class="text-2xl font-extralight text-background-white text-center">
+        The Death and Life of Zebulon Finch
+      </h1>
     </div>
-    <p>Description</p>
+    <div
+      class="bg-background-white h-fit w-full rounded-t-3xl overflow-x-hidden flex-[0_0_auto]"
+    >
+      <div class="w-full h-fit flex m-3">
+        <div
+          class="w-1/2 flex flex-col justify-center items-start px-8 text-grey"
+        >
+          <mat-form-field class="w-full h-[4.5rem]">
+            <mat-select [(value)]="selected">
+              <mat-option value="nothing">Nothing Yet</mat-option>
+              <mat-option value="tbr">TBR</mat-option>
+              <mat-option value="reading">Reading</mat-option>
+              <mat-option value="read">Read</mat-option>
+              <mat-option value="dnf">DNF</mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+
+        <div
+          class="w-1/2 flex flex-col justify-center items-start px-8 py-2 text-grey text-sm"
+        >
+          <div class="form-control">
+            <label class="label cursor-pointer flex gap-5">
+              <span class="label-text text-lg">Owned</span>
+              <input type="checkbox" class="toggle" />
+            </label>
+          </div>
+        </div>
+      </div>
+      <div class="w-full h-fit flex m-3">
+        <div
+          class="w-1/2 flex flex-col justify-center items-start border-r border-light-grey px-8 text-grey"
+        >
+          <p class="font-semibold">Daniel Krause</p>
+          <p class="text-xs">23 May 2015</p>
+        </div>
+        <div
+          class="w-1/2 flex flex-col justify-center items-start px-8 py-2 text-grey text-sm"
+        >
+          <p class="font-semibold">
+            203 <span class="text-xs font-normal">Pages</span>
+          </p>
+          <p class="text-xs">English</p>
+        </div>
+      </div>
+      <div class="w-full h-fit flex m-3">
+        <div
+          class="w-1/2 flex flex-col justify-center items-start border-r border-light-grey px-8 text-grey"
+        >
+          <p class="font-light text-sm">
+            Here is the story behind one of the most remarkable Internet
+            successes of our time. Based on scrupulous research and
+            extraordinary access to Google, ...
+          </p>
+        </div>
+        <div
+          class="w-1/2 flex flex-wrap gap-2 justify-start px-4 py-2 text-grey text-sm"
+        >
+          <div class="badge badge-outline">Historical</div>
+          <div class="badge badge-outline">Fantasy</div>
+          <div class="badge badge-outline">Mature</div>
+          <div class="badge badge-outline">Comedy</div>
+          <div class="badge badge-outline">Dark Humor</div>
+        </div>
+      </div>
+      <app-reading />
+      <!-- <app-tbr /> -->
+    </div>
+    <!-- dnf is own component that appears only when dnf is selected, otherwise just show vanilla is reading
+    tbr had an expected rating. when the button is clicked make it an is reading page
+    is reading has a complete review button, this makes it a completed review page -->
   </div>
-  <div>
-    <!-- add a dropdown with: read, currently reading, TBR, DNF -->
-  </div>
-  <!-- Now you need to have diffrent sections for each of the above options -->
-
-  <!-- read -->
-  <!-- rating, mood, pace, comments, likes, dislikes, genres (possibly like/dislike) -->
-
-  <!-- currently reading -->
-  <!-- same as read -->
-  <!-- If currently reading, have a DNF/Finish button -->
-  <!-- Finish button turns it into a have read page -->
-  <!-- DNF button turns it into a DNF page -->
-
-  <!-- TBR -->
-  <!-- Owned/digital/library etc -->
-  <!-- comments -->
-
-  <!-- DNF -->
-  <!-- rating, why did you not like this?, mood, pace, comments, likes, dislikes, genres (possibly like/dislike) -->
 </div>
