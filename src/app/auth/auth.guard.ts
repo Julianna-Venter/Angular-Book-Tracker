@@ -12,8 +12,8 @@ export const authGuard: CanActivateFn = (route, state) => {
     if (user) {
       authService.currentUserSig.set({
         //! is added because it is pretty much guaranteed that the user is logged in at this point
-        email: user.email!,
-        username: user.displayName!,
+        email: user.email ?? '',
+        username: user.displayName ?? '',
       });
     } else {
       authService.currentUserSig.set(null);
