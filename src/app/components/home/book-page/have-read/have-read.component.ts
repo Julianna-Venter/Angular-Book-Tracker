@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, EventEmitter, Output } from '@angular/core';
 import { NgIconComponent, provideIcons } from '@ng-icons/core';
 import { heroStarSolid } from '@ng-icons/heroicons/solid';
 
@@ -10,4 +10,10 @@ import { heroStarSolid } from '@ng-icons/heroicons/solid';
   styleUrl: './have-read.component.scss',
   viewProviders: [provideIcons({ heroStarSolid })],
 })
-export class HaveReadComponent {}
+export class HaveReadComponent {
+  @Output() updateReviewEvent = new EventEmitter<string>();
+
+  updateReview() {
+    this.updateReviewEvent.emit('reading');
+  }
+}

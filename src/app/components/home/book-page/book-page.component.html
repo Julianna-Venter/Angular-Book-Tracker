@@ -79,12 +79,21 @@
           <div class="badge badge-outline">Dark Humor</div>
         </div>
       </div>
-      <!-- <app-reading /> -->
-      <!-- <app-tbr /> -->
-      <app-have-read />
+      @if (selected === 'tbr') {
+      <app-tbr (startReviewEvent)="changeSelected($event)" />
+      } @else if (selected === 'reading' ) {
+      <app-reading
+        [dnf]="false"
+        (completeReviewEvent)="changeSelected($event)"
+      />
+      } @else if (selected === 'read') {
+      <app-have-read (updateReviewEvent)="changeSelected($event)" />
+      } @else if (selected === 'dnf') {
+      <app-reading
+        [dnf]="true"
+        (completeReviewEvent)="changeSelected($event)"
+      />
+      }
     </div>
-    <!-- dnf is own component that appears only when dnf is selected, otherwise just show vanilla is reading
-    tbr had an expected rating. when the button is clicked make it an is reading page
-    is reading has a complete review button, this makes it a completed review page -->
   </div>
 </div>

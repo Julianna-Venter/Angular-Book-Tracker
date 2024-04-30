@@ -62,9 +62,9 @@
           type="range"
           min="0"
           max="100"
-          value="25"
+          value="0"
           class="range range-sm"
-          step="25"
+          step="14.28"
         />
         <div class="w-full flex justify-between text-md px-2">
           <span>Slow</span>
@@ -72,7 +72,9 @@
         </div>
       </div>
     </div>
+    @if (dnf) {
     <app-dnf />
+    }
     <div class="w-full">
       <h2 class="text-xl font-bold uppercase">Moods</h2>
       <div class="flex flex-col gap-8">
@@ -81,9 +83,9 @@
             type="range"
             min="0"
             max="100"
-            value="25"
+            value="0"
             class="range range-sm"
-            step="25"
+            step="14.28"
           />
           <div class="w-full flex justify-between text-md px-2">
             <span>Character Driven</span>
@@ -95,9 +97,9 @@
             type="range"
             min="0"
             max="100"
-            value="25"
+            value="0"
             class="range range-sm"
-            step="25"
+            step="14.28"
           />
           <div class="w-full flex justify-between text-md px-2">
             <span>Tense</span>
@@ -109,9 +111,9 @@
             type="range"
             min="0"
             max="100"
-            value="25"
+            value="0"
             class="range range-sm"
-            step="25"
+            step="14.28"
           />
           <div class="w-full flex justify-between text-md px-2">
             <span>Dark</span>
@@ -123,9 +125,9 @@
             type="range"
             min="0"
             max="100"
-            value="25"
+            value="0"
             class="range range-sm"
-            step="25"
+            step="14.28"
           />
           <div class="w-full flex justify-between text-md px-2">
             <span>Informative</span>
@@ -137,9 +139,9 @@
             type="range"
             min="0"
             max="100"
-            value="25"
+            value="0"
             class="range range-sm"
-            step="25"
+            step="14.28"
           />
           <div class="w-full flex justify-between text-md px-2">
             <span>Adventurous</span>
@@ -151,9 +153,9 @@
             type="range"
             min="0"
             max="100"
-            value="25"
+            value="0"
             class="range range-sm"
-            step="25"
+            step="14.28"
           />
           <div class="w-full flex justify-between text-md px-2">
             <span>Reflective</span>
@@ -165,12 +167,13 @@
     <div class="w-full">
       <h2 class="text-xl font-bold uppercase">Comments</h2>
       <textarea
-        class="textarea textarea-bordered w-full bg-grey/10"
-        placeholder="Bio"
+        class="textarea textarea-bordered w-full bg-grey/5 h-32"
+        placeholder="Thoughts?"
       ></textarea>
     </div>
     <button
       class="text-xl font-bold text-white uppercase bg-green hover:bg-blue rounded-full py-2 px-5"
+      (click)="completeReview()"
     >
       Complete Review
     </button>

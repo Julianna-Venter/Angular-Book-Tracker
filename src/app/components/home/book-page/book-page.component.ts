@@ -1,9 +1,9 @@
 import { Component } from '@angular/core';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatSelectModule } from '@angular/material/select';
+import { HaveReadComponent } from './have-read/have-read.component';
 import { ReadingComponent } from './reading/reading.component';
 import { TbrComponent } from './tbr/tbr.component';
-import { HaveReadComponent } from './have-read/have-read.component';
 
 @Component({
   selector: 'app-book-page',
@@ -23,4 +23,8 @@ export class BookPageComponent {
     'https://books.google.com/books/content?id=-puZBgAAQBAJ&printsec=frontcover&img=1&zoom=1&edge=curl&source=gbs_api';
 
   selected = 'nothing';
+
+  changeSelected(event: string) {
+    this.selected = event;
+  }
 }
