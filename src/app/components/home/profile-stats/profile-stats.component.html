@@ -1,1 +1,33 @@
-<p>profile-stats works!</p>
+<div class="text-grey px-8 pb-10 pt-[5rem]">
+  <h1 class="pt-5 text-3xl font-bold">PROFILE STATS.</h1>
+  <h2 class="text-3xl font-bold">Username</h2>
+  <div class="flex gap-5 justify-center items-center">
+    <div class="stats stats-vertical shadow overflow-hidden">
+      <div class="stat flex justify-center flex-col">
+        <div class="stat-value">15</div>
+        <div class="stat-desc">Books Read</div>
+      </div>
+      <div class="stat">
+        <div class="stat-value">3</div>
+        <div class="stat-desc">Reviews</div>
+      </div>
+      <div class="stat">
+        <div class="stat-value">1200</div>
+        <div class="stat-desc">Pages</div>
+      </div>
+    </div>
+    <div class="flex flex-col justify-center items-center gap-4">
+      <div
+        class="radial-progress bg-primary text-primary-content border-4 border-primary text-2xl font-bold"
+        style="--value: 65; --size: 12rem"
+        role="progressbar"
+      >
+        <div class="flex flex-col justify-center items-center">
+          <ng-icon name="heroStarSolid" size="50" class="text-blue"></ng-icon>
+          <span>3.5</span>
+        </div>
+      </div>
+      <span class="text-xl font-bold uppercase">Average Rating</span>
+    </div>
+  </div>
+</div>
