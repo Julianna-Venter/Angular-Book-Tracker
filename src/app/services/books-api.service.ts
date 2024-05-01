@@ -4,7 +4,7 @@ import { map } from 'rxjs';
 import { API_KEYS } from '../../../environments/api-keys';
 import { Volume } from '../interfaces/booksInterfaces';
 //https://www.googleapis.com/books/v1/volumes?q=search+terms
-// https://www.googleapis.com/books/v1/volumes?q=flowers+inauthor:keyes&key=yourAPIKey
+//https://www.googleapis.com/books/v1/volumes?q=flowers+inauthor:keyes&key=yourAPIKey
 //Notes: spaces don't matter, it gets converted in url anyway
 
 @Injectable({
@@ -17,9 +17,8 @@ export class BooksApiService {
   constructor(private http: HttpClient) {}
 
   getBooks(query: string) {
-    console.log(this.baseUrl + query);
-    return this.http.get<Volume>(this.baseUrl + query).pipe(
-      map((response) => response.items) // Extracting the items array
-    );
+    return this.http
+      .get<Volume>(this.baseUrl + query)
+      .pipe(map((response) => response.items));
   }
 }

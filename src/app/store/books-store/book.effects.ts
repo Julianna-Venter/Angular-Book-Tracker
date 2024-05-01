@@ -1,11 +1,11 @@
 import { Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { EMPTY, catchError, map, retry, switchMap } from 'rxjs';
-import { UsableBooks } from '../interfaces/booksInterfaces';
-import { BooksApiService } from '../services/books-api.service';
-import { getBooksAction, getBooksComplete } from './actions';
+import { UsableBooks } from '../../interfaces/booksInterfaces';
+import { BooksApiService } from '../../services/books-api.service';
+import { getBooksAction, getBooksComplete } from '../actions';
 
-interface quereType {
+interface queryType {
   query: string;
   type: string;
 }
@@ -15,7 +15,7 @@ export class BooksEffects {
   getBooks$ = createEffect(() =>
     this.actions$.pipe(
       ofType(getBooksAction.type),
-      switchMap((action: quereType) =>
+      switchMap((action: queryType) =>
         this.booksApiService.getBooks(action.query).pipe(
           map((givenBooks) => {
             const books: UsableBooks[] = givenBooks.map((book) => ({

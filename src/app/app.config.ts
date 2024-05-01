@@ -3,15 +3,15 @@ import { ApplicationConfig, importProvidersFrom } from '@angular/core';
 import { initializeApp, provideFirebaseApp } from '@angular/fire/app';
 import { getAuth, provideAuth } from '@angular/fire/auth';
 import { getFirestore, provideFirestore } from '@angular/fire/firestore';
+import { FormsModule } from '@angular/forms';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 import { provideRouter } from '@angular/router';
 import { provideEffects } from '@ngrx/effects';
 import { provideState, provideStore } from '@ngrx/store';
 import { API_KEYS } from '../../environments/api-keys';
 import { routes } from './app.routes';
-import { BooksEffects } from './store/effects';
-import { booksReducer, featureKey } from './store/reducer';
-import { FormsModule } from '@angular/forms';
+import { BooksEffects } from './store/books-store/book.effects';
+import { booksReducer, featureKey } from './store/books-store/book.reducer';
 
 const firebaseConfig = {
   apiKey: API_KEYS.firestore,

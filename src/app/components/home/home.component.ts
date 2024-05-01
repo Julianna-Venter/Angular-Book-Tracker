@@ -16,8 +16,8 @@ import { FirestoreUser } from '../../interfaces/booksInterfaces';
 import { AuthService } from '../../services/auth.service';
 import { UsersFirebaseService } from '../../services/users-firebase.service';
 import { getBooksAction } from '../../store/actions';
-import { BooksState } from '../../store/reducer';
-import { selectBooks } from '../../store/selectors';
+import { BooksState } from '../../store/books-store/book.reducer';
+import { selectBooks } from '../../store/books-store/book.selectors';
 import { LogOutComponent } from './profile-stats/log-out/log-out.component';
 
 @Component({
