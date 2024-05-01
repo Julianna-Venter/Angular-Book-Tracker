@@ -1,5 +1,5 @@
 import { createAction, props } from '@ngrx/store';
-import { Volume } from '../interfaces/booksInterfaces';
+import { BookArrays, Volume, UsableBooks } from '../interfaces/booksInterfaces';
 
 //API Actions
 
@@ -10,7 +10,7 @@ export const getBooksAction = createAction(
 
 export const getBooksComplete = createAction(
   '[Books API] GetBooksComplete',
-  props<{ books: Volume[] }>()
+  props<{ books: UsableBooks[] }>()
 );
 
 //Application Actions

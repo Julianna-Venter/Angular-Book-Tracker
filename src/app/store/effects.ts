@@ -1,16 +1,36 @@
 import { Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
-import { EMPTY, catchError, exhaustMap, map, retry } from 'rxjs';
+import { EMPTY, catchError, map, retry, switchMap } from 'rxjs';
+import { UsableBooks } from '../interfaces/booksInterfaces';
 import { BooksApiService } from '../services/books-api.service';
 import { getBooksAction, getBooksComplete } from './actions';
-Injectable();
+
+interface quereType {
+  query: string;
+  type: string;
+}
+
+@Injectable()
 export class BooksEffects {
   getBooks$ = createEffect(() =>
     this.actions$.pipe(
       ofType(getBooksAction.type),
-      exhaustMap((action: any) =>
+      switchMap((action: quereType) =>
         this.booksApiService.getBooks(action.query).pipe(
-          map((books) => getBooksComplete({ books })),
+          map((givenBooks) => {
+            const books: UsableBooks[] = givenBooks.map((book) => ({
+              id: book.id,
+              title: book.volumeInfo.title,
+              subtitle: book.volumeInfo.subtitle ?? '',
+              authors: book.volumeInfo.authors ?? [],
+              description: book.volumeInfo.description ?? '',
+              pageCount: book.volumeInfo.pageCount ?? 0,
+              publishedDate: book.volumeInfo.publishedDate ?? '',
+              categories: book.volumeInfo.categories ?? [],
+              imageLink: book.volumeInfo.imageLinks?.thumbnail ?? '',
+            }));
+            return getBooksComplete({ books });
+          }),
           retry(2),
           catchError((error) => {
             console.error('Error fetching books', error);

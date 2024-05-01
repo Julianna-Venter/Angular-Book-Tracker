@@ -1,4 +1,4 @@
-import { AsyncPipe } from '@angular/common';
+import { AsyncPipe, JsonPipe } from '@angular/common';
 import { Component, OnDestroy, OnInit, inject } from '@angular/core';
 import { Router, RouterLink, RouterOutlet } from '@angular/router';
 import { NgIconComponent, provideIcons } from '@ng-icons/core';
@@ -28,6 +28,7 @@ import { LogOutComponent } from './profile-stats/log-out/log-out.component';
     RouterOutlet,
     LogOutComponent,
     AsyncPipe,
+    JsonPipe,
     RouterLink,
   ],
   templateUrl: './home.component.html',
@@ -55,14 +56,11 @@ export class HomeComponent implements OnInit, OnDestroy {
   home = false;
   stats = false;
 
+  store = inject(Store<BooksState>);
   books$ = this.store.select(selectBooks);
   query = 'Harry Potter';
 
-  constructor(
-    private authService: AuthService,
-    private store: Store<BooksState>
-  ) {
-    this.store.dispatch(getBooksAction({ query: this.query }));
+  constructor(private authService: AuthService) {
     if (this.router.url === '/home') {
       this.home = true;
       this.stats = false;
@@ -73,6 +71,11 @@ export class HomeComponent implements OnInit, OnDestroy {
       this.home = false;
       this.stats = false;
     }
+
+    this.store.dispatch(getBooksAction({ query: this.query }));
+
+    // console.log('books$');
+    // this.books$.subscribe(console.log);
   }
 
   changeActive(click: string) {
@@ -102,13 +105,9 @@ export class HomeComponent implements OnInit, OnDestroy {
         if (user) {
           this.currentUserData = user[0];
           //will remove this later, this is just for testing
-          console.log('user from home: ', this.currentUserData);
+          // console.log('user from home: ', this.currentUserData);
         }
       });
-
-    this.books$.subscribe((books) => {
-      console.log('books from home: ', books);
-    });
   }
 
   ngOnDestroy() {

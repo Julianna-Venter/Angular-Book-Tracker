@@ -1,14 +1,17 @@
+import { provideHttpClient } from '@angular/common/http';
 import { ApplicationConfig, importProvidersFrom } from '@angular/core';
 import { initializeApp, provideFirebaseApp } from '@angular/fire/app';
 import { getAuth, provideAuth } from '@angular/fire/auth';
 import { getFirestore, provideFirestore } from '@angular/fire/firestore';
+import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 import { provideRouter } from '@angular/router';
+import { provideEffects } from '@ngrx/effects';
 import { provideState, provideStore } from '@ngrx/store';
 import { API_KEYS } from '../../environments/api-keys';
 import { routes } from './app.routes';
+import { BooksEffects } from './store/effects';
 import { booksReducer, featureKey } from './store/reducer';
-import { provideEffects } from '@ngrx/effects';
-import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
+import { FormsModule } from '@angular/forms';
 
 const firebaseConfig = {
   apiKey: API_KEYS.firestore,
@@ -22,13 +25,16 @@ const firebaseConfig = {
 export const appConfig: ApplicationConfig = {
   providers: [
     provideRouter(routes),
+    provideHttpClient(),
     importProvidersFrom([
       provideFirebaseApp(() => initializeApp(firebaseConfig)),
       provideFirestore(() => getFirestore()),
       provideAuth(() => getAuth()),
+      FormsModule,
     ]),
     provideStore(),
     provideState({ name: featureKey, reducer: booksReducer }),
-    provideEffects(), provideAnimationsAsync('noop'),
+    provideEffects(BooksEffects),
+    provideAnimationsAsync(),
   ],
 };

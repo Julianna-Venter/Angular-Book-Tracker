@@ -15,6 +15,7 @@ export interface FirestoreUser {
 
 interface VolumeInfo {
   title: string;
+  subtitle?: string;
   authors: string[];
   publisher: string;
   publishedDate: string;
@@ -88,6 +89,12 @@ interface AccessInfo {
 }
 
 export interface Volume {
+  items: BookArrays[];
+  kind: string;
+  totalItems: number;
+}
+
+export interface BookArrays {
   kind: string;
   id: string;
   etag: string;
@@ -95,4 +102,16 @@ export interface Volume {
   volumeInfo: VolumeInfo;
   saleInfo: SaleInfo;
   accessInfo: AccessInfo;
+}
+
+export interface UsableBooks {
+  id: string;
+  title: string;
+  subtitle: string;
+  authors: Array<string>;
+  description: string;
+  pageCount: number;
+  publishedDate: string;
+  categories: Array<string>;
+  imageLink: string;
 }

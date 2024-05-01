@@ -57,9 +57,16 @@
   <!-- @if (currentUserData) {
   <div>{{ currentUserData.username }}</div>
   } -->
-  <!-- @for (book of books$ | async; track book.id) {
-  <p>BookInfo</p>
-  <div>{{ book }}</div>
-  } -->
+  <p>Books:</p>
+  @for (book of books$ | async; track book.id) {
+  <div>==========================</div>
+  <div>{{ book.title }}</div>
+  <div>{{ book.authors }}</div>
+  <div>{{ book.description }}</div>
+  <div>{{ book.pageCount }}</div>
+  <div>{{ book.categories }}</div>
+  <div>{{ book.publishedDate }}</div>
+  <div>==========================</div>
+  }
   <router-outlet />
 </div>

@@ -1,5 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { map } from 'rxjs';
 import { API_KEYS } from '../../../environments/api-keys';
 import { Volume } from '../interfaces/booksInterfaces';
 //https://www.googleapis.com/books/v1/volumes?q=search+terms
@@ -16,6 +17,9 @@ export class BooksApiService {
   constructor(private http: HttpClient) {}
 
   getBooks(query: string) {
-    return this.http.get<Volume[]>(this.baseUrl + query + this.apiKey);
+    console.log(this.baseUrl + query);
+    return this.http.get<Volume>(this.baseUrl + query).pipe(
+      map((response) => response.items) // Extracting the items array
+    );
   }
 }
