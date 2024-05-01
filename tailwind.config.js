@@ -8,7 +8,7 @@ module.exports = {
       colors: {
         beige: "#BBA58F",
         grey: "#223030",
-        cream: "#E8D9CG",
+        cream: "#e8d9c9",
         green: "#508165",
         "dark-orange": "#f2b181",
         "light-orange": "#f4c199",
@@ -22,5 +22,8 @@ module.exports = {
       },
     },
   },
-  plugins: [],
+  plugins: [require("daisyui")],
+  daisyui: {
+    themes: ["light"],
+  },
 };

@@ -1,1 +1,24 @@
-<p>summaries works!</p>
+<div class="text-grey">
+  <h1 class="py-5 text-3xl font-bold">BOOKSHELF.</h1>
+  <div id="albums" class="flex flex-col gap-5 overflow-y-scroll no-scrollbar">
+    <div id="current" class="flex flex-col">
+      <h2 class="pb-5 text-xl font-bold">CURRENT READS.</h2>
+      <div class="flex justify-center relative">
+        <!-- if books > 1 -->
+        <div
+          class="inverted-corner bg-grey/50 backdrop-blur-md h-[40px] w-[262.5px] absolute self-end rounded-b-box flex justify-center items-end z-20"
+        >
+          <ng-icon
+            name="heroChevronDown"
+            size="35"
+            class="text-white"
+          ></ng-icon>
+        </div>
+        <!-- loop over current reads here -->
+        <app-book-carousel />
+      </div>
+    </div>
+    <h2 class="pt-5 text-xl font-bold">COLLECTIONS.</h2>
+    <app-book-album />
+  </div>
+</div>
