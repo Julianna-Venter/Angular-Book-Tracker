@@ -1,4 +1,4 @@
-import { AsyncPipe, JsonPipe } from '@angular/common';
+import { AsyncPipe, JsonPipe, Location } from '@angular/common';
 import { Component, OnDestroy, OnInit, inject } from '@angular/core';
 import { Router, RouterLink, RouterOutlet } from '@angular/router';
 import { NgIconComponent, provideIcons } from '@ng-icons/core';
@@ -60,7 +60,7 @@ export class HomeComponent implements OnInit, OnDestroy {
   books$ = this.store.select(selectBooks);
   query = 'Harry Potter';
 
-  constructor(private authService: AuthService) {
+  constructor(private authService: AuthService, private location: Location) {
     if (this.router.url === '/home') {
       this.home = true;
       this.stats = false;
@@ -105,7 +105,7 @@ export class HomeComponent implements OnInit, OnDestroy {
         if (user) {
           this.currentUserData = user[0];
           //will remove this later, this is just for testing
-          // console.log('user from home: ', this.currentUserData);
+          console.log('user from home: ', this.currentUserData);
         }
       });
   }
@@ -114,5 +114,9 @@ export class HomeComponent implements OnInit, OnDestroy {
     if (this.currentUserSubscription) {
       this.currentUserSubscription.unsubscribe();
     }
+  }
+
+  back(): void {
+    this.location.back();
   }
 }

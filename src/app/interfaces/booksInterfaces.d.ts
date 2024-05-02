@@ -114,4 +114,15 @@ export interface UsableBooks {
   publishedDate: string;
   categories: Array<string>;
   imageLink: string;
+  pace: number;
+  rating: number;
+  comments: string;
+  status: string;
+  character_plot: number;
+  tense_lighthearted: number;
+  dark_light: number;
+  informative_fun: number;
+  adventurous_grounded: number;
+  reflective_action: number;
+  DNF_reason?: Array<string>;
 }

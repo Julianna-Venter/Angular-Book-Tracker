@@ -22,6 +22,7 @@ export const routes: Routes = [
       {
         path: 'book-list/:id',
         component: BookListComponent,
+        children: [],
       },
       {
         path: 'book-list/:id/book/:id',

@@ -1,5 +1,5 @@
-import { Component, inject } from '@angular/core';
-import { Router, RouterLink } from '@angular/router';
+import { Component } from '@angular/core';
+import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 
 @Component({
   selector: 'app-book-list',
@@ -9,11 +9,9 @@ import { Router, RouterLink } from '@angular/router';
   styleUrl: './book-list.component.scss',
 })
 export class BookListComponent {
-  router = inject(Router);
-
   title = 'Book List';
 
-  constructor() {
+  constructor(private router: Router, private route: ActivatedRoute) {
     if (this.router.url === '/home/book-list/tbr') {
       this.title = 'To Be Read';
     } else if (this.router.url === '/home/book-list/dnf') {
@@ -21,5 +19,9 @@ export class BookListComponent {
     } else if (this.router.url === '/home/book-list/read') {
       this.title = 'Have Read';
     }
+  }
+
+  navChild() {
+    this.router.navigate(['book', 'this-book'], { relativeTo: this.route });
   }
 }

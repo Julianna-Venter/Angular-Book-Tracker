@@ -28,6 +28,16 @@ export class BooksEffects {
               publishedDate: book.volumeInfo.publishedDate ?? '',
               categories: book.volumeInfo.categories ?? [],
               imageLink: book.volumeInfo.imageLinks?.thumbnail ?? '',
+              status: 'unread',
+              pace: 0,
+              rating: 0,
+              character_plot: 0,
+              tense_lighthearted: 0,
+              dark_light: 0,
+              informative_fun: 0,
+              adventurous_grounded: 0,
+              reflective_action: 0,
+              comments: '',
             }));
             return getBooksComplete({ books });
           }),

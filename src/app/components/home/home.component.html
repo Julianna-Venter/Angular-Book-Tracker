@@ -3,7 +3,7 @@
     <div
       class="bg-white w-fit h-fit px-3 py-3 flex gap-5 rounded-full shadow-4xl"
     >
-      <div class="flex justify-center items-center">
+      <div class="flex justify-center items-center" (click)="back()">
         <ng-icon
           name="heroChevronDoubleLeft"
           size="30"
@@ -53,11 +53,11 @@
       </div>
     </div>
   </div>
-  <!-- <app-log-out /> -->
-  <!-- @if (currentUserData) {
+
+  @if (currentUserData) {
   <div>{{ currentUserData.username }}</div>
-  } -->
-  <p>Books:</p>
+  }
+  <!-- <p>Books:</p>
   @for (book of books$ | async; track book.id) {
   <div>==========================</div>
   <div>{{ book.title }}</div>
@@ -67,6 +67,7 @@
   <div>{{ book.categories }}</div>
   <div>{{ book.publishedDate }}</div>
   <div>==========================</div>
-  }
+  } -->
   <router-outlet />
 </div>
+<app-log-out />
