@@ -1,25 +1,21 @@
 import { createReducer, on } from '@ngrx/store';
 import { UserResponse } from '../../interfaces/authInterface';
-import {
-  getUserDataComplete,
-  loginComplete,
-  setUserDataComplete,
-  signUpComplete,
-} from '../actions';
+import { getUserDataComplete, loginComplete, signUpComplete } from '../actions';
+import { FirestoreUser } from '../../interfaces/booksInterfaces';
 
-export const featureKey = 'User Store';
+export const userFeatureKey = 'User Store';
 
 export interface UserState {
-  user: UserResponse;
+  users: FirestoreUser;
 }
 
 export const initialState: UserState = {
-  user: {} as UserResponse,
+  users: {} as FirestoreUser,
 };
 
 export let username: string;
 
-export const booksReducer = createReducer(
+export const userReducer = createReducer(
   initialState,
   on(loginComplete, (state, { username }) => ({
     ...state,
@@ -29,11 +25,8 @@ export const booksReducer = createReducer(
     ...state,
     username,
   })),
-  on(getUserDataComplete, (state, { user }) => ({
+  on(getUserDataComplete, (state, { users }) => ({
     ...state,
-    user,
-  })),
-  on(setUserDataComplete, (state) => ({
-    ...state,
+    users,
   }))
 );

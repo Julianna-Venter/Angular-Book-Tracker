@@ -2,7 +2,7 @@ import { createReducer, on } from '@ngrx/store';
 import { UsableBooks } from '../../interfaces/booksInterfaces';
 import { getBooksComplete } from '../actions';
 
-export const featureKey = 'Books API';
+export const booksFeatureKey = 'Books API';
 
 export interface BooksState {
   books: UsableBooks[];

@@ -11,7 +11,12 @@ import { provideState, provideStore } from '@ngrx/store';
 import { API_KEYS } from '../../environments/api-keys';
 import { routes } from './app.routes';
 import { BooksEffects } from './store/books-store/book.effects';
-import { booksReducer, featureKey } from './store/books-store/book.reducer';
+import {
+  booksFeatureKey,
+  booksReducer,
+} from './store/books-store/book.reducer';
+import { UsersEffects } from './store/user-store/user.effects';
+import { userFeatureKey, userReducer } from './store/user-store/user.reducer';
 
 const firebaseConfig = {
   apiKey: API_KEYS.firestore,
@@ -33,8 +38,9 @@ export const appConfig: ApplicationConfig = {
       FormsModule,
     ]),
     provideStore(),
-    provideState({ name: featureKey, reducer: booksReducer }),
-    provideEffects(BooksEffects),
+    provideState({ name: userFeatureKey, reducer: userReducer }),
+    provideState({ name: booksFeatureKey, reducer: booksReducer }),
+    provideEffects(BooksEffects, UsersEffects),
     provideAnimationsAsync(),
   ],
 };

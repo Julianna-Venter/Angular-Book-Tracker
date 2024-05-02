@@ -1,6 +1,10 @@
 import { createAction, props } from '@ngrx/store';
 import { UserResponse } from '../interfaces/authInterface';
-import { UsableBooks } from '../interfaces/booksInterfaces';
+import { FirestoreUser, UsableBooks } from '../interfaces/booksInterfaces';
+
+export interface SetUserDataError {
+  message: string;
+}
 
 //API Actions
 
@@ -39,14 +43,14 @@ export const signUpComplete = createAction(
 );
 
 //delete
-export const deleteProfile = createAction(
-  '[Profile Page] Delete',
-  props<{ email: string }>()
-);
+// export const deleteProfile = createAction(
+//   '[Profile Page] Delete',
+//   props<{ email: string }>()
+// );
 
-export const deleteProfileComplete = createAction(
-  '[Profile Page] DeleteComplete'
-);
+// export const deleteProfileComplete = createAction(
+//   '[Profile Page] DeleteComplete'
+// );
 
 //get data
 export const getUserData = createAction(
@@ -56,10 +60,10 @@ export const getUserData = createAction(
 
 export const getUserDataComplete = createAction(
   '[User Data] getDataComplete',
-  props<{ user: UserResponse }>()
+  props<{ users: FirestoreUser }>()
 );
 
-export const getUserDataLoading = createAction('[User Data] getDataLoading'); //check how to do this
+// export const getUserDataLoading = createAction('[User Data] getDataLoading'); //check how to do this
 
 //set data
 export const setUserData = createAction(
@@ -67,14 +71,24 @@ export const setUserData = createAction(
   props<{ user: UserResponse }>()
 );
 
-export const setUserDataComplete = createAction('[User Data] setDataComplete');
+export const setUserDataSuccess = createAction('[User Data] setDataSuccess');
+
+export const setUserDataFailure = createAction(
+  '[User Data] setDataFailure',
+  props<{ error: SetUserDataError }>()
+);
 
 //delete a book's data
 export const deleteUserBookData = createAction(
   '[User Data] deleteBookData',
-  props<{ user: UsableBooks }>()
+  props<{ id: string }>()
 );
 
-export const deleteUserBookDataComplete = createAction(
-  '[User Data] deleteBookDataComplete'
+export const deleteUserBookDataSuccess = createAction(
+  '[User Data] deleteSuccess'
+);
+
+export const deleteUserBookDataFailure = createAction(
+  '[User Data] deleteFailure',
+  props<{ error: SetUserDataError }>()
 );
