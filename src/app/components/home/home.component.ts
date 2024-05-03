@@ -88,13 +88,10 @@ export class HomeComponent {
 
     this.userData$.pipe(take(2)).subscribe((users) => {
       if (users && users.length > 0) {
-        // Assign the first user to currentUserData
+        // get the first matched user, since email and password pairs are unique the array will only have one user anyway
         this.currentUserData = users[0];
-        // Log for testing
+        // Log for testing, will be removed later
         console.log('User from home effect:', this.currentUserData);
-      } else {
-        // Handle case where users array is empty or undefined
-        console.error('No user data received or user array is empty.');
       }
     });
   }

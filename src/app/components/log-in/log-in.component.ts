@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component, OnDestroy, inject } from '@angular/core';
 import {
   FormControl,
   FormGroup,
@@ -14,6 +14,7 @@ import {
   heroUser,
 } from '@ng-icons/heroicons/outline';
 import { Store } from '@ngrx/store';
+import { Subscription } from 'rxjs';
 import { AuthService } from '../../services/auth.service';
 import { login } from '../../store/actions';
 import { UserState } from '../../store/user-store/user.reducer';
@@ -38,7 +39,7 @@ import { BackgroundComponent } from '../shared-components/background/background.
     provideIcons({ heroUser, heroLockClosed, heroEye, heroEyeSlash }),
   ],
 })
-export class LogInComponent {
+export class LogInComponent implements OnDestroy {
   authService = inject(AuthService);
   router = inject(Router);
   showPassword: boolean = true;
@@ -51,6 +52,7 @@ export class LogInComponent {
   store = inject(Store<UserState>);
   login$ = this.store.select(selectLogin);
   userData$ = this.store.select(selectgetUserData);
+  loginSubscription$: Subscription | undefined;
 
   errorMessage: string | null = null;
 
@@ -63,7 +65,7 @@ export class LogInComponent {
       login({ email: rawForm.email ?? '', password: rawForm.password ?? '' })
     );
 
-    this.login$.subscribe({
+    this.loginSubscription$ = this.login$.subscribe({
       next: () => {
         this.router.navigate(['/home']);
       },
@@ -74,23 +76,13 @@ export class LogInComponent {
     });
   }
 
-  // this.authService
-  //   .login(rawForm.email ?? '', rawForm.password ?? '')
-  //   .subscribe({
-  //     next: () => {
-  //       this.router.navigate(['/home']);
-  //     },
-  //     error: (error) => {
-  //       this.errorMessage =
-  //         "This email and password combination doesn't exist. Please try again.";
-  //     },
-  //   });
-
   togglePassword() {
     this.showPassword = !this.showPassword;
   }
-}
 
-// onSubmit(username: string, password: string) {
-//   store.dispatch(login({ username: username, password: password }));
-// }
+  ngOnDestroy(): void {
+    if (this.loginSubscription$) {
+      this.loginSubscription$.unsubscribe();
+    }
+  }
+}

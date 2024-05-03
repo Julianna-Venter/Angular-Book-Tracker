@@ -65,13 +65,19 @@ export class UsersEffects {
             map(({ username, email }) => signUpComplete({ username, email })),
             catchError((error) => {
               console.error('Error logging in:', error);
-              return EMPTY;
+              return of(
+                loginFailed({
+                  errorMessage:
+                    'This profile already exists. Please log in or create a new profile.',
+                })
+              );
             })
           )
       )
     )
   );
 
+  //for later use
   // deleteProfile$ = createEffect(() =>
 
   getUserData$ = createEffect(() =>

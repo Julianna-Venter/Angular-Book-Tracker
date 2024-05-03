@@ -47,6 +47,12 @@ export const signUpComplete = createAction(
   props<{ username: string; email: string }>()
 );
 
+export const signUpFail = createAction(
+  '[SignUp Page] SignUpComplete',
+  props<{ errorMessage: string }>()
+);
+
+//for later use
 //delete
 // export const deleteProfile = createAction(
 //   '[Profile Page] Delete',
@@ -68,6 +74,7 @@ export const getUserDataComplete = createAction(
   props<{ users: FirestoreUser[] }>()
 );
 
+//for later use
 // export const getUserDataLoading = createAction('[User Data] getDataLoading'); //check how to do this
 
 //set data

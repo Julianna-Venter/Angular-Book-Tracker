@@ -16,7 +16,7 @@ import {
   heroUser,
 } from '@ng-icons/heroicons/outline';
 import { Store } from '@ngrx/store';
-import { filter, tap } from 'rxjs';
+import { Subscription } from 'rxjs';
 import { AuthService } from '../../services/auth.service';
 import { UsersFirebaseService } from '../../services/users-firebase.service';
 import { confirmationValidator } from '../../shared/compare-validator.directive';
@@ -80,7 +80,7 @@ export class SignUpComponent implements OnDestroy {
           Validators.pattern(this.passwordRegex),
         ],
       ],
-      confirmPassword: ['', [Validators.required, confirmationValidator]], // Use the imported custom validator
+      confirmPassword: ['', [Validators.required, confirmationValidator]],
     });
   }
 
@@ -88,28 +88,14 @@ export class SignUpComponent implements OnDestroy {
   usersFirebaseService = inject(UsersFirebaseService);
   store = inject(Store<UserState>);
   signup$ = this.store.select(selectSignUp);
+  signupSubscription$: Subscription | undefined;
 
   onSubmit(): void {
     if (this.signupForm.valid) {
-      //   // TODO: when this is implememted you need to have a spinner to indicate that the form is being submitted
+      // TODO: when this is implememted you need to have a spinner to indicate that the form is being submitted
       console.warn(this.signupForm.value);
       const rawForm = this.signupForm.getRawValue();
 
-      // this.authService
-      //   .register(
-      //     rawForm.email ?? '',
-      //     rawForm.username ?? '',
-      //     rawForm.password ?? ''
-      //   )
-      //   .subscribe({
-      //     next: () => {
-      //       this.usersFirebaseService.addUser(rawForm.username, rawForm.email);
-      //       this.router.navigate(['/home']);
-      //     },
-      //     error: (error) => {
-      //       this.errorMessage = error.code;
-      //     },
-      //   });
       this.store.dispatch(
         signUp({
           email: rawForm.email ?? '',
@@ -118,17 +104,15 @@ export class SignUpComponent implements OnDestroy {
         })
       );
 
-      // this.signup$
-      //   .pipe(
-      //     filter((signupResult) => !!signupResult),
-      //     tap((signupResult) => {
-      //       if (signupResult.username) {
-      //         console.log(signupResult.username);
-      //         this.router.navigate(['/home']);
-      //       }
-      //     })
-      //   )
-      //   .subscribe();
+      this.signupSubscription$ = this.signup$.subscribe({
+        next: () => {
+          this.router.navigate(['/home']);
+        },
+        error: (error) => {
+          console.log('error', error);
+          this.errorMessage = error.errorMessage;
+        },
+      });
     } else {
       Object.entries(this.signupForm.controls).forEach(([key, control]) => {
         if (control.invalid) {
@@ -139,13 +123,16 @@ export class SignUpComponent implements OnDestroy {
     }
   }
 
-  ngOnDestroy() {
-    // Clean up the subscription when the component is destroyed
+  ngOnDestroy(): void {
+    if (this.signupSubscription$) {
+      this.signupSubscription$.unsubscribe();
+    }
   }
 
   togglePassword() {
     this.showPassword = !this.showPassword;
   }
+
   togglePasswordConfirm() {
     this.showPasswordConfirm = !this.showPasswordConfirm;
   }

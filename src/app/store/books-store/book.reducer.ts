@@ -19,5 +19,3 @@ export const booksReducer = createReducer(
     books,
   }))
 );
-
-// export const metaReducers: MetaReducer<OpsState>[] = isDevMode() ? [] : [];
