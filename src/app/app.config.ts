@@ -15,6 +15,10 @@ import {
   booksFeatureKey,
   booksReducer,
 } from './store/books-store/book.reducer';
+import {
+  userDataFeatureKey,
+  userDataReducer,
+} from './store/user-store/user-data.reducer';
 import { UsersEffects } from './store/user-store/user.effects';
 import { userFeatureKey, userReducer } from './store/user-store/user.reducer';
 
@@ -39,6 +43,7 @@ export const appConfig: ApplicationConfig = {
     ]),
     provideStore(),
     provideState({ name: userFeatureKey, reducer: userReducer }),
+    provideState({ name: userDataFeatureKey, reducer: userDataReducer }),
     provideState({ name: booksFeatureKey, reducer: booksReducer }),
     provideEffects(BooksEffects, UsersEffects),
     provideAnimationsAsync(),

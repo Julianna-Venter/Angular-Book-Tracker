@@ -14,6 +14,7 @@ import {
   getUserDataComplete,
   login,
   loginComplete,
+  loginFailed,
   setUserData,
   setUserDataFailure,
   setUserDataSuccess,
@@ -39,10 +40,15 @@ export class UsersEffects {
       ofType(login.type),
       switchMap((action: loginType) =>
         this.firestoreService.login(action.email, action.password).pipe(
-          map(({ username }) => loginComplete({ username })),
+          map(({ username, email }) => loginComplete({ username, email })),
           catchError((error) => {
             console.error('Error logging in:', error);
-            return EMPTY;
+            return of(
+              loginFailed({
+                errorMessage:
+                  "This email and password combination doesn't exist. Please try again.",
+              })
+            );
           })
         )
       )
@@ -56,7 +62,7 @@ export class UsersEffects {
         this.firestoreService
           .register(action.email, action.username, action.password)
           .pipe(
-            map(({ username }) => signUpComplete({ username })),
+            map(({ username, email }) => signUpComplete({ username, email })),
             catchError((error) => {
               console.error('Error logging in:', error);
               return EMPTY;
@@ -71,11 +77,11 @@ export class UsersEffects {
   getUserData$ = createEffect(() =>
     this.actions$.pipe(
       ofType(getUserData.type),
-      switchMap((action: { username: string }) =>
-        this.databaseService.getUser(action.username).pipe(
-          map((users: FirestoreUser[]) =>
-            getUserDataComplete({ users: users[0] })
-          ),
+      switchMap((action: { email: string }) =>
+        this.databaseService.getUser(action.email).pipe(
+          map((users: FirestoreUser[]) => {
+            return getUserDataComplete({ users: users });
+          }),
           catchError((error) => {
             console.error('Error getting user data:', error);
             return EMPTY;

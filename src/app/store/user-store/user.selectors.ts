@@ -1,9 +1,11 @@
 import { createFeatureSelector, createSelector } from '@ngrx/store';
-import { UserState, featureKey } from './user.reducer';
+import { UserDataState, userDataFeatureKey } from './user-data.reducer';
+import { UserState, userFeatureKey } from './user.reducer';
 
-export const selectFeatureUsers = createFeatureSelector<UserState>(featureKey);
+export const selectFeatureUsers =
+  createFeatureSelector<UserDataState>(userDataFeatureKey);
 export const selectFeatureCredentials =
-  createFeatureSelector<string>(featureKey);
+  createFeatureSelector<UserState>(userFeatureKey);
 
 export const selectLogin = createSelector(
   selectFeatureCredentials,
@@ -17,10 +19,10 @@ export const selectSignUp = createSelector(
 
 export const selectgetUserData = createSelector(
   selectFeatureUsers,
-  (state) => state.user
+  (state) => state.users
 );
 
 export const selectsetUserData = createSelector(
   selectFeatureUsers,
-  (state) => state.user
+  (state) => state.users
 );

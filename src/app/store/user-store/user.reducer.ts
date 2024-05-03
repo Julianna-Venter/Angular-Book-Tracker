@@ -1,32 +1,28 @@
 import { createReducer, on } from '@ngrx/store';
-import { UserResponse } from '../../interfaces/authInterface';
-import { getUserDataComplete, loginComplete, signUpComplete } from '../actions';
-import { FirestoreUser } from '../../interfaces/booksInterfaces';
+import { loginComplete, signUpComplete } from '../actions';
 
 export const userFeatureKey = 'User Store';
 
 export interface UserState {
-  users: FirestoreUser;
+  username: string | null;
+  email: string | null;
 }
 
 export const initialState: UserState = {
-  users: {} as FirestoreUser,
+  username: null,
+  email: null,
 };
-
-export let username: string;
 
 export const userReducer = createReducer(
   initialState,
-  on(loginComplete, (state, { username }) => ({
+  on(loginComplete, (state, { username, email }) => ({
     ...state,
     username,
+    email,
   })),
-  on(signUpComplete, (state, { username }) => ({
+  on(signUpComplete, (state, { username, email }) => ({
     ...state,
     username,
-  })),
-  on(getUserDataComplete, (state, { users }) => ({
-    ...state,
-    users,
+    email,
   }))
 );

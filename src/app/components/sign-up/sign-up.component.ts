@@ -15,9 +15,14 @@ import {
   heroLockClosed,
   heroUser,
 } from '@ng-icons/heroicons/outline';
+import { Store } from '@ngrx/store';
+import { filter, tap } from 'rxjs';
 import { AuthService } from '../../services/auth.service';
 import { UsersFirebaseService } from '../../services/users-firebase.service';
 import { confirmationValidator } from '../../shared/compare-validator.directive';
+import { signUp } from '../../store/actions';
+import { UserState } from '../../store/user-store/user.reducer';
+import { selectSignUp } from '../../store/user-store/user.selectors';
 import { BackgroundComponent } from '../shared-components/background/background.component';
 
 @Component({
@@ -81,6 +86,8 @@ export class SignUpComponent implements OnDestroy {
 
   errorMessage: string | null = null;
   usersFirebaseService = inject(UsersFirebaseService);
+  store = inject(Store<UserState>);
+  signup$ = this.store.select(selectSignUp);
 
   onSubmit(): void {
     if (this.signupForm.valid) {
@@ -88,21 +95,40 @@ export class SignUpComponent implements OnDestroy {
       console.warn(this.signupForm.value);
       const rawForm = this.signupForm.getRawValue();
 
-      this.authService
-        .register(
-          rawForm.email ?? '',
-          rawForm.username ?? '',
-          rawForm.password ?? ''
-        )
-        .subscribe({
-          next: () => {
-            this.usersFirebaseService.addUser(rawForm.username, rawForm.email);
-            this.router.navigate(['/home']);
-          },
-          error: (error) => {
-            this.errorMessage = error.code;
-          },
-        });
+      // this.authService
+      //   .register(
+      //     rawForm.email ?? '',
+      //     rawForm.username ?? '',
+      //     rawForm.password ?? ''
+      //   )
+      //   .subscribe({
+      //     next: () => {
+      //       this.usersFirebaseService.addUser(rawForm.username, rawForm.email);
+      //       this.router.navigate(['/home']);
+      //     },
+      //     error: (error) => {
+      //       this.errorMessage = error.code;
+      //     },
+      //   });
+      this.store.dispatch(
+        signUp({
+          email: rawForm.email ?? '',
+          username: rawForm.username ?? '',
+          password: rawForm.password ?? '',
+        })
+      );
+
+      // this.signup$
+      //   .pipe(
+      //     filter((signupResult) => !!signupResult),
+      //     tap((signupResult) => {
+      //       if (signupResult.username) {
+      //         console.log(signupResult.username);
+      //         this.router.navigate(['/home']);
+      //       }
+      //     })
+      //   )
+      //   .subscribe();
     } else {
       Object.entries(this.signupForm.controls).forEach(([key, control]) => {
         if (control.invalid) {

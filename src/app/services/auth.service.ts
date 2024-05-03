@@ -1,4 +1,4 @@
-import { Injectable, inject, signal } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import {
   Auth,
   UserCredential,
@@ -8,8 +8,8 @@ import {
   updateProfile,
   user,
 } from '@angular/fire/auth';
-import { Observable, Subject, from, map } from 'rxjs';
-import { AuthUser } from '../interfaces/authInterface';
+import { Router } from '@angular/router';
+import { Observable, from, map } from 'rxjs';
 import { UsersFirebaseService } from './users-firebase.service';
 
 @Injectable({
@@ -18,35 +18,40 @@ import { UsersFirebaseService } from './users-firebase.service';
 export class AuthService {
   firebaseAuth = inject(Auth);
   user$ = user(this.firebaseAuth);
-  currentUserSig = signal<AuthUser | null | undefined>(undefined); //might not be needed
-  isUserSet$ = new Subject<boolean>();
   usersFirebaseService = inject(UsersFirebaseService);
+  router = inject(Router);
 
   register(
     email: string,
     username: string,
     password: string
-  ): Observable<{ username: string }> {
+  ): Observable<{ username: string; email: string }> {
     this.usersFirebaseService.addUser(username, email);
     return from(
       createUserWithEmailAndPassword(this.firebaseAuth, email, password).then(
         (response) => {
           const username = response?.user?.displayName || '';
+          const email = response?.user?.email || '';
           updateProfile(response.user, { displayName: username });
-          return { username };
+          this.router.navigate(['/home']);
+          return { username, email };
         }
       )
     );
   }
 
-  login(email: string, password: string): Observable<{ username: string }> {
+  login(
+    email: string,
+    password: string
+  ): Observable<{ username: string; email: string }> {
     return from(
       signInWithEmailAndPassword(this.firebaseAuth, email, password)
     ).pipe(
       map((userCredential: UserCredential) => {
-        // Check if user is null or undefined or if displayName is null
         const username = userCredential?.user?.displayName || '';
-        return { username };
+        const email = userCredential?.user?.email || '';
+        // this.router.navigate(['/home']);
+        return { username, email };
       })
     );
   }

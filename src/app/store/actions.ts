@@ -28,7 +28,12 @@ export const login = createAction(
 
 export const loginComplete = createAction(
   '[Login Page] LoginComplete',
-  props<{ username: string }>()
+  props<{ username: string; email: string }>()
+);
+
+export const loginFailed = createAction(
+  '[Login Page] LoginComplete',
+  props<{ errorMessage: string }>()
 );
 
 //signup
@@ -39,7 +44,7 @@ export const signUp = createAction(
 
 export const signUpComplete = createAction(
   '[SignUp Page] SignUpComplete',
-  props<{ username: string }>()
+  props<{ username: string; email: string }>()
 );
 
 //delete
@@ -55,12 +60,12 @@ export const signUpComplete = createAction(
 //get data
 export const getUserData = createAction(
   '[User Data] getData',
-  props<{ username: string }>()
+  props<{ email: string }>()
 );
 
 export const getUserDataComplete = createAction(
   '[User Data] getDataComplete',
-  props<{ users: FirestoreUser }>()
+  props<{ users: FirestoreUser[] }>()
 );
 
 // export const getUserDataLoading = createAction('[User Data] getDataLoading'); //check how to do this
