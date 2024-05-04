@@ -33,7 +33,6 @@ export class AuthService {
           const username = response?.user?.displayName || '';
           const email = response?.user?.email || '';
           updateProfile(response.user, { displayName: username });
-          this.router.navigate(['/home']);
           return { username, email };
         }
       )
@@ -50,7 +49,6 @@ export class AuthService {
       map((userCredential: UserCredential) => {
         const username = userCredential?.user?.displayName || '';
         const email = userCredential?.user?.email || '';
-        // this.router.navigate(['/home']);
         return { username, email };
       })
     );

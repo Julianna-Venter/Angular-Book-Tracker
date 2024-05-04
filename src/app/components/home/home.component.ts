@@ -11,10 +11,9 @@ import {
 } from '@ng-icons/heroicons/outline';
 import { heroChartPieSolid, heroHomeSolid } from '@ng-icons/heroicons/solid';
 import { Store } from '@ngrx/store';
-import { Subscription, take } from 'rxjs';
+import { take } from 'rxjs';
 import { FirestoreUser } from '../../interfaces/booksInterfaces';
 import { AuthService } from '../../services/auth.service';
-import { UsersFirebaseService } from '../../services/users-firebase.service';
 import { getBooksAction, getUserData } from '../../store/actions';
 import { BooksState } from '../../store/books-store/book.reducer';
 import { selectBooks } from '../../store/books-store/book.selectors';
@@ -53,8 +52,6 @@ export class HomeComponent {
   homeIcon = 'heroHome';
   pieIcon = 'heroChartPie';
 
-  currentUserSubscription: Subscription | undefined;
-  usersFirebaseService = inject(UsersFirebaseService);
   router = inject(Router);
   currentUserData: FirestoreUser | null = null;
   home = false;
