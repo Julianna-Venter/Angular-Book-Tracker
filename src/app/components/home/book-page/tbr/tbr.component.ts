@@ -58,6 +58,7 @@ export class TbrComponent {
       rating = 0;
     }
 
+    //will refine these data points later
     const returnData = {
       rawForm,
       rating,
