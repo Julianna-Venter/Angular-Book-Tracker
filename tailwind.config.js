@@ -6,10 +6,13 @@ module.exports = {
   theme: {
     extend: {
       colors: {
-        "light-grey": "#b4b4b4",
-        grey: "#23272B",
-        green: "#508165",
+        "light-grey": "#8c8c8b",
+        grey: "#1b1a19",
+        "med-grey": "#4c4c4c",
+        "button-color": "#aa343c",
+        "muted-red": "#704146",
         "dark-orange": "#f2b181",
+        "brown-grey": "#3e3333",
         "light-orange": "#f4c199",
         "background-white": "#f7f6f6",
         blue: "#577490",

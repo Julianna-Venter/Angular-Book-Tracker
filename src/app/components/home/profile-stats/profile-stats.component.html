@@ -1,33 +1,70 @@
-<div class="text-grey px-8 pb-10 pt-[5rem]">
-  <h1 class="pt-5 text-3xl font-bold">PROFILE STATS.</h1>
-  <h2 class="text-3xl font-bold">Username</h2>
-  <div class="flex gap-5 justify-center items-center">
-    <div class="stats stats-vertical shadow overflow-hidden">
-      <div class="stat flex justify-center flex-col">
-        <div class="stat-value">15</div>
-        <div class="stat-desc">Books Read</div>
-      </div>
-      <div class="stat">
-        <div class="stat-value">3</div>
-        <div class="stat-desc">Reviews</div>
-      </div>
-      <div class="stat">
-        <div class="stat-value">1200</div>
-        <div class="stat-desc">Pages</div>
-      </div>
-    </div>
-    <div class="flex flex-col justify-center items-center gap-4">
-      <div
-        class="radial-progress bg-primary text-primary-content border-4 border-primary text-2xl font-bold"
-        style="--value: 65; --size: 12rem"
-        role="progressbar"
-      >
-        <div class="flex flex-col justify-center items-center">
-          <ng-icon name="heroStarSolid" size="50" class="text-blue"></ng-icon>
-          <span>3.5</span>
+<div
+  class="text-white px-8 pb-10 pt-[5rem] flex flex-col justify-center items-center"
+>
+  <div
+    class="flex flex-col lg:flex-row gap-5 justify-evenly lg:items-end w-full"
+  >
+    <div class="flex flex-col">
+      <h1 class="pt-5 text-3xl font-bold uppercase">PROFILE STATS.</h1>
+      <h2 class="text-3xl font-bold uppercase mb-4">Username</h2>
+      <div class="flex gap-5 justify-center items-center">
+        <div
+          class="stats stats-vertical shadow overflow-hidden w-1/3 h-[250px]"
+        >
+          <div class="stat flex justify-center items-center flex-col p-0">
+            <div class="stat-value">15</div>
+            <div class="stat-desc">Books Read</div>
+          </div>
+          <div class="stat flex justify-center items-center flex-col p-0">
+            <div class="stat-value">3</div>
+            <div class="stat-desc">Reviews</div>
+          </div>
+          <div class="stat flex justify-center items-center flex-col p-0">
+            <div class="stat-value text-[2rem]">1200</div>
+            <div class="stat-desc">Pages</div>
+          </div>
+        </div>
+        <div class="flex flex-col justify-center items-center gap-4 w-2/3">
+          <div id="chart">
+            <apx-chart
+              [series]="chartOptions.series"
+              [chart]="chartOptions.chart"
+              [labels]="chartOptions.labels"
+              [title]="chartOptions.title"
+              [theme]="chartOptions.theme"
+              [fill]="chartOptions.fill"
+              [yaxis]="chartOptions.yaxis"
+              [stroke]="chartOptions.stroke"
+              [legend]="chartOptions.legend"
+              [plotOptions]="chartOptions.plotOptions"
+            ></apx-chart>
+          </div>
+          <div class="flex gap-4">
+            <span class="text-xl font-bold uppercase">Average Rating:</span>
+            <span class="text-xl font-bold uppercase">4.5</span>
+          </div>
         </div>
       </div>
-      <span class="text-xl font-bold uppercase">Average Rating</span>
+    </div>
+    <div>
+      <h2 class="text-3xl font-bold uppercase">Pace.</h2>
+      <div id="barChart" class="flex justify-center items-center">
+        <apx-chart
+          [series]="barChartOptions.series"
+          [chart]="barChartOptions.chart"
+          [dataLabels]="barChartOptions.dataLabels"
+          [plotOptions]="barChartOptions.plotOptions"
+          [xaxis]="barChartOptions.xaxis"
+          [stroke]="barChartOptions.stroke"
+          [fill]="barChartOptions.fill"
+          [yaxis]="barChartOptions.yaxis"
+          [title]="barChartOptions.title"
+          [tooltip]="barChartOptions.tooltip"
+          [legend]="barChartOptions.legend"
+        ></apx-chart>
+      </div>
     </div>
   </div>
+
+  <app-charts />
 </div>

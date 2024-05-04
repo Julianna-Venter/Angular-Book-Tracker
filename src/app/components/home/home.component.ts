@@ -26,6 +26,7 @@ import {
   selectgetUserData,
 } from '../../store/user-store/user.selectors';
 import { LogOutComponent } from './profile-stats/log-out/log-out.component';
+import { BackgroundComponent } from '../shared-components/background/background.component';
 
 @Component({
   selector: 'app-home',
@@ -37,6 +38,7 @@ import { LogOutComponent } from './profile-stats/log-out/log-out.component';
     AsyncPipe,
     JsonPipe,
     RouterLink,
+    BackgroundComponent,
   ],
   templateUrl: './home.component.html',
   styleUrl: './home.component.scss',

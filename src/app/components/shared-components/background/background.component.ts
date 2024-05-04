@@ -1,12 +1,11 @@
 import { Component } from '@angular/core';
+import { SpotlightComponent } from '../spotlight/spotlight.component';
 
 @Component({
   selector: 'app-background',
   standalone: true,
-  imports: [],
+  imports: [SpotlightComponent],
   templateUrl: './background.component.html',
-  styleUrl: './background.component.scss'
+  styleUrl: './background.component.scss',
 })
-export class BackgroundComponent {
-
-}
+export class BackgroundComponent {}

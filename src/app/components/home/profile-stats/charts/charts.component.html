@@ -1,0 +1,67 @@
+<div class="pt-10 flex flex-col gap-10">
+  <div>
+    <h2 class="text-3xl font-bold uppercase">Moods.</h2>
+    <div class="flex flex-wrap gap-2 justify-center">
+      <div id="PCChart">
+        <apx-chart
+          [series]="chartOptionsPC.series"
+          [chart]="chartOptionsPC.chart"
+          [labels]="chartOptionsPC.labels"
+          [title]="chartOptionsPC.title"
+          [theme]="chartOptionsPC.theme"
+          [responsive]="chartOptionsPC.responsive"
+        ></apx-chart>
+      </div>
+      <div id="TLChart">
+        <apx-chart
+          [series]="chartOptionsTL.series"
+          [chart]="chartOptionsTL.chart"
+          [labels]="chartOptionsTL.labels"
+          [title]="chartOptionsTL.title"
+          [theme]="chartOptionsTL.theme"
+          [responsive]="chartOptionsTL.responsive"
+        ></apx-chart>
+      </div>
+      <div id="DLChart">
+        <apx-chart
+          [series]="chartOptionsDL.series"
+          [chart]="chartOptionsDL.chart"
+          [labels]="chartOptionsDL.labels"
+          [title]="chartOptionsDL.title"
+          [theme]="chartOptionsDL.theme"
+          [responsive]="chartOptionsDL.responsive"
+        ></apx-chart>
+      </div>
+      <div id="IFChart">
+        <apx-chart
+          [series]="chartOptionsIF.series"
+          [chart]="chartOptionsIF.chart"
+          [labels]="chartOptionsIF.labels"
+          [title]="chartOptionsIF.title"
+          [theme]="chartOptionsIF.theme"
+          [responsive]="chartOptionsIF.responsive"
+        ></apx-chart>
+      </div>
+      <div id="AGChart">
+        <apx-chart
+          [series]="chartOptionsAG.series"
+          [chart]="chartOptionsAG.chart"
+          [labels]="chartOptionsAG.labels"
+          [title]="chartOptionsAG.title"
+          [theme]="chartOptionsAG.theme"
+          [responsive]="chartOptionsAG.responsive"
+        ></apx-chart>
+      </div>
+      <div id="RCChart">
+        <apx-chart
+          [series]="chartOptionsRC.series"
+          [chart]="chartOptionsRC.chart"
+          [labels]="chartOptionsRC.labels"
+          [title]="chartOptionsRC.title"
+          [theme]="chartOptionsRC.theme"
+          [responsive]="chartOptionsRC.responsive"
+        ></apx-chart>
+      </div>
+    </div>
+  </div>
+</div>

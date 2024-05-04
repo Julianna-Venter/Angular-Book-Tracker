@@ -23,6 +23,7 @@ import {
   selectgetUserData,
 } from '../../store/user-store/user.selectors';
 import { BackgroundComponent } from '../shared-components/background/background.component';
+import { SpotlightComponent } from '../shared-components/spotlight/spotlight.component';
 
 @Component({
   selector: 'app-log-in',
@@ -32,6 +33,7 @@ import { BackgroundComponent } from '../shared-components/background/background.
     BackgroundComponent,
     NgIconComponent,
     RouterLink,
+    SpotlightComponent,
   ],
   templateUrl: './log-in.component.html',
   styleUrl: './log-in.component.scss',
