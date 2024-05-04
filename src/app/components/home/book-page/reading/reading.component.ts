@@ -12,6 +12,7 @@ import { DnfComponent } from '../dnf/dnf.component';
 export class ReadingComponent {
   @Input() dnf!: boolean;
   @Output() completeReviewEvent = new EventEmitter<string>();
+  @Output() returnDataEvent = new EventEmitter();
 
   readingForm = new FormGroup({
     rating: new FormControl(0),
@@ -35,9 +36,17 @@ export class ReadingComponent {
     comments: new FormControl(''),
   });
 
+  dnfReasons: string[] = [];
+
+  getDNFReasons(reasons: string[]) {
+    this.dnfReasons = reasons;
+  }
+
   completeReview() {
     this.completeReviewEvent.emit('read');
     const rawForm = this.readingForm.getRawValue();
+
+    const submitdate = new Date().toISOString();
 
     let rating = 0;
 
@@ -65,6 +74,13 @@ export class ReadingComponent {
       rating = 0;
     }
 
-    console.log(rawForm, typeof rating, rating);
+    const returnData = {
+      rawForm,
+      rating,
+      submitdate,
+      dnfReasons: this.dnfReasons,
+    };
+
+    this.returnDataEvent.emit(returnData);
   }
 }

@@ -80,11 +80,15 @@
         </div>
       </div>
       @if (selected === 'tbr') {
-      <app-tbr (startReviewEvent)="changeSelected($event)" />
+      <app-tbr
+        (startReviewEvent)="changeSelected($event)"
+        (returnDataEvent)="returnData($event)"
+      />
       } @else if (selected === 'reading' ) {
       <app-reading
         [dnf]="false"
         (completeReviewEvent)="changeSelected($event)"
+        (returnDataEvent)="returnData($event)"
       />
       } @else if (selected === 'read') {
       <app-have-read (updateReviewEvent)="changeSelected($event)" />
@@ -92,6 +96,7 @@
       <app-reading
         [dnf]="true"
         (completeReviewEvent)="changeSelected($event)"
+        (returnDataEvent)="returnData($event)"
       />
       }
     </div>

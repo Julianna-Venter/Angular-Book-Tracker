@@ -27,4 +27,8 @@ export class BookPageComponent {
   changeSelected(event: string) {
     this.selected = event;
   }
+
+  returnData(event: string) {
+    console.log('returnedData', event);
+  }
 }

@@ -1,6 +1,6 @@
 <div class="px-10 pb-10">
   <h1 class="py-5 text-3xl font-bold uppercase">Reading review.</h1>
-  <form [formGroup]="readingForm" (ngSubmit)="completeReview()" class="">
+  <form [formGroup]="readingForm" (ngSubmit)="completeReview()">
     <div class="flex flex-col justify-center items-center gap-10">
       <div class="rating rating-lg rating-half">
         <input
@@ -90,7 +90,7 @@
         </div>
       </div>
       @if (dnf) {
-      <app-dnf />
+      <app-dnf (DNFEvent)="getDNFReasons($event)" />
       }
       <div class="w-full">
         <h2 class="text-xl font-bold uppercase">Moods</h2>
