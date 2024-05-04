@@ -1,83 +1,78 @@
 <div class="px-10 pb-10">
   <h1 class="py-5 text-3xl font-bold uppercase">Reading review.</h1>
-  <div class="flex flex-col justify-center items-center gap-10">
-    <div class="rating rating-lg rating-half">
-      <input type="radio" name="rating-10" class="rating-hidden" />
-      <input
-        type="radio"
-        name="rating-10"
-        class="bg-button-color-500 mask mask-star-2 mask-half-1"
-        checked
-      />
-      <input
-        type="radio"
-        name="rating-10"
-        class="bg-button-color-500 mask mask-star-2 mask-half-2"
-      />
-      <input
-        type="radio"
-        name="rating-10"
-        class="bg-button-color-500 mask mask-star-2 mask-half-1"
-      />
-      <input
-        type="radio"
-        name="rating-10"
-        class="bg-button-color-500 mask mask-star-2 mask-half-2"
-      />
-      <input
-        type="radio"
-        name="rating-10"
-        class="bg-button-color-500 mask mask-star-2 mask-half-1"
-      />
-      <input
-        type="radio"
-        name="rating-10"
-        class="bg-button-color-500 mask mask-star-2 mask-half-2"
-      />
-      <input
-        type="radio"
-        name="rating-10"
-        class="bg-button-color-500 mask mask-star-2 mask-half-1"
-      />
-      <input
-        type="radio"
-        name="rating-10"
-        class="bg-button-color-500 mask mask-star-2 mask-half-2"
-      />
-      <input
-        type="radio"
-        name="rating-10"
-        class="bg-button-color-500 mask mask-star-2 mask-half-1"
-      />
-      <input
-        type="radio"
-        name="rating-10"
-        class="bg-button-color-500 mask mask-star-2 mask-half-2"
-      />
-    </div>
-    <div class="w-full">
-      <h2 class="text-xl font-bold uppercase">Pace</h2>
-      <div>
+  <form [formGroup]="readingForm" (ngSubmit)="completeReview()" class="">
+    <div class="flex flex-col justify-center items-center gap-10">
+      <div class="rating rating-lg rating-half">
         <input
-          type="range"
-          min="0"
-          max="100"
+          type="radio"
+          class="rating-hidden"
           value="0"
-          class="range range-sm"
-          step="14.28"
+          formControlName="rating"
         />
-        <div class="w-full flex justify-between text-md px-2">
-          <span>Slow</span>
-          <span>fast</span>
-        </div>
+        <input
+          type="radio"
+          formControlName="ratingHalf"
+          class="bg-button-color-500 mask mask-star-2 mask-half-1"
+          value="0.5"
+          checked
+        />
+        <input
+          type="radio"
+          formControlName="rating1"
+          class="bg-button-color-500 mask mask-star-2 mask-half-2"
+          value="1"
+        />
+        <input
+          type="radio"
+          formControlName="rating1Half"
+          class="bg-button-color-500 mask mask-star-2 mask-half-1"
+          value="1.5"
+        />
+        <input
+          type="radio"
+          formControlName="rating2"
+          class="bg-button-color-500 mask mask-star-2 mask-half-2"
+          value="2"
+        />
+        <input
+          type="radio"
+          formControlName="rating2Half"
+          class="bg-button-color-500 mask mask-star-2 mask-half-1"
+          value="2.5"
+        />
+        <input
+          type="radio"
+          formControlName="rating3"
+          class="bg-button-color-500 mask mask-star-2 mask-half-2"
+          value="3"
+        />
+        <input
+          type="radio"
+          formControlName="rating3Half"
+          class="bg-button-color-500 mask mask-star-2 mask-half-1"
+          value="3.5"
+        />
+        <input
+          type="radio"
+          formControlName="rating4"
+          class="bg-button-color-500 mask mask-star-2 mask-half-2"
+          value="4"
+        />
+        <input
+          type="radio"
+          formControlName="rating4Half"
+          class="bg-button-color-500 mask mask-star-2 mask-half-1"
+          value="4.5"
+        />
+        <input
+          type="radio"
+          formControlName="rating5"
+          class="bg-button-color-500 mask mask-star-2 mask-half-2"
+          value="5"
+        />
       </div>
-    </div>
-    @if (dnf) {
-    <app-dnf />
-    }
-    <div class="w-full">
-      <h2 class="text-xl font-bold uppercase">Moods</h2>
-      <div class="flex flex-col gap-8">
+      <div class="w-full">
+        <h2 class="text-xl font-bold uppercase">Pace</h2>
         <div>
           <input
             type="range"
@@ -86,96 +81,126 @@
             value="0"
             class="range range-sm"
             step="14.28"
+            formControlName="pace"
           />
           <div class="w-full flex justify-between text-md px-2">
-            <span>Character Driven</span>
-            <span>Plot Driven</span>
-          </div>
-        </div>
-        <div>
-          <input
-            type="range"
-            min="0"
-            max="100"
-            value="0"
-            class="range range-sm"
-            step="14.28"
-          />
-          <div class="w-full flex justify-between text-md px-2">
-            <span>Tense</span>
-            <span>Light Hearted</span>
-          </div>
-        </div>
-        <div>
-          <input
-            type="range"
-            min="0"
-            max="100"
-            value="0"
-            class="range range-sm"
-            step="14.28"
-          />
-          <div class="w-full flex justify-between text-md px-2">
-            <span>Dark</span>
-            <span>Light</span>
-          </div>
-        </div>
-        <div>
-          <input
-            type="range"
-            min="0"
-            max="100"
-            value="0"
-            class="range range-sm"
-            step="14.28"
-          />
-          <div class="w-full flex justify-between text-md px-2">
-            <span>Informative</span>
-            <span>Fun</span>
-          </div>
-        </div>
-        <div>
-          <input
-            type="range"
-            min="0"
-            max="100"
-            value="0"
-            class="range range-sm"
-            step="14.28"
-          />
-          <div class="w-full flex justify-between text-md px-2">
-            <span>Adventurous</span>
-            <span>Grounded</span>
-          </div>
-        </div>
-        <div>
-          <input
-            type="range"
-            min="0"
-            max="100"
-            value="0"
-            class="range range-sm"
-            step="14.28"
-          />
-          <div class="w-full flex justify-between text-md px-2">
-            <span>Reflective</span>
-            <span>Casual</span>
+            <span>Slow</span>
+            <span>fast</span>
           </div>
         </div>
       </div>
+      @if (dnf) {
+      <app-dnf />
+      }
+      <div class="w-full">
+        <h2 class="text-xl font-bold uppercase">Moods</h2>
+        <div class="flex flex-col gap-8">
+          <div>
+            <input
+              type="range"
+              min="0"
+              max="100"
+              value="0"
+              class="range range-sm"
+              step="14.28"
+              formControlName="PC"
+            />
+            <div class="w-full flex justify-between text-md px-2">
+              <span>Character Driven</span>
+              <span>Plot Driven</span>
+            </div>
+          </div>
+          <div>
+            <input
+              type="range"
+              min="0"
+              max="100"
+              value="0"
+              class="range range-sm"
+              step="14.28"
+              formControlName="TL"
+            />
+            <div class="w-full flex justify-between text-md px-2">
+              <span>Tense</span>
+              <span>Light Hearted</span>
+            </div>
+          </div>
+          <div>
+            <input
+              type="range"
+              min="0"
+              max="100"
+              value="0"
+              class="range range-sm"
+              step="14.28"
+              formControlName="DL"
+            />
+            <div class="w-full flex justify-between text-md px-2">
+              <span>Dark</span>
+              <span>Light</span>
+            </div>
+          </div>
+          <div>
+            <input
+              type="range"
+              min="0"
+              max="100"
+              value="0"
+              class="range range-sm"
+              step="14.28"
+              formControlName="IF"
+            />
+            <div class="w-full flex justify-between text-md px-2">
+              <span>Informative</span>
+              <span>Fun</span>
+            </div>
+          </div>
+          <div>
+            <input
+              type="range"
+              min="0"
+              max="100"
+              value="0"
+              class="range range-sm"
+              step="14.28"
+              formControlName="AG"
+            />
+            <div class="w-full flex justify-between text-md px-2">
+              <span>Adventurous</span>
+              <span>Grounded</span>
+            </div>
+          </div>
+          <div>
+            <input
+              type="range"
+              min="0"
+              max="100"
+              value="0"
+              class="range range-sm"
+              step="14.28"
+              formControlName="RC"
+            />
+            <div class="w-full flex justify-between text-md px-2">
+              <span>Reflective</span>
+              <span>Casual</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="w-full">
+        <h2 class="text-xl font-bold uppercase">Comments</h2>
+        <textarea
+          class="textarea textarea-bordered w-full bg-grey/5 h-32"
+          placeholder="Thoughts?"
+          formControlName="comments"
+        ></textarea>
+      </div>
+      <button
+        class="text-xl font-bold text-white uppercase bg-button-color hover:bg-blue rounded-full py-2 px-5"
+        type="submit"
+      >
+        Complete Review
+      </button>
     </div>
-    <div class="w-full">
-      <h2 class="text-xl font-bold uppercase">Comments</h2>
-      <textarea
-        class="textarea textarea-bordered w-full bg-grey/5 h-32"
-        placeholder="Thoughts?"
-      ></textarea>
-    </div>
-    <button
-      class="text-xl font-bold text-white uppercase bg-button-color hover:bg-blue rounded-full py-2 px-5"
-      (click)="completeReview()"
-    >
-      Complete Review
-    </button>
-  </div>
+  </form>
 </div>
