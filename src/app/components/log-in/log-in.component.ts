@@ -56,8 +56,6 @@ export class LogInComponent implements OnDestroy {
 
   errorMessage: string | null = null;
 
-  constructor() {}
-
   onSubmit() {
     // TODO: when this is implememted you need to have a spinner to indicate that the form is being submitted
     const rawForm = this.loginForm.getRawValue();
