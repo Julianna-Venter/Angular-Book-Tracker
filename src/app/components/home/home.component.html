@@ -15,7 +15,7 @@
       class="bg-white w-fit h-fit px-5 py-3 flex gap-5 rounded-full shadow-4xl"
     >
       <div
-        class="flex justify-center items-center"
+        class="flex justify-center items-center mx-1"
         routerLink="/home"
         (click)="changeActive('home')"
       >
@@ -28,7 +28,7 @@
         ></ng-icon>
       </div>
       <div
-        class="flex justify-center items-center"
+        class="flex justify-center items-center mx-1"
         routerLink="profile"
         (click)="changeActive('stats')"
       >
@@ -40,7 +40,32 @@
           }} hover:text-dark-orange"
         ></ng-icon>
       </div>
+      <div
+        class="flex justify-center items-center"
+        (click)="changeActive('stats')"
+      >
+        <div class="dropdown dropdown-end">
+          <div
+            tabindex="0"
+            role="button"
+            class="flex justify-center items-center"
+          >
+            <ng-icon
+              name="heroEllipsisVerticalSolid"
+              size="30"
+              class="text-grey hover:text-dark-orange"
+            ></ng-icon>
+          </div>
+          <ul
+            tabindex="0"
+            class="dropdown-content z-[1] menu p-2 shadow bg-base-100 rounded-box w-52"
+          >
+            <li><app-log-out /></li>
+          </ul>
+        </div>
+      </div>
     </div>
+
     <div
       class="bg-white w-fit h-fit px-3 py-3 flex gap-5 rounded-full shadow-4xl"
     >
@@ -72,4 +97,3 @@
   <router-outlet />
 </div>
 <!-- //this will be styled better later -->
-<app-log-out />

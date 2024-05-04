@@ -9,7 +9,11 @@ import {
   heroMagnifyingGlass,
   heroPlus,
 } from '@ng-icons/heroicons/outline';
-import { heroChartPieSolid, heroHomeSolid } from '@ng-icons/heroicons/solid';
+import {
+  heroChartPieSolid,
+  heroEllipsisVerticalSolid,
+  heroHomeSolid,
+} from '@ng-icons/heroicons/solid';
 import { Store } from '@ngrx/store';
 import { Subscription, take } from 'rxjs';
 import { FirestoreUser } from '../../interfaces/booksInterfaces';
@@ -46,6 +50,7 @@ import { LogOutComponent } from './profile-stats/log-out/log-out.component';
       heroChartPie,
       heroMagnifyingGlass,
       heroChevronDoubleLeft,
+      heroEllipsisVerticalSolid,
     }),
   ],
 })
