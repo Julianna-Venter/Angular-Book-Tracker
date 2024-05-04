@@ -1,15 +1,3 @@
-export type ChartOptions = {
-  series: ApexNonAxisChartSeries;
-  chart: ApexChart;
-  responsive: ApexResponsive[];
-  labels: any;
-  theme: ApexTheme;
-  title: ApexTitleSubtitle;
-  fill: ApexFill;
-  dataLabels: ApexDataLabels;
-  legend: ApexLegend;
-};
-
 export type BarChartOptions = {
   series: ApexAxisChartSeries;
   chart: ApexChart;

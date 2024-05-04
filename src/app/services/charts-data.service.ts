@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
 import {
   BarChartOptions,
-  ChartOptions,
   PolarChartOptions,
 } from '../interfaces/chartsInterface';
 
