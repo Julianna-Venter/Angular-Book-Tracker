@@ -6,14 +6,15 @@ module.exports = {
   theme: {
     extend: {
       colors: {
-        beige: "#BBA58F",
-        grey: "#223030",
-        cream: "#e8d9c9",
+        "light-grey": "#b4b4b4",
+        grey: "#23272B",
         green: "#508165",
         "dark-orange": "#f2b181",
         "light-orange": "#f4c199",
         "background-white": "#f7f6f6",
         blue: "#577490",
+        "light-blue": "#7494a4",
+        "blue-grey": "#c8ced5",
       },
       boxShadow: {
         "3xl": "0px 0px 5px 0px rgba(0,0,0,0.35)",

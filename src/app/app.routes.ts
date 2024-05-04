@@ -1,5 +1,5 @@
 import { Routes } from '@angular/router';
-import { authGuard } from './auth/auth.guard';
+import { authGuard } from './guards/auth.guard';
 import { BookListComponent } from './components/home/book-list/book-list.component';
 import { BookPageComponent } from './components/home/book-page/book-page.component';
 import { HomeComponent } from './components/home/home.component';
@@ -22,6 +22,7 @@ export const routes: Routes = [
       {
         path: 'book-list/:id',
         component: BookListComponent,
+        children: [],
       },
       {
         path: 'book-list/:id/book/:id',

@@ -1,14 +1,16 @@
-import { Injectable, inject, signal } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import {
   Auth,
+  UserCredential,
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
   signOut,
   updateProfile,
   user,
 } from '@angular/fire/auth';
-import { Observable, Subject, from } from 'rxjs';
-import { AuthUser } from '../interfaces/authInterface';
+import { Router } from '@angular/router';
+import { Observable, from, map } from 'rxjs';
+import { UsersFirebaseService } from './users-firebase.service';
 
 @Injectable({
   providedIn: 'root',
@@ -16,26 +18,39 @@ import { AuthUser } from '../interfaces/authInterface';
 export class AuthService {
   firebaseAuth = inject(Auth);
   user$ = user(this.firebaseAuth);
-  currentUserSig = signal<AuthUser | null | undefined>(undefined);
-  isUserSet$ = new Subject<boolean>();
+  usersFirebaseService = inject(UsersFirebaseService);
+  router = inject(Router);
 
   register(
     email: string,
     username: string,
     password: string
-  ): Observable<void> {
+  ): Observable<{ username: string; email: string }> {
+    this.usersFirebaseService.addUser(username, email);
     return from(
       createUserWithEmailAndPassword(this.firebaseAuth, email, password).then(
-        (response) => updateProfile(response.user, { displayName: username })
+        (response) => {
+          const username = response?.user?.displayName || '';
+          const email = response?.user?.email || '';
+          updateProfile(response.user, { displayName: username });
+          return { username, email };
+        }
       )
     );
   }
 
-  login(email: string, password: string): Observable<void> {
+  login(
+    email: string,
+    password: string
+  ): Observable<{ username: string; email: string }> {
     return from(
-      signInWithEmailAndPassword(this.firebaseAuth, email, password).then(
-        () => {}
-      )
+      signInWithEmailAndPassword(this.firebaseAuth, email, password)
+    ).pipe(
+      map((userCredential: UserCredential) => {
+        const username = userCredential?.user?.displayName || '';
+        const email = userCredential?.user?.email || '';
+        return { username, email };
+      })
     );
   }
 

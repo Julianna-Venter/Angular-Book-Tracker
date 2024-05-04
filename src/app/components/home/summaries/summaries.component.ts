@@ -2,8 +2,8 @@ import { Component } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { NgIconComponent, provideIcons } from '@ng-icons/core';
 import { heroChevronDown } from '@ng-icons/heroicons/outline';
-import { BookCarouselComponent } from './book-carousel/book-carousel.component';
 import { BookAlbumComponent } from './book-album/book-album.component';
+import { BookCarouselComponent } from './book-carousel/book-carousel.component';
 
 @Component({
   selector: 'app-summaries',
