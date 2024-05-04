@@ -1,5 +1,5 @@
 import { AsyncPipe, JsonPipe, Location } from '@angular/common';
-import { Component, inject } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import { Router, RouterLink, RouterOutlet } from '@angular/router';
 import { NgIconComponent, provideIcons } from '@ng-icons/core';
 import {
@@ -25,8 +25,8 @@ import {
   selectLogin,
   selectgetUserData,
 } from '../../store/user-store/user.selectors';
-import { LogOutComponent } from './profile-stats/log-out/log-out.component';
 import { BackgroundComponent } from '../shared-components/background/background.component';
+import { LogOutComponent } from './profile-stats/log-out/log-out.component';
 
 @Component({
   selector: 'app-home',
@@ -55,7 +55,7 @@ import { BackgroundComponent } from '../shared-components/background/background.
     }),
   ],
 })
-export class HomeComponent {
+export class HomeComponent implements OnInit {
   homeIcon = 'heroHome';
   pieIcon = 'heroChartPie';
 
@@ -89,13 +89,23 @@ export class HomeComponent {
         this.store.dispatch(getUserData({ email: user.email ?? '' }));
       }
     });
+  }
 
+  ngOnInit(): void {
     this.userData$.pipe(take(2)).subscribe((users) => {
-      if (users && users.length > 0) {
+      if (
+        users &&
+        users.length > 0 &&
+        localStorage.getItem('currentUser') === null
+      ) {
         // get the first matched user, since email and password pairs are unique the array will only have one user anyway
         this.currentUserData = users[0];
         // Log for testing, will be removed later
         console.log('User from home effect:', this.currentUserData);
+        localStorage.setItem(
+          'currentUser',
+          JSON.stringify(this.currentUserData)
+        );
       }
     });
   }

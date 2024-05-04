@@ -18,6 +18,7 @@ module.exports = {
         blue: "#577490",
         "light-blue": "#7494a4",
         "blue-grey": "#c8ced5",
+        green: "#9AAA34",
       },
       boxShadow: {
         "3xl": "0px 0px 5px 0px rgba(0,0,0,0.35)",
