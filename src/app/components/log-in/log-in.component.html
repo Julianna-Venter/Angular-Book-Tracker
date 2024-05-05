@@ -1,73 +1,81 @@
 <app-background />
+<div class="lg:flex lg:justify-evenly lg:items-center w-full h-lvh">
+  <div
+    class="w-full p-16 h-lvh lg:h-fit overflow-hidden flex flex-col justify-center items-center text-white bg-grey/40 backdrop-blur-lg lg:border-2 lg:border-white/60 lg:rounded-box lg:ml-[28%] lg:w-[530px] lg:mb-10"
+  >
+    <span class="font-semibold self-start uppercase text-[2rem]">LOG IN.</span>
+    <div class="h-1/2 w-full mb-8 flex flex-col">
+      <form
+        [formGroup]="loginForm"
+        (ngSubmit)="onSubmit()"
+        class="flex flex-col gap-10 mt-20"
+      >
+        <div class="flex flex-col gap-1">
+          <div class="flex items-end w-full">
+            <div class="border-b-[1px] border-white/60 pl-1">
+              <ng-icon
+                name="heroUser"
+                size="22"
+                class="text-white/60"
+              ></ng-icon>
+            </div>
 
-<div
-  class="w-full h-lvh overflow-hidden flex flex-col justify-center items-center text-grey"
->
-  <div class="h-1/2 w-full p-16 mb-10 flex flex-col">
-    <h1 class="font-bold text-3xl mb-10">LOG IN</h1>
-    <form
-      [formGroup]="loginForm"
-      (ngSubmit)="onSubmit()"
-      class="flex flex-col gap-10"
-    >
-      <div class="flex flex-col gap-1">
-        <div class="flex items-end w-full">
-          <div class="border-b-[1px] border-grey/60 pl-1">
-            <ng-icon name="heroUser" size="22" class="text-grey/60"></ng-icon>
-          </div>
-          <input
-            id="email"
-            type="text"
-            formControlName="email"
-            placeholder="Email"
-            class="bg-transparent border-b-[1px] border-grey/60 h-8 w-full pl-2"
-          />
-        </div>
-      </div>
-      <div class="flex flex-col gap-1">
-        <div class="flex items-end w-full">
-          <div class="border-b-[1px] border-grey/60 pl-1">
-            <ng-icon
-              name="heroLockClosed"
-              size="22"
-              class="text-grey/60"
-            ></ng-icon>
-          </div>
-          <input
-            id="password"
-            type="{{ showPassword ? 'password' : 'text' }}"
-            formControlName="password"
-            placeholder="Password"
-            class="bg-transparent border-b-[1px] border-grey/60 h-8 w-full pl-2"
-          />
-          <div class="border-b-[1px] border-grey/60 pl-1">
-            <ng-icon
-              name="{{ showPassword ? 'heroEye' : 'heroEyeSlash' }}"
-              size="22"
-              class="text-grey/60"
-              (click)="togglePassword()"
-            ></ng-icon>
+            <input
+              id="email"
+              type="text"
+              formControlName="email"
+              placeholder="Email"
+              class="bg-transparent border-b-[1px] border-white/60 h-8 w-full pl-2"
+            />
           </div>
         </div>
-      </div>
-      <div class="flex flex-col gap-2">
-        <button
-          type="submit"
-          class="text-white font-bold px-5 py-2 rounded-3xl self-center w-full mt-4"
-          [class.bg-green]="loginForm.valid"
-          [class.bg-gray-400]="!loginForm.valid"
-        >
-          Login
+        <div class="flex flex-col gap-1">
+          <div class="flex items-end w-full">
+            <div class="border-b-[1px] border-white/60 pl-1">
+              <ng-icon
+                name="heroLockClosed"
+                size="22"
+                class="text-white/60"
+              ></ng-icon>
+            </div>
+            <input
+              id="password"
+              type="{{ showPassword ? 'password' : 'text' }}"
+              formControlName="password"
+              placeholder="Password"
+              class="bg-transparent border-b-[1px] border-white/60 h-8 w-full pl-2"
+            />
+            <div class="border-b-[1px] border-white/60 pl-1">
+              <ng-icon
+                name="{{ showPassword ? 'heroEye' : 'heroEyeSlash' }}"
+                size="22"
+                class="text-white/60"
+                (click)="togglePassword()"
+              ></ng-icon>
+            </div>
+          </div>
+        </div>
+        <div class="flex flex-col gap-2">
+          <button
+            type="submit"
+            class="text-white font-bold px-5 py-2 rounded-3xl self-center w-full mt-4 lg:mt-10"
+            [class.bg-button-color]="loginForm.valid"
+            [class.bg-gray-400]="!loginForm.valid"
+          >
+            Login
+          </button>
+
+          @if (errorMessage) {
+          <div class="text-red-500 text-center">{{ errorMessage }}</div>
+          }
+        </div>
+      </form>
+      <div class="flex gap-2 self-center text-sm mt-5">
+        <span>Don't have an account?</span>
+        <button class="font-bold underline" routerLink="/signup">
+          Sign Up
         </button>
-
-        @if (errorMessage) {
-        <div class="text-red-500 text-center">{{ errorMessage }}</div>
-        }
       </div>
-    </form>
-    <div class="flex gap-2 self-center text-sm mt-5">
-      <span>Don't have an account?</span>
-      <button class="font-bold underline" routerLink="/signup">Sign Up</button>
     </div>
   </div>
 </div>

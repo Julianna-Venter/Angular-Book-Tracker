@@ -1,12 +1,18 @@
-<div class="text-grey px-8 pb-10 pt-16">
-  <h1 class="py-5 text-3xl font-bold">BOOKSHELF.</h1>
-  <div id="albums" class="flex flex-col gap-5 overflow-y-scroll no-scrollbar">
-    <div id="current" class="flex flex-col">
+<div
+  class="text-white px-8 pb-10 pt-24 z-10 lg:pt-20 lg:w-full lg:h-full lg:items-center"
+>
+  <span class="text-3xl font-semibold">BOOKSHELF.</span>
+  <div
+    id="albums"
+    class="flex flex-col lg:flex-row gap-5 mt-10 overflow-y-scroll no-scrollbar lg:w-full lg:h-full lg:justify-evenly"
+  >
+    <div id="current" class="flex flex-col lg:pl-20">
+      <!-- <app-spotlight class="absolute" /> -->
       <h2 class="pb-5 text-xl font-bold">CURRENT READS.</h2>
       <div class="flex justify-center relative">
         <!-- if books > 1 -->
         <div
-          class="inverted-corner bg-grey/50 backdrop-blur-md h-[40px] w-[262.5px] absolute self-end rounded-b-box flex justify-center items-end z-20"
+          class="inverted-corner bg-grey/50 backdrop-blur-md h-[40px] w-[262.5px] lg:w-[337.5px] absolute self-end rounded-b-box flex justify-center items-end z-20"
         >
           <ng-icon
             name="heroChevronDown"
@@ -18,7 +24,9 @@
         <app-book-carousel />
       </div>
     </div>
-    <h2 class="pt-5 text-xl font-bold">COLLECTIONS.</h2>
-    <app-book-album />
+    <div class="lg:w-2/3 lg:px-20">
+      <h2 class="pt-5 lg:pb-5 lg:pt-0 text-xl font-bold">COLLECTIONS.</h2>
+      <app-book-album />
+    </div>
   </div>
 </div>

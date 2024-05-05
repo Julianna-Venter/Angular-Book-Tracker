@@ -4,6 +4,7 @@ import { NgIconComponent, provideIcons } from '@ng-icons/core';
 import { heroChevronDown } from '@ng-icons/heroicons/outline';
 import { BookAlbumComponent } from './book-album/book-album.component';
 import { BookCarouselComponent } from './book-carousel/book-carousel.component';
+import { SpotlightComponent } from '../../shared-components/spotlight/spotlight.component';
 
 @Component({
   selector: 'app-summaries',
@@ -13,6 +14,7 @@ import { BookCarouselComponent } from './book-carousel/book-carousel.component';
     NgIconComponent,
     BookCarouselComponent,
     BookAlbumComponent,
+    SpotlightComponent,
   ],
   templateUrl: './summaries.component.html',
   styleUrl: './summaries.component.scss',

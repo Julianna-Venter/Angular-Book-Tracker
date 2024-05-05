@@ -27,4 +27,9 @@ export class BookPageComponent {
   changeSelected(event: string) {
     this.selected = event;
   }
+
+  //these console logs are placeholders for the actual data that will be sent to the backend database
+  returnData(event: string) {
+    console.log('returnedData', event);
+  }
 }

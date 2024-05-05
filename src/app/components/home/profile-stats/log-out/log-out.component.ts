@@ -1,13 +1,16 @@
 import { Component, inject } from '@angular/core';
-import { AuthService } from '../../../../services/auth.service';
 import { Router } from '@angular/router';
+import { NgIconComponent, provideIcons } from '@ng-icons/core';
+import { heroArrowRightOnRectangleSolid } from '@ng-icons/heroicons/solid';
+import { AuthService } from '../../../../services/auth.service';
 
 @Component({
   selector: 'app-log-out',
   standalone: true,
-  imports: [],
+  imports: [NgIconComponent],
   templateUrl: './log-out.component.html',
   styleUrl: './log-out.component.scss',
+  viewProviders: [provideIcons({ heroArrowRightOnRectangleSolid })],
 })
 export class LogOutComponent {
   authService = inject(AuthService);

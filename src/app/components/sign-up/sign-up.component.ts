@@ -24,6 +24,7 @@ import { signUp } from '../../store/actions';
 import { UserState } from '../../store/user-store/user.reducer';
 import { selectSignUp } from '../../store/user-store/user.selectors';
 import { BackgroundComponent } from '../shared-components/background/background.component';
+import { SpotlightComponent } from '../shared-components/spotlight/spotlight.component';
 
 @Component({
   selector: 'app-sign-up',
@@ -33,6 +34,7 @@ import { BackgroundComponent } from '../shared-components/background/background.
     BackgroundComponent,
     NgIconComponent,
     RouterLink,
+    SpotlightComponent,
   ],
   templateUrl: './sign-up.component.html',
   styleUrl: './sign-up.component.scss',
