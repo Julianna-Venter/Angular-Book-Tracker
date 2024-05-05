@@ -8,6 +8,7 @@ import {
   heroHome,
   heroMagnifyingGlass,
   heroPlus,
+  heroXCircle,
 } from '@ng-icons/heroicons/outline';
 import {
   heroChartPieSolid,
@@ -28,6 +29,15 @@ import {
 import { BackgroundComponent } from '../shared-components/background/background.component';
 import { LogOutComponent } from './profile-stats/log-out/log-out.component';
 
+import { FormControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { MatSelectModule } from '@angular/material/select';
+import { Observable } from 'rxjs';
+import { map, startWith } from 'rxjs/operators';
+
+import { MatAutocompleteModule } from '@angular/material/autocomplete';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
+
 @Component({
   selector: 'app-home',
   standalone: true,
@@ -39,6 +49,12 @@ import { LogOutComponent } from './profile-stats/log-out/log-out.component';
     JsonPipe,
     RouterLink,
     BackgroundComponent,
+    MatSelectModule,
+    MatAutocompleteModule,
+    MatInputModule,
+    MatFormFieldModule,
+    FormsModule,
+    ReactiveFormsModule,
   ],
   templateUrl: './home.component.html',
   styleUrl: './home.component.scss',
@@ -52,12 +68,14 @@ import { LogOutComponent } from './profile-stats/log-out/log-out.component';
       heroMagnifyingGlass,
       heroChevronDoubleLeft,
       heroEllipsisVerticalSolid,
+      heroXCircle,
     }),
   ],
 })
 export class HomeComponent implements OnInit {
   homeIcon = 'heroHome';
   pieIcon = 'heroChartPie';
+  search = true;
 
   router = inject(Router);
   currentUserData: FirestoreUser | null = null;
@@ -69,6 +87,10 @@ export class HomeComponent implements OnInit {
   query = 'Harry Potter';
   login$ = this.store.select(selectLogin);
   userData$ = this.store.select(selectgetUserData);
+
+  myControl = new FormControl('');
+  options: string[] = ['One', 'Two', 'Three'];
+  filteredOptions: Observable<string[]> | undefined;
 
   constructor(private authService: AuthService, private location: Location) {
     if (this.router.url === '/home') {
@@ -108,6 +130,19 @@ export class HomeComponent implements OnInit {
         );
       }
     });
+
+    this.filteredOptions = this.myControl.valueChanges.pipe(
+      startWith(''),
+      map((value) => this._filter(value || ''))
+    );
+  }
+
+  private _filter(value: string): string[] {
+    const filterValue = value.toLowerCase();
+
+    return this.options.filter((option) =>
+      option.toLowerCase().includes(filterValue)
+    );
   }
 
   changeActive(click: string) {
@@ -122,5 +157,9 @@ export class HomeComponent implements OnInit {
 
   back(): void {
     this.location.back();
+  }
+
+  toggleSearch() {
+    this.search = !this.search;
   }
 }
