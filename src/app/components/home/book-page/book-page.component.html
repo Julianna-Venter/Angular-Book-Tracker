@@ -1,21 +1,31 @@
 <div class="w-full h-full absolute top-0 left-0 z-10">
   <div
-    class="w-full h-full bg-grey flex justify-between lg:px-20 items-center pt-28 flex-col gap-5 overflow-y-auto lg:flex-row"
+    class="w-full h-full bg-grey flex justify-between lg:px-20 items-center pt-28 flex-col gap-5 overflow-y-auto overflow-x-hidden lg:flex-row"
   >
     <div
       class="h-full w-full flex flex-col justify-center items-center gap-5 px-10"
     >
       <img
-        [src]="bookTitle"
+        [src]="
+          thisBook?.imageLink ||
+          'https://www.marytribble.com/wp-content/uploads/2020/12/book-cover-placeholder.png'
+        "
         alt="Book Cover"
         class="rounded-box border border-background-white/30 h-[314px] w-[210px]"
       />
-      <h1 class="text-2xl font-extralight text-background-white text-center">
-        The Death and Life of Zebulon Finch
-      </h1>
+      <div class="flex flex-col">
+        <span class="text-2xl text-background-white text-center m-0">
+          {{ thisBook?.title }}
+        </span>
+        @if (thisBook?.subtitle){
+        <span class="text-lg font-extralight text-background-white text-center">
+          {{ thisBook?.subtitle }}
+        </span>
+        }
+      </div>
     </div>
     <div
-      class="bg-background-white h-fit w-full lg:w-1/2 rounded-t-3xl lg:rounded-3xl overflow-x-hidden flex-[0_0_auto] lg:overflow-x-scroll lg:max-h-[80%]"
+      class="bg-background-white h-fit w-full lg:w-1/2 rounded-t-3xl lg:rounded-3xl overflow-x-hidden flex-[0_0_auto] lg:overflow-y-scroll lg:max-h-[80%]"
     >
       <div class="w-full h-fit flex m-3">
         <div
@@ -23,11 +33,21 @@
         >
           <mat-form-field class="w-full h-[4.5rem]">
             <mat-select [(value)]="selected">
-              <mat-option value="nothing">Not Added</mat-option>
-              <mat-option value="tbr">TBR</mat-option>
-              <mat-option value="reading">Reading</mat-option>
-              <mat-option value="read">Read</mat-option>
-              <mat-option value="dnf">DNF</mat-option>
+              <mat-option value="unread" (click)="setSelectedBook('unread')"
+                >Not Added</mat-option
+              >
+              <mat-option value="tbr" (click)="setSelectedBook('tbr')"
+                >TBR</mat-option
+              >
+              <mat-option value="reading" (click)="setSelectedBook('reading')"
+                >Reading</mat-option
+              >
+              <mat-option value="read" (click)="setSelectedBook('read')"
+                >Read</mat-option
+              >
+              <mat-option value="dnf" (click)="setSelectedBook('dnf')"
+                >DNF</mat-option
+              >
             </mat-select>
           </mat-form-field>
         </div>
@@ -47,14 +67,15 @@
         <div
           class="w-1/2 flex flex-col justify-center items-start border-r border-light-grey px-8 text-grey"
         >
-          <p class="font-semibold">Daniel Kraus</p>
-          <p class="text-xs">23 May 2015</p>
+          <p class="font-semibold">{{ thisBook?.authors }}</p>
+          <p class="text-xs">{{ thisBook?.publishedDate }}</p>
         </div>
         <div
           class="w-1/2 flex flex-col justify-center items-start px-8 py-2 text-grey text-sm"
         >
           <p class="font-semibold">
-            203 <span class="text-xs font-normal">Pages</span>
+            {{ thisBook?.pageCount }}
+            <span class="text-xs font-normal">Pages</span>
           </p>
           <p class="text-xs">English</p>
         </div>
@@ -64,31 +85,28 @@
           class="w-1/2 flex flex-col justify-center items-start border-r border-light-grey px-8 text-grey"
         >
           <p class="font-light text-sm">
-            Here is the story behind one of the most remarkable Internet
-            successes of our time. Based on scrupulous research and
-            extraordinary access to Google, ...
+            {{ thisBook?.description?.substring(0, 400) }}...
           </p>
         </div>
         <div
           class="w-1/2 flex flex-wrap gap-2 justify-start px-4 py-2 text-grey text-sm"
         >
-          <div class="badge badge-outline">Historical</div>
-          <div class="badge badge-outline">Fantasy</div>
-          <div class="badge badge-outline">Mature</div>
-          <div class="badge badge-outline">Comedy</div>
-          <div class="badge badge-outline">Dark Humor</div>
+          @for (category of thisBook?.categories; track thisBook?.id) {
+          <div class="badge badge-outline">{{ category }}</div>
+          }
         </div>
       </div>
       @if (selected === 'tbr') {
       <app-tbr
         (startReviewEvent)="changeSelected($event)"
-        (returnDataEvent)="returnData($event)"
+        (returnDataEvent)="sendReviewData($event)"
       />
       } @else if (selected === 'reading' ) {
       <app-reading
         [dnf]="false"
         (completeReviewEvent)="changeSelected($event)"
-        (returnDataEvent)="returnData($event)"
+        [reviewData]="reviewData"
+        (reviewDataChange)="sendReviewData($event)"
       />
       } @else if (selected === 'read') {
       <app-have-read (updateReviewEvent)="changeSelected($event)" />
@@ -96,7 +114,8 @@
       <app-reading
         [dnf]="true"
         (completeReviewEvent)="changeSelected($event)"
-        (returnDataEvent)="returnData($event)"
+        [reviewData]="reviewData"
+        (reviewDataChange)="sendReviewData($event)"
       />
       }
     </div>

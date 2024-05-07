@@ -1,21 +1,33 @@
+import { inject } from '@angular/core';
 import { CanActivateFn, Router } from '@angular/router';
 import { AuthService } from '../services/auth.service';
 
-import { map, take } from 'rxjs/operators';
+import { take } from 'rxjs/operators';
 
 export const authGuard: CanActivateFn = (route, state) => {
-  const authService = new AuthService();
-  const router = new Router();
+  const authService = inject(AuthService);
+  const router = inject(Router);
 
-  return authService.user$.pipe(
-    take(1),
-    map((user) => {
-      if (!user) {
-        router.navigate(['/login']);
-        return false;
-      } else {
-        return true;
-      }
-    })
-  );
+  authService.user$.pipe(take(1)).subscribe((user) => {
+    if (user) {
+      authService.currentUserSig.set({
+        //! is added because it is pretty much guaranteed that the user is logged in at this point
+        email: user.email ?? '',
+        username: user.displayName ?? '',
+      });
+    } else {
+      authService.currentUserSig.set(null);
+    }
+
+    if (!user) {
+      router.navigate(['/login']);
+      return false;
+    } else {
+      router.navigate(['/home']);
+      authService.isUserSet$.next(true);
+      return true;
+    }
+  });
+
+  return true;
 };

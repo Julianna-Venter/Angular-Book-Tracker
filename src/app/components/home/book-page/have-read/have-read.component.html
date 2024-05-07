@@ -2,28 +2,35 @@
   <div>
     <h1 class="text-3xl font-bold uppercase">Rating</h1>
     <!-- loop over how many stars -->
-    <div class="flex justify-center items-center">
-      <ng-icon name="heroStarSolid" size="50" class="text-blue"></ng-icon>
+    <div class="flex flex-col justify-center items-center gap-5">
+      <div class="flex justify-center items-center">
+        <app-stars [fullStars]="ratingFull" [halfStars]="ratingHalf" />
+      </div>
+      <div class="flex flex-col justify-center items-center">
+        @if (thisBook?.DNF_reason?.length != 0) {
+        <div class="text-2xl font-bold text-button-color">DNF</div>
+        <div class="flex">
+          @for (reason of thisBook?.DNF_reason; track reason) {
+          <div class="flex gap-1 justify-center items-center">
+            <span class="font-bold text-grey/30">|</span
+            ><span>{{ reason }}</span
+            ><span class="font-bold text-grey/30">|</span>
+          </div>
+          }
+        </div>
+        }
+      </div>
     </div>
   </div>
   <div>
     <h1 class="text-3xl font-bold uppercase">Comments</h1>
-    <p class="text-lg text-grey/70 m-0">
-      This was amazing! I really likes the characters and plot and etc etc etc
-    </p>
+    <span class="text-lg text-grey/70">
+      {{ thisBook?.comments }}
+    </span>
   </div>
   <div>
     <h1 class="text-3xl font-bold uppercase">Review tags</h1>
-    <div
-      class="w-full flex flex-wrap gap-2 text-grey justify-center items-center"
-    >
-      <div class="badge badge-outline p-3 text-lg">Character Driven 80%</div>
-      <div class="badge badge-outline p-3 text-lg">Tense 60%</div>
-      <div class="badge badge-outline p-3 text-lg">Light 90%</div>
-      <div class="badge badge-outline p-3 text-lg">Fun 75%</div>
-      <div class="badge badge-outline p-3 text-lg">Adventurous 80%</div>
-      <div class="badge badge-outline p-3 text-lg">Casual 55%</div>
-    </div>
+    <app-tags [tags]="tags" />
   </div>
   <div class="flex flex-col gap-2">
     <button
@@ -33,7 +40,7 @@
       Change Review
     </button>
     <span class="text-grey/60 font-bold self-center"
-      >Last Changed: 23-04-2024</span
+      >Last Changed: {{ thisBook?.lastUpdated | date }}</span
     >
   </div>
 </div>

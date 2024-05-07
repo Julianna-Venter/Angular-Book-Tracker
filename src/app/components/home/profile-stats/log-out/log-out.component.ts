@@ -17,6 +17,8 @@ export class LogOutComponent {
   router = inject(Router);
 
   logOut() {
+    localStorage.removeItem('currentUser');
+    localStorage.removeItem('currentBook');
     this.authService.logout().subscribe(() => {
       this.router.navigate(['/login']);
     });

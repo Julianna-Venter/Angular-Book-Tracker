@@ -4,13 +4,16 @@ import {
   addDoc,
   collection,
   collectionData,
+  doc,
   query,
+  updateDoc,
   where,
 } from '@angular/fire/firestore';
 import { Observable } from 'rxjs';
 import { UserResponse } from '../interfaces/authInterface';
-import { FirestoreUser } from '../interfaces/booksInterfaces';
+import { FirestoreUser, UsableBooks } from '../interfaces/booksInterfaces';
 import { SetUserDataError } from '../store/actions';
+import { User } from '@angular/fire/auth';
 
 @Injectable({
   providedIn: 'root',
@@ -29,9 +32,9 @@ export class UsersFirebaseService {
         read: [],
         tbr: [],
       },
-      profilestats: {
-        stats: [],
-      },
+      // profilestats: {
+      //   stats: [],
+      // },
     });
   }
 
@@ -44,16 +47,9 @@ export class UsersFirebaseService {
     return collectionData(q, { idField: 'id' }) as Observable<FirestoreUser[]>;
   }
 
-  //these two need to be implemented
-  setUserData(user: UserResponse): Observable<SetUserDataError> {
-    return new Observable((observer) => {
-      observer.next({ message: 'Error' });
-    });
-  }
+  addToList(list: string, book: UsableBooks) {}
 
-  deleteUserBookData(bookId: string): Observable<SetUserDataError> {
-    return new Observable((observer) => {
-      observer.next({ message: 'Error' });
-    });
-  }
+  removeFromList(list: string, book: UsableBooks) {}
+
+  getList(list: string) {}
 }

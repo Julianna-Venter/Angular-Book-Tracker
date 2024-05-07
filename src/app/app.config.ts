@@ -20,7 +20,6 @@ import {
   userDataReducer,
 } from './store/user-store/user-data.reducer';
 import { UsersEffects } from './store/user-store/user.effects';
-import { userFeatureKey, userReducer } from './store/user-store/user.reducer';
 
 const firebaseConfig = {
   apiKey: API_KEYS.firestore,
@@ -42,7 +41,6 @@ export const appConfig: ApplicationConfig = {
       FormsModule,
     ]),
     provideStore(),
-    provideState({ name: userFeatureKey, reducer: userReducer }),
     provideState({ name: userDataFeatureKey, reducer: userDataReducer }),
     provideState({ name: booksFeatureKey, reducer: booksReducer }),
     provideEffects(BooksEffects, UsersEffects),

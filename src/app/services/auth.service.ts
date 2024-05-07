@@ -1,16 +1,14 @@
-import { Injectable, inject } from '@angular/core';
+import { Injectable, inject, signal } from '@angular/core';
 import {
   Auth,
-  UserCredential,
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
   signOut,
   updateProfile,
   user,
 } from '@angular/fire/auth';
-import { Router } from '@angular/router';
-import { Observable, from, map } from 'rxjs';
-import { UsersFirebaseService } from './users-firebase.service';
+import { Observable, Subject, from } from 'rxjs';
+import { AuthUser } from '../interfaces/authInterface';
 
 @Injectable({
   providedIn: 'root',
@@ -18,39 +16,26 @@ import { UsersFirebaseService } from './users-firebase.service';
 export class AuthService {
   firebaseAuth = inject(Auth);
   user$ = user(this.firebaseAuth);
-  usersFirebaseService = inject(UsersFirebaseService);
-  router = inject(Router);
+  currentUserSig = signal<AuthUser | null | undefined>(undefined);
+  isUserSet$ = new Subject<boolean>();
 
   register(
     email: string,
     username: string,
     password: string
-  ): Observable<{ username: string; email: string }> {
-    this.usersFirebaseService.addUser(username, email);
+  ): Observable<void> {
     return from(
       createUserWithEmailAndPassword(this.firebaseAuth, email, password).then(
-        (response) => {
-          const username = response?.user?.displayName || '';
-          const email = response?.user?.email || '';
-          updateProfile(response.user, { displayName: username });
-          return { username, email };
-        }
+        (response) => updateProfile(response.user, { displayName: username })
       )
     );
   }
 
-  login(
-    email: string,
-    password: string
-  ): Observable<{ username: string; email: string }> {
+  login(email: string, password: string): Observable<void> {
     return from(
-      signInWithEmailAndPassword(this.firebaseAuth, email, password)
-    ).pipe(
-      map((userCredential: UserCredential) => {
-        const username = userCredential?.user?.displayName || '';
-        const email = userCredential?.user?.email || '';
-        return { username, email };
-      })
+      signInWithEmailAndPassword(this.firebaseAuth, email, password).then(
+        () => {}
+      )
     );
   }
 

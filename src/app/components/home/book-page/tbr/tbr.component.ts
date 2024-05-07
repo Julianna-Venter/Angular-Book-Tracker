@@ -58,11 +58,19 @@ export class TbrComponent {
       rating = 0;
     }
 
-    //will refine these data points later
     const returnData = {
-      rawForm,
-      rating,
-      submitdate,
+      pace: 0,
+      rating: rating || 0,
+      comments: '',
+      status: 'reading',
+      character_plot: 0,
+      tense_lighthearted: 0,
+      dark_light: 0,
+      informative_fun: 0,
+      adventurous_grounded: 0,
+      reflective_action: 0,
+      DNF_reason: [],
+      lastUpdated: submitdate,
     };
 
     this.returnDataEvent.emit(returnData);

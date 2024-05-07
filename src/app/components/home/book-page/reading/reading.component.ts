@@ -1,5 +1,9 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
+import {
+  ReviewData,
+  UsableBooks,
+} from '../../../../interfaces/booksInterfaces';
 import { DnfComponent } from '../dnf/dnf.component';
 
 @Component({
@@ -12,7 +16,9 @@ import { DnfComponent } from '../dnf/dnf.component';
 export class ReadingComponent {
   @Input() dnf!: boolean;
   @Output() completeReviewEvent = new EventEmitter<string>();
-  @Output() returnDataEvent = new EventEmitter();
+  @Input() reviewData!: ReviewData | undefined;
+  @Output() reviewDataChange = new EventEmitter<ReviewData>();
+  thisBook: UsableBooks | undefined;
 
   readingForm = new FormGroup({
     rating: new FormControl(0),
@@ -37,6 +43,16 @@ export class ReadingComponent {
   });
 
   dnfReasons: string[] = [];
+  pace: string = '';
+  step = 14.28;
+
+  constructor() {
+    this.dnfReasons = [];
+    const bookString = localStorage.getItem('currentBook');
+    if (bookString !== null) {
+      this.thisBook = JSON.parse(bookString);
+    }
+  }
 
   getDNFReasons(reasons: string[]) {
     this.dnfReasons = reasons;
@@ -73,16 +89,26 @@ export class ReadingComponent {
     } else {
       rating = 0;
     }
+    let statusTemp = 'read';
+    if (this.dnfReasons.length > 0) {
+      statusTemp = 'dnf';
+    }
 
-    //will refine these data points later
-
-    const returnData = {
-      rawForm,
-      rating,
-      submitdate,
-      dnfReasons: this.dnfReasons,
+    this.reviewData = {
+      pace: rawForm.pace || 0,
+      rating: rating || 0,
+      comments: rawForm.comments || '',
+      status: statusTemp,
+      character_plot: rawForm.PC || 0,
+      tense_lighthearted: rawForm.TL || 0,
+      dark_light: rawForm.DL || 0,
+      informative_fun: rawForm.IF || 0,
+      adventurous_grounded: rawForm.AG || 0,
+      reflective_action: rawForm.RC || 0,
+      DNF_reason: this.dnfReasons,
+      lastUpdated: submitdate,
     };
 
-    this.returnDataEvent.emit(returnData);
+    this.reviewDataChange.emit(this.reviewData);
   }
 }

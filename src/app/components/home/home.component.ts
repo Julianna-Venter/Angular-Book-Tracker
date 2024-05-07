@@ -17,26 +17,38 @@ import {
 } from '@ng-icons/heroicons/solid';
 import { Store } from '@ngrx/store';
 import { take } from 'rxjs';
-import { FirestoreUser } from '../../interfaces/booksInterfaces';
+import { FirestoreUser, UsableBooks } from '../../interfaces/booksInterfaces';
 import { AuthService } from '../../services/auth.service';
 import { getBooksAction, getUserData } from '../../store/actions';
 import { BooksState } from '../../store/books-store/book.reducer';
 import { selectBooks } from '../../store/books-store/book.selectors';
-import {
-  selectLogin,
-  selectgetUserData,
-} from '../../store/user-store/user.selectors';
+import { selectgetUserData } from '../../store/user-store/user.selectors';
 import { BackgroundComponent } from '../shared-components/background/background.component';
 import { LogOutComponent } from './profile-stats/log-out/log-out.component';
 
-import { FormControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
+import {
+  FormControl,
+  FormGroup,
+  FormsModule,
+  ReactiveFormsModule,
+} from '@angular/forms';
 import { MatSelectModule } from '@angular/material/select';
 import { Observable } from 'rxjs';
-import { map, startWith } from 'rxjs/operators';
+import {
+  debounceTime,
+  distinctUntilChanged,
+  map,
+  startWith,
+} from 'rxjs/operators';
 
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
+
+interface Book {
+  id: string;
+  title: string;
+}
 
 @Component({
   selector: 'app-home',
@@ -75,7 +87,7 @@ import { MatInputModule } from '@angular/material/input';
 export class HomeComponent implements OnInit {
   homeIcon = 'heroHome';
   pieIcon = 'heroChartPie';
-  search = true;
+  search = false;
 
   router = inject(Router);
   currentUserData: FirestoreUser | null = null;
@@ -85,12 +97,16 @@ export class HomeComponent implements OnInit {
   store = inject(Store<BooksState>);
   books$ = this.store.select(selectBooks);
   query = 'Harry Potter';
-  login$ = this.store.select(selectLogin);
   userData$ = this.store.select(selectgetUserData);
 
-  myControl = new FormControl('');
-  options: string[] = ['One', 'Two', 'Three'];
-  filteredOptions: Observable<string[]> | undefined;
+  options: string[] = [];
+  filteredOptions: Observable<Book[]> | undefined;
+  searchCorrelation: Book[] = [];
+  searchedBooks: UsableBooks[] = [];
+
+  searchForm = new FormGroup({
+    searchTerm: new FormControl<Book>({ id: '', title: '' }),
+  });
 
   constructor(private authService: AuthService, private location: Location) {
     if (this.router.url === '/home') {
@@ -114,34 +130,61 @@ export class HomeComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.userData$.pipe(take(2)).subscribe((users) => {
-      if (
-        users &&
-        users.length > 0 &&
-        localStorage.getItem('currentUser') === null
-      ) {
-        // get the first matched user, since email and password pairs are unique the array will only have one user anyway
-        this.currentUserData = users[0];
-        // Log for testing, will be removed later
-        console.log('User from home effect:', this.currentUserData);
-        localStorage.setItem(
-          'currentUser',
-          JSON.stringify(this.currentUserData)
-        );
-      }
-    });
+    if (localStorage.getItem('currentUser') === null) {
+      this.userData$.subscribe((users) => {
+        if (users && users.length > 0) {
+          // get the first matched user, since email and password pairs are unique the array will only have one user anyway
+          this.currentUserData = users[0];
+          // Log for testing, will be removed later
+          console.log('User from home:', this.currentUserData);
+          localStorage.setItem(
+            'currentUser',
+            JSON.stringify(this.currentUserData)
+          );
+        }
+      });
+    } else {
+      console.log(localStorage.getItem('currentUser'));
+    }
 
-    this.filteredOptions = this.myControl.valueChanges.pipe(
-      startWith(''),
-      map((value) => this._filter(value || ''))
-    );
+    console.log('User from home outside:', this.currentUserData);
+
+    this.filteredOptions =
+      this.searchForm.controls.searchTerm.valueChanges.pipe(
+        startWith(''),
+        map((value) => {
+          if (typeof value === 'string') {
+            return value;
+          } else {
+            return value?.title;
+          }
+        }),
+        map((value) => this._filter(value || ''))
+      );
   }
 
-  private _filter(value: string): string[] {
+  private _filter(value: string): Book[] {
+    if (typeof value !== 'string') {
+      return [];
+    }
+
     const filterValue = value.toLowerCase();
 
-    return this.options.filter((option) =>
-      option.toLowerCase().includes(filterValue)
+    if (filterValue !== '' && !this.options.includes(filterValue)) {
+      this.store.dispatch(getBooksAction({ query: filterValue }));
+      this.books$
+        .pipe(debounceTime(150), distinctUntilChanged())
+        .subscribe((books) => {
+          this.options = books.map((book) => book.title);
+          this.searchCorrelation = books.map((book) => {
+            return { id: book.id, title: book.title };
+          });
+          this.searchedBooks = books;
+        });
+    }
+
+    return this.searchCorrelation.filter((book) =>
+      book.title.toLowerCase().includes(filterValue)
     );
   }
 
@@ -161,5 +204,25 @@ export class HomeComponent implements OnInit {
 
   toggleSearch() {
     this.search = !this.search;
+  }
+
+  searchBooks() {
+    const rawForm = this.searchForm.getRawValue();
+
+    if (this.options.includes(rawForm.searchTerm?.title ?? '')) {
+      console.log('searching...', rawForm.searchTerm);
+      this.books$.pipe(take(1)).subscribe((books) => {
+        const book = books.find(
+          (book) => book.title === rawForm.searchTerm?.title
+        );
+        localStorage.setItem('currentBook', JSON.stringify(book));
+        this.search = false;
+        this.router.navigate(['home/book/' + book?.title]);
+      });
+    }
+  }
+
+  displayBookTitle(book: Book): string {
+    return book ? book.title : '';
   }
 }

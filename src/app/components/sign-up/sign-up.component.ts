@@ -1,4 +1,4 @@
-import { Component, OnDestroy, inject } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import {
   FormControl,
   FormGroup,
@@ -15,16 +15,10 @@ import {
   heroLockClosed,
   heroUser,
 } from '@ng-icons/heroicons/outline';
-import { Store } from '@ngrx/store';
-import { Subscription } from 'rxjs';
 import { AuthService } from '../../services/auth.service';
 import { UsersFirebaseService } from '../../services/users-firebase.service';
 import { confirmationValidator } from '../../shared/compare-validator.directive';
-import { signUp } from '../../store/actions';
-import { UserState } from '../../store/user-store/user.reducer';
-import { selectSignUp } from '../../store/user-store/user.selectors';
 import { BackgroundComponent } from '../shared-components/background/background.component';
-import { SpotlightComponent } from '../shared-components/spotlight/spotlight.component';
 
 @Component({
   selector: 'app-sign-up',
@@ -34,7 +28,6 @@ import { SpotlightComponent } from '../shared-components/spotlight/spotlight.com
     BackgroundComponent,
     NgIconComponent,
     RouterLink,
-    SpotlightComponent,
   ],
   templateUrl: './sign-up.component.html',
   styleUrl: './sign-up.component.scss',
@@ -48,7 +41,7 @@ import { SpotlightComponent } from '../shared-components/spotlight/spotlight.com
     }),
   ],
 })
-export class SignUpComponent implements OnDestroy {
+export class SignUpComponent {
   authService = inject(AuthService);
   router = inject(Router);
 
@@ -82,39 +75,34 @@ export class SignUpComponent implements OnDestroy {
           Validators.pattern(this.passwordRegex),
         ],
       ],
-      confirmPassword: ['', [Validators.required, confirmationValidator]],
+      confirmPassword: ['', [Validators.required, confirmationValidator]], // Use the imported custom validator
     });
   }
 
   errorMessage: string | null = null;
   usersFirebaseService = inject(UsersFirebaseService);
-  store = inject(Store<UserState>);
-  signup$ = this.store.select(selectSignUp);
-  signupSubscription$: Subscription | undefined;
 
   onSubmit(): void {
     if (this.signupForm.valid) {
-      // TODO: when this is implememted you need to have a spinner to indicate that the form is being submitted
+      //   // TODO: when this is implememted you need to have a spinner to indicate that the form is being submitted
       console.warn(this.signupForm.value);
       const rawForm = this.signupForm.getRawValue();
 
-      this.store.dispatch(
-        signUp({
-          email: rawForm.email ?? '',
-          username: rawForm.username ?? '',
-          password: rawForm.password ?? '',
-        })
-      );
-
-      this.signupSubscription$ = this.signup$.subscribe({
-        next: () => {
-          this.router.navigate(['/home']);
-        },
-        error: (error) => {
-          console.log('error', error);
-          this.errorMessage = error.errorMessage;
-        },
-      });
+      this.authService
+        .register(
+          rawForm.email ?? '',
+          rawForm.username ?? '',
+          rawForm.password ?? ''
+        )
+        .subscribe({
+          next: () => {
+            this.usersFirebaseService.addUser(rawForm.username, rawForm.email);
+            this.router.navigate(['/home']);
+          },
+          error: (error) => {
+            this.errorMessage = error.code;
+          },
+        });
     } else {
       Object.entries(this.signupForm.controls).forEach(([key, control]) => {
         if (control.invalid) {
@@ -125,17 +113,15 @@ export class SignUpComponent implements OnDestroy {
     }
   }
 
-  ngOnDestroy(): void {
-    if (this.signupSubscription$) {
-      this.signupSubscription$.unsubscribe();
-    }
-  }
-
   togglePassword() {
     this.showPassword = !this.showPassword;
   }
-
   togglePasswordConfirm() {
     this.showPasswordConfirm = !this.showPasswordConfirm;
   }
+
+  //API for the searching:
+  //https://openlibrary.org/search.json?q=harry+potter
+  //API for the cover image, using the cover key
+  //https://covers.openlibrary.org/b/olid/OL21058613M.jpg
 }

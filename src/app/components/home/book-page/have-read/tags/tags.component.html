@@ -1,0 +1,51 @@
+<div class="w-full flex flex-wrap gap-2 text-grey justify-center items-center">
+  @if (PC.percentage !== 0){
+  <div
+    class="badge badge-outline p-3 text-lg flex items-center justify-center gap-2"
+  >
+    <span>{{ PC.title }}</span
+    ><span class="opacity-50">|</span>
+    <span class="text-muted-red">{{ PC.percentage }}%</span>
+  </div>
+  } @if (TL.percentage !== 0){
+  <div
+    class="badge badge-outline p-3 text-lg flex items-center justify-center gap-2"
+  >
+    <span>{{ TL.title }}</span
+    ><span class="opacity-50">|</span>
+    <span class="text-muted-red">{{ TL.percentage }}%</span>
+  </div>
+  } @if (DL.percentage !== 0){
+  <div
+    class="badge badge-outline p-3 text-lg flex items-center justify-center gap-2"
+  >
+    <span>{{ DL.title }}</span
+    ><span class="opacity-50">|</span>
+    <span class="text-muted-red">{{ DL.percentage }}%</span>
+  </div>
+  } @if (IF.percentage !== 0){
+  <div
+    class="badge badge-outline p-3 text-lg flex items-center justify-center gap-2"
+  >
+    <span>{{ IF.title }}</span
+    ><span class="opacity-50">|</span>
+    <span class="text-muted-red">{{ IF.percentage }}%</span>
+  </div>
+  } @if (AG.percentage !== 0){
+  <div
+    class="badge badge-outline p-3 text-lg flex items-center justify-center gap-2"
+  >
+    <span>{{ AG.title }}</span
+    ><span class="opacity-50">|</span>
+    <span class="text-muted-red">{{ AG.percentage }}%</span>
+  </div>
+  } @if (RA.percentage !== 0){
+  <div
+    class="badge badge-outline p-3 text-lg flex items-center justify-center gap-2"
+  >
+    <span>{{ RA.title }}</span
+    ><span class="opacity-50">|</span>
+    <span class="text-muted-red">{{ RA.percentage }}%</span>
+  </div>
+  }
+</div>

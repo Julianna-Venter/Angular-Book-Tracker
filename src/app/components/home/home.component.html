@@ -80,36 +80,51 @@
     </div>
     } @else if (search) {
     <div
-      class="bg-white w-fit h-[70px] px-5 py-2 flex gap-5 rounded-full shadow-4xl overflow-y-hidden"
+      class="bg-white w-fit h-[70px] pl-2 pr-5 py-2 flex gap-5 rounded-full shadow-4xl overflow-y-hidden"
     >
-      <div class="flex justify-center items-center">
-        <div class="flex justify-center items-center">
-          <ng-icon
-            name="heroMagnifyingGlass"
-            size="30"
-            class="text-grey hover:text-button-color"
-            (click)="toggleSearch()"
-          ></ng-icon>
-        </div>
-      </div>
-      <div class="flex justify-center items-start rounded-full overflow-hidden">
-        <form class="example-form">
-          <mat-form-field class="example-full-width">
-            <mat-label>Search Book</mat-label>
-            <input
-              type="text"
-              placeholder="Harry Potter..."
-              aria-label="Search Book"
-              matInput
-              [formControl]="myControl"
-              [matAutocomplete]="auto"
-            />
-            <mat-autocomplete autoActiveFirstOption #auto="matAutocomplete">
-              @for (option of filteredOptions | async; track option) {
-              <mat-option [value]="option">{{ option }}</mat-option>
-              }
-            </mat-autocomplete>
-          </mat-form-field>
+      <div
+        class="flex justify-center items-start rounded-full overflow-y-hidden"
+      >
+        <form
+          class="example-form flex gap-3"
+          [formGroup]="searchForm"
+          (ngSubmit)="searchBooks()"
+        >
+          <div class="w-fit h-[55px] rounded-full overflow-hidden">
+            <mat-form-field class="example-full-width">
+              <mat-label>Search Book</mat-label>
+              <input
+                type="text"
+                placeholder="Harry Potter..."
+                aria-label="Search Book"
+                matInput
+                [formControl]="searchForm.controls['searchTerm']"
+                [matAutocomplete]="auto"
+              />
+              <mat-autocomplete
+                autoActiveFirstOption
+                #auto="matAutocomplete"
+                [displayWith]="displayBookTitle"
+              >
+                @for (option of filteredOptions | async; track option) {
+                <mat-option [value]="option">{{ option.title }}</mat-option>
+                }
+              </mat-autocomplete>
+            </mat-form-field>
+          </div>
+          <div class="flex justify-center items-center">
+            <button
+              class="flex justify-center items-center"
+              type="submit"
+              [disabled]="!searchForm.controls['searchTerm'].value"
+            >
+              <ng-icon
+                name="heroMagnifyingGlass"
+                size="30"
+                class="text-grey hover:text-button-color"
+              ></ng-icon>
+            </button>
+          </div>
         </form>
       </div>
       <div class="flex justify-center items-center">

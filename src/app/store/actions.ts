@@ -20,49 +20,6 @@ export const getBooksComplete = createAction(
 
 //Application Actions
 
-//login
-export const login = createAction(
-  '[Login Page] Login',
-  props<{ email: string; password: string }>()
-);
-
-export const loginComplete = createAction(
-  '[Login Page] LoginComplete',
-  props<{ username: string; email: string }>()
-);
-
-export const loginFailed = createAction(
-  '[Login Page] LoginComplete',
-  props<{ errorMessage: string }>()
-);
-
-//signup
-export const signUp = createAction(
-  '[SignUp Page] SignUp',
-  props<{ email: string; username: string; password: string }>()
-);
-
-export const signUpComplete = createAction(
-  '[SignUp Page] SignUpComplete',
-  props<{ username: string; email: string }>()
-);
-
-export const signUpFail = createAction(
-  '[SignUp Page] SignUpComplete',
-  props<{ errorMessage: string }>()
-);
-
-//for later use
-//delete
-// export const deleteProfile = createAction(
-//   '[Profile Page] Delete',
-//   props<{ email: string }>()
-// );
-
-// export const deleteProfileComplete = createAction(
-//   '[Profile Page] DeleteComplete'
-// );
-
 //get data
 export const getUserData = createAction(
   '[User Data] getData',
