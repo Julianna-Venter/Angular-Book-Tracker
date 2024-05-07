@@ -4,7 +4,7 @@ import { EMPTY, catchError, map, switchMap } from 'rxjs';
 import { FirestoreUser } from '../../interfaces/booksInterfaces';
 import { AuthService } from '../../services/auth.service';
 import { UsersFirebaseService } from '../../services/users-firebase.service';
-import { getUserData, getUserDataComplete } from '../actions';
+import { getUserData, getUserDataComplete } from '../actions/user.actions';
 
 interface loginType {
   email: string;

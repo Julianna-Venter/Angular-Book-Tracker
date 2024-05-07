@@ -10,16 +10,13 @@ import { provideEffects } from '@ngrx/effects';
 import { provideState, provideStore } from '@ngrx/store';
 import { API_KEYS } from '../../environments/api-keys';
 import { routes } from './app.routes';
-import { BooksEffects } from './store/books-store/book.effects';
-import {
-  booksFeatureKey,
-  booksReducer,
-} from './store/books-store/book.reducer';
+import { BooksEffects } from './store/effects/book.effects';
+import { UsersEffects } from './store/effects/user.effects';
+import { booksFeatureKey, booksReducer } from './store/reducers/book.reducer';
 import {
   userDataFeatureKey,
   userDataReducer,
-} from './store/user-store/user-data.reducer';
-import { UsersEffects } from './store/user-store/user.effects';
+} from './store/reducers/user.reducer';
 
 const firebaseConfig = {
   apiKey: API_KEYS.firestore,

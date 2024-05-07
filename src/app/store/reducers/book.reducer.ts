@@ -1,6 +1,6 @@
 import { createReducer, on } from '@ngrx/store';
 import { UsableBooks } from '../../interfaces/booksInterfaces';
-import { getBooksComplete } from '../actions';
+import { getBooksComplete } from '../actions/book.actions';
 
 export const booksFeatureKey = 'Books API';
 

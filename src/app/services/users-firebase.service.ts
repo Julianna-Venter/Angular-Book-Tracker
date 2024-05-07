@@ -4,16 +4,11 @@ import {
   addDoc,
   collection,
   collectionData,
-  doc,
   query,
-  updateDoc,
   where,
 } from '@angular/fire/firestore';
 import { Observable } from 'rxjs';
-import { UserResponse } from '../interfaces/authInterface';
 import { FirestoreUser, UsableBooks } from '../interfaces/booksInterfaces';
-import { SetUserDataError } from '../store/actions';
-import { User } from '@angular/fire/auth';
 
 @Injectable({
   providedIn: 'root',

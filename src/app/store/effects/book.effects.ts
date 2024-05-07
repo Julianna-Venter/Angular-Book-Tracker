@@ -3,7 +3,7 @@ import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { EMPTY, catchError, map, retry, switchMap } from 'rxjs';
 import { UsableBooks } from '../../interfaces/booksInterfaces';
 import { BooksApiService } from '../../services/books-api.service';
-import { getBooksAction, getBooksComplete } from '../actions';
+import { getBooksAction, getBooksComplete } from '../actions/book.actions';
 
 interface queryType {
   query: string;

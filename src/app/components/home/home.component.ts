@@ -19,10 +19,11 @@ import { Store } from '@ngrx/store';
 import { take } from 'rxjs';
 import { FirestoreUser, UsableBooks } from '../../interfaces/booksInterfaces';
 import { AuthService } from '../../services/auth.service';
-import { getBooksAction, getUserData } from '../../store/actions';
-import { BooksState } from '../../store/books-store/book.reducer';
-import { selectBooks } from '../../store/books-store/book.selectors';
-import { selectgetUserData } from '../../store/user-store/user.selectors';
+import { getBooksAction } from '../../store/actions/book.actions';
+import { getUserData } from '../../store/actions/user.actions';
+import { BooksState } from '../../store/reducers/book.reducer';
+import { selectBooks } from '../../store/selectors/book.selectors';
+import { selectgetUserData } from '../../store/selectors/user.selectors';
 import { BackgroundComponent } from '../shared-components/background/background.component';
 import { LogOutComponent } from './profile-stats/log-out/log-out.component';
 

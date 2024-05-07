@@ -1,6 +1,6 @@
 import { createReducer, on } from '@ngrx/store';
 import { FirestoreUser } from '../../interfaces/booksInterfaces';
-import { getUserDataComplete } from '../actions';
+import { getUserDataComplete } from '../actions/user.actions';
 
 export const userDataFeatureKey = 'User Data Store';
 

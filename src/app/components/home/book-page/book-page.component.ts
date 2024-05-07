@@ -5,7 +5,7 @@ import { MatSelectModule } from '@angular/material/select';
 import { Store } from '@ngrx/store';
 import { UserResponse } from '../../../interfaces/authInterface';
 import { ReviewData, UsableBooks } from '../../../interfaces/booksInterfaces';
-import { BooksState } from '../../../store/books-store/book.reducer';
+import { BooksState } from '../../../store/reducers/book.reducer';
 import { HaveReadComponent } from './have-read/have-read.component';
 import { ReadingComponent } from './reading/reading.component';
 import { TbrComponent } from './tbr/tbr.component';
