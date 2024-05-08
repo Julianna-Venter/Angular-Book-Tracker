@@ -2,15 +2,17 @@ export interface FirestoreUser {
   id: string;
   username: string;
   email: string;
-  booklist: {
-    current: [];
-    dnf: [];
-    read: [];
-    tbr: [];
-  };
+  booklist: BookList;
   profilestats: {
     stats: [];
   };
+}
+
+export interface BookList {
+  reading: UsableBooks[];
+  dnf: UsableBooks[];
+  read: UsableBooks[];
+  tbr: UsableBooks[];
 }
 
 interface VolumeInfo {
@@ -126,7 +128,6 @@ export interface UsableBooks {
   reflective_action: number;
   DNF_reason?: Array<string>;
   lastUpdated?: string;
-  owned?: boolean;
 }
 
 export interface ReviewData {
@@ -142,5 +143,4 @@ export interface ReviewData {
   reflective_action: number;
   DNF_reason?: Array<string>;
   lastUpdated?: string;
-  owned?: boolean;
 }

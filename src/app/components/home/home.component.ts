@@ -45,6 +45,7 @@ import {
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
+import { UsersFirebaseService } from '../../services/users-firebase.service';
 
 interface Book {
   id: string;
@@ -92,6 +93,7 @@ export class HomeComponent implements OnInit {
 
   router = inject(Router);
   currentUserData: FirestoreUser | null = null;
+  firebaseService = inject(UsersFirebaseService);
   home = false;
   stats = false;
 
@@ -128,28 +130,27 @@ export class HomeComponent implements OnInit {
         this.store.dispatch(getUserData({ email: user.email ?? '' }));
       }
     });
+
+    this.userData$.pipe(take(2)).subscribe((users) => {
+      if (users && users.length > 0) {
+        // get the first matched user, since email and password pairs are unique the array will only have one user anyway
+        this.currentUserData = users[0];
+        console.log('Current user:', this.currentUserData);
+      }
+    });
+
+    // this.firebaseService
+    //   .getMatchedBook('testing@hash.com', 'read', 'lG-8PjH8NFwC')
+    //   .subscribe((bookList) => {
+    //     if (bookList) {
+    //       console.log('Book list book match from home:', bookList);
+    //     } else {
+    //       console.log('No user found');
+    //     }
+    //   });
   }
 
   ngOnInit(): void {
-    if (localStorage.getItem('currentUser') === null) {
-      this.userData$.subscribe((users) => {
-        if (users && users.length > 0) {
-          // get the first matched user, since email and password pairs are unique the array will only have one user anyway
-          this.currentUserData = users[0];
-          // Log for testing, will be removed later
-          console.log('User from home:', this.currentUserData);
-          localStorage.setItem(
-            'currentUser',
-            JSON.stringify(this.currentUserData)
-          );
-        }
-      });
-    } else {
-      console.log(localStorage.getItem('currentUser'));
-    }
-
-    console.log('User from home outside:', this.currentUserData);
-
     this.filteredOptions =
       this.searchForm.controls.searchTerm.valueChanges.pipe(
         startWith(''),

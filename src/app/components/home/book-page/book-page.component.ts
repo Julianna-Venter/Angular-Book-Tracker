@@ -3,9 +3,11 @@ import { Component, inject } from '@angular/core';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatSelectModule } from '@angular/material/select';
 import { Store } from '@ngrx/store';
-import { UserResponse } from '../../../interfaces/authInterface';
+import { take } from 'rxjs';
 import { ReviewData, UsableBooks } from '../../../interfaces/booksInterfaces';
+import { UsersFirebaseService } from '../../../services/users-firebase.service';
 import { BooksState } from '../../../store/reducers/book.reducer';
+import { selectgetUserData } from '../../../store/selectors/user.selectors';
 import { HaveReadComponent } from './have-read/have-read.component';
 import { ReadingComponent } from './reading/reading.component';
 import { TbrComponent } from './tbr/tbr.component';
@@ -28,10 +30,9 @@ export class BookPageComponent {
   thisBook: UsableBooks | undefined;
   selected = 'unread';
   reviewData: ReviewData | undefined;
-  userData: UserResponse = JSON.parse(
-    localStorage.getItem('currentUser') || '{}'
-  );
   store = inject(Store<BooksState>);
+  userData$ = this.store.select(selectgetUserData);
+  firebaseService = inject(UsersFirebaseService);
 
   changeSelected(event: string) {
     this.selected = event;
@@ -41,88 +42,42 @@ export class BookPageComponent {
     if (!this.thisBook) {
       return;
     }
-    this.removeBook();
-    this.addBook(event);
+
     this.thisBook.status = event;
     this.updateLocal();
 
-    console.log(this.userData);
+    // if (event === 'unread') {
+    //   this.firebaseService.removeFromList(
+    //     'read',
+    //     this.thisBook.id,
+    //     'QMG6aEOytQCc23i8c83P'
+    //   );
+    // }
   }
 
   updateLocal() {
     localStorage.setItem('currentBook', JSON.stringify(this.thisBook));
-    localStorage.setItem('currentUser', JSON.stringify(this.userData));
-    console.log(this.userData);
+    // console.log(this.userData);
     // this.store.dispatch(setUserData({ user: this.userData }));
   }
 
   updateBookinUser() {
     const listname = this.thisBook?.status;
 
-    this.removeBook();
-    this.addBook(listname!);
     this.updateLocal();
-  }
-
-  addBook(event: string) {
-    if (!this.thisBook) {
-      return;
-    }
-
-    switch (event) {
-      case 'read':
-        if (!this.userData.booklist.read.includes(this.thisBook)) {
-          this.userData.booklist.read.push(this.thisBook);
-        }
-        break;
-      case 'tbr':
-        if (!this.userData.booklist.tbr.includes(this.thisBook)) {
-          this.userData.booklist.tbr.push(this.thisBook);
-        }
-        break;
-      case 'reading':
-        if (!this.userData.booklist.current.includes(this.thisBook)) {
-          this.userData.booklist.current.push(this.thisBook);
-        }
-        break;
-      case 'dnf':
-        if (!this.userData.booklist.dnf.includes(this.thisBook)) {
-          this.userData.booklist.dnf.push(this.thisBook);
-        }
-        break;
-    }
-  }
-
-  removeBook() {
-    if (this.thisBook !== undefined) {
-      const bookToRemove = this.thisBook;
-
-      const readIndex = this.userData.booklist.read.indexOf(bookToRemove);
-      if (readIndex !== -1) {
-        this.userData.booklist.read.splice(readIndex, 1);
-      }
-
-      const tbrIndex = this.userData.booklist.tbr.indexOf(bookToRemove);
-      if (tbrIndex !== -1) {
-        this.userData.booklist.tbr.splice(tbrIndex, 1);
-      }
-
-      const currentIndex = this.userData.booklist.current.indexOf(bookToRemove);
-      if (currentIndex !== -1) {
-        this.userData.booklist.current.splice(currentIndex, 1);
-      }
-
-      const dnfIndex = this.userData.booklist.dnf.indexOf(bookToRemove);
-      if (dnfIndex !== -1) {
-        this.userData.booklist.dnf.splice(dnfIndex, 1);
-      }
-    }
   }
 
   constructor() {
     const bookString = localStorage.getItem('currentBook');
     if (bookString !== null) {
       this.thisBook = JSON.parse(bookString);
+      if (this.thisBook) {
+        this.firebaseService.removeFromList(
+          'read',
+          this.thisBook.id,
+          'QMG6aEOytQCc23i8c83P'
+        );
+      }
     } else {
       console.log('No book found in localStorage.');
     }
@@ -145,12 +100,47 @@ export class BookPageComponent {
       this.thisBook.reflective_action = this.reviewData.reflective_action;
       this.thisBook.comments = this.reviewData.comments;
       this.thisBook.lastUpdated = this.reviewData.lastUpdated;
-      this.thisBook.owned = this.reviewData.owned;
       if (this.reviewData.DNF_reason !== undefined) {
         this.thisBook.DNF_reason = this.reviewData.DNF_reason;
       }
     }
 
+    console.log(this.thisBook);
+
     this.updateBookinUser();
+    this.userData$.pipe(take(2)).subscribe((users) => {
+      if (users && this.thisBook) {
+        // get the first matched user, since email and password pairs are unique the array will only have one user anyway
+        // this.currentUserData = users[0];
+        this.firebaseService.addToList(this.selected, this.thisBook, users[0]);
+      }
+    });
+
+    // if (this.thisBook) {
+    //   this.firebaseService
+    //     .getBook('testing@hash.com', 'read', this.thisBook)
+    //     .pipe(take(2))
+    //     .subscribe((book) => {
+    //       console.log('here you go read:', book);
+    //     });
+    //   this.firebaseService
+    //     .getBook('testing@hash.com', 'reading', this.thisBook)
+    //     .pipe(take(2))
+    //     .subscribe((book) => {
+    //       console.log('here you go reading:', book);
+    //     });
+    //   this.firebaseService
+    //     .getBook('testing@hash.com', 'tbr', this.thisBook)
+    //     .pipe(take(2))
+    //     .subscribe((book) => {
+    //       console.log('here you go tbr:', book);
+    //     });
+    //   this.firebaseService
+    //     .getBook('testing@hash.com', 'dnf', this.thisBook)
+    //     .pipe(take(2))
+    //     .subscribe((book) => {
+    //       console.log('here you go dnf:', book);
+    //     });
+    // }
   }
 }
