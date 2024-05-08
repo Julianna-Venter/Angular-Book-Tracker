@@ -16,3 +16,13 @@ export const getBooksComplete = createAction(
   '[Books API] GetBooksComplete',
   props<{ books: UsableBooks[] }>()
 );
+
+export const setSearchedBook = createAction(
+  '[Books API] SetSearchedBooks',
+  props<{ searchedBook: UsableBooks | null }>()
+);
+
+export const setSearchedBookComplete = createAction(
+  '[Books API] SetSearchedBooksComplete',
+  props<{ searchedBook: UsableBooks }>()
+);

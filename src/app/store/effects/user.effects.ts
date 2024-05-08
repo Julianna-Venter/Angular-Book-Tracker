@@ -1,27 +1,25 @@
 import { Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
-import { EMPTY, catchError, map, switchMap } from 'rxjs';
-import { FirestoreUser } from '../../interfaces/booksInterfaces';
+import { EMPTY, catchError, map, of, switchMap } from 'rxjs';
+import {
+  BookList,
+  FirestoreUser,
+  UsableBooks,
+} from '../../interfaces/booksInterfaces';
 import { AuthService } from '../../services/auth.service';
 import { UsersFirebaseService } from '../../services/users-firebase.service';
-import { getUserData, getUserDataComplete } from '../actions/user.actions';
-
-interface loginType {
-  email: string;
-  password: string;
-}
-
-interface signUpType {
-  email: string;
-  username: string;
-  password: string;
-}
+import { setSearchedBook } from '../actions/book.actions';
+import {
+  addToList,
+  getMatchedBook,
+  getUserData,
+  getUserDataComplete,
+  removeFromList,
+  removeFromListComplete,
+} from '../actions/user.actions';
 
 @Injectable()
 export class UsersEffects {
-  //for later use
-  // deleteProfile$ = createEffect(() =>
-
   getUserData$ = createEffect(() =>
     this.actions$.pipe(
       ofType(getUserData.type),
@@ -39,36 +37,65 @@ export class UsersEffects {
     )
   );
 
-  //remember to actually implement these in the service
-  // setUserData$ = createEffect(() =>
-  //   this.actions$.pipe(
-  //     ofType(setUserData.type),
-  //     switchMap((action: { user: UserResponse }) =>
-  //       from(this.databaseService.setUserData(action.user)).pipe(
-  //         map(() => setUserDataSuccess()),
-  //         catchError((error: SetUserDataError) => {
-  //           console.error('Error setting user data:', error);
-  //           return EMPTY;
-  //         })
-  //       )
-  //     )
-  //   )
-  // );
+  addToList$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(addToList.type),
+      switchMap(
+        (action: { list: string; book: UsableBooks; user: FirestoreUser }) => {
+          this.databaseService.addToList(action.list, action.book, action.user);
 
-  // deleteUserBookData$ = createEffect(() =>
-  //   this.actions$.pipe(
-  //     ofType(deleteUserBookData.type),
-  //     switchMap((action: { bookId: string }) =>
-  //       this.databaseService.deleteUserBookData(action.bookId).pipe(
-  //         map(() => deleteUserBookDataSuccess()),
-  //         catchError((error: SetUserDataError) => {
-  //           console.error('Error setting user data:', error);
-  //           return of(deleteUserBookDataFailure({ error }));
-  //         })
-  //       )
-  //     )
-  //   )
-  // );
+          return of(
+            getUserData({ email: action.user.email }),
+            setSearchedBook({ searchedBook: action.book })
+          );
+        }
+      )
+    )
+  );
+
+  removeFromList$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(removeFromList.type),
+      switchMap(
+        async (action: {
+          list: string;
+          book: UsableBooks;
+          user: FirestoreUser;
+        }) => {
+          console.log('Removing from list: ', action.list);
+          await this.databaseService.removeFromList(
+            action.list,
+            action.book.id,
+            action.user.id
+          );
+          return removeFromListComplete();
+        }
+      )
+    )
+  );
+
+  getMatchedBook$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(getMatchedBook.type),
+      switchMap((action: { userEmail: string; list: string; bookId: string }) =>
+        this.databaseService
+          .getMatchedBook(
+            action.userEmail,
+            action.list as keyof BookList,
+            action.bookId
+          )
+          .pipe(
+            map((matchedBook: UsableBooks) => {
+              return setSearchedBook({ searchedBook: matchedBook });
+            }),
+            catchError((error) => {
+              console.error('Error getting user data:', error);
+              return EMPTY;
+            })
+          )
+      )
+    )
+  );
 
   constructor(
     private actions$: Actions,

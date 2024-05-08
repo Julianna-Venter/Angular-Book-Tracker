@@ -1,12 +1,15 @@
-import { JsonPipe } from '@angular/common';
+import { AsyncPipe, JsonPipe } from '@angular/common';
 import { Component, inject } from '@angular/core';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatSelectModule } from '@angular/material/select';
 import { Store } from '@ngrx/store';
-import { take } from 'rxjs';
+import { combineLatest, take } from 'rxjs';
 import { ReviewData, UsableBooks } from '../../../interfaces/booksInterfaces';
 import { UsersFirebaseService } from '../../../services/users-firebase.service';
+import { addToList, removeFromList } from '../../../store/actions/user.actions';
 import { BooksState } from '../../../store/reducers/book.reducer';
+import { UserDataState } from '../../../store/reducers/user.reducer';
+import { selectSearchedBook } from '../../../store/selectors/book.selectors';
 import { selectgetUserData } from '../../../store/selectors/user.selectors';
 import { HaveReadComponent } from './have-read/have-read.component';
 import { ReadingComponent } from './reading/reading.component';
@@ -22,125 +25,82 @@ import { TbrComponent } from './tbr/tbr.component';
     TbrComponent,
     HaveReadComponent,
     JsonPipe,
+    AsyncPipe,
   ],
   templateUrl: './book-page.component.html',
   styleUrl: './book-page.component.scss',
 })
 export class BookPageComponent {
-  thisBook: UsableBooks | undefined;
-  selected = 'unread';
-  reviewData: ReviewData | undefined;
-  store = inject(Store<BooksState>);
-  userData$ = this.store.select(selectgetUserData);
   firebaseService = inject(UsersFirebaseService);
+  reviewData: ReviewData | undefined;
+  bookStore = inject(Store<BooksState>);
+  userStore = inject(Store<UserDataState>);
+  userData$ = this.userStore.select(selectgetUserData);
+  searchedBook$ = this.bookStore.select(selectSearchedBook);
+  selected = 'unread';
 
   changeSelected(event: string) {
     this.selected = event;
   }
 
-  setSelectedBook(event: string) {
-    if (!this.thisBook) {
-      return;
-    }
+  setSelectedBook(event: string, reviewData?: ReviewData) {
+    combineLatest([this.userData$, this.searchedBook$])
+      .pipe(take(1))
+      .subscribe(([users, book]) => {
+        // console.log(users[0], book?.status);
+        //get the results form the two observables
+        if (users && book) {
+          console.log(event, book.status);
+          this.userStore.dispatch(
+            removeFromList({
+              list: book.status,
+              bookId: book.id,
+              userId: users[0].id,
+            })
+          ); //remove it from the list it is moving from
+        }
 
-    this.thisBook.status = event;
-    this.updateLocal();
+        // console.log(event, book?.status);
+        const newBook = {
+          ...book,
+        };
+        //get the results form the two observables
+        if (users && book) {
+          newBook.status = event; //chnage the book's status to the list it is moving to
 
-    // if (event === 'unread') {
-    //   this.firebaseService.removeFromList(
-    //     'read',
-    //     this.thisBook.id,
-    //     'QMG6aEOytQCc23i8c83P'
-    //   );
-    // }
+          if (reviewData) {
+            //if a review has been added, update the book with the review data
+            newBook.rating = reviewData.rating;
+            newBook.pace = reviewData.pace;
+            newBook.status = reviewData.status;
+            newBook.character_plot = reviewData.character_plot;
+            newBook.tense_lighthearted = reviewData.tense_lighthearted;
+            newBook.dark_light = reviewData.dark_light;
+            newBook.informative_fun = reviewData.informative_fun;
+            newBook.adventurous_grounded = reviewData.adventurous_grounded;
+            newBook.reflective_action = reviewData.reflective_action;
+            newBook.comments = reviewData.comments;
+            newBook.lastUpdated = reviewData.lastUpdated;
+            if (reviewData.DNF_reason !== undefined) {
+              newBook.DNF_reason = reviewData.DNF_reason;
+            }
+          }
+
+          {
+            this.userStore.dispatch(
+              addToList({
+                list: event,
+                book: newBook as UsableBooks,
+                user: users[0],
+              }) //add the book with the updated data to the new list in the db
+            );
+          }
+        }
+      });
   }
 
-  updateLocal() {
-    localStorage.setItem('currentBook', JSON.stringify(this.thisBook));
-    // console.log(this.userData);
-    // this.store.dispatch(setUserData({ user: this.userData }));
-  }
-
-  updateBookinUser() {
-    const listname = this.thisBook?.status;
-
-    this.updateLocal();
-  }
-
-  constructor() {
-    const bookString = localStorage.getItem('currentBook');
-    if (bookString !== null) {
-      this.thisBook = JSON.parse(bookString);
-      if (this.thisBook) {
-        this.firebaseService.removeFromList(
-          'read',
-          this.thisBook.id,
-          'QMG6aEOytQCc23i8c83P'
-        );
-      }
-    } else {
-      console.log('No book found in localStorage.');
-    }
-    this.selected = this.thisBook?.status || 'unread';
-    // console.log(typeof this.userData.booklist.read);
-  }
-
-  sendReviewData(event: ReviewData | undefined) {
+  sendReviewData(event: ReviewData) {
     this.reviewData = event;
-
-    if (this.reviewData && this.thisBook) {
-      this.thisBook.rating = this.reviewData.rating;
-      this.thisBook.pace = this.reviewData.pace;
-      this.thisBook.status = this.reviewData.status;
-      this.thisBook.character_plot = this.reviewData.character_plot;
-      this.thisBook.tense_lighthearted = this.reviewData.tense_lighthearted;
-      this.thisBook.dark_light = this.reviewData.dark_light;
-      this.thisBook.informative_fun = this.reviewData.informative_fun;
-      this.thisBook.adventurous_grounded = this.reviewData.adventurous_grounded;
-      this.thisBook.reflective_action = this.reviewData.reflective_action;
-      this.thisBook.comments = this.reviewData.comments;
-      this.thisBook.lastUpdated = this.reviewData.lastUpdated;
-      if (this.reviewData.DNF_reason !== undefined) {
-        this.thisBook.DNF_reason = this.reviewData.DNF_reason;
-      }
-    }
-
-    console.log(this.thisBook);
-
-    this.updateBookinUser();
-    this.userData$.pipe(take(2)).subscribe((users) => {
-      if (users && this.thisBook) {
-        // get the first matched user, since email and password pairs are unique the array will only have one user anyway
-        // this.currentUserData = users[0];
-        this.firebaseService.addToList(this.selected, this.thisBook, users[0]);
-      }
-    });
-
-    // if (this.thisBook) {
-    //   this.firebaseService
-    //     .getBook('testing@hash.com', 'read', this.thisBook)
-    //     .pipe(take(2))
-    //     .subscribe((book) => {
-    //       console.log('here you go read:', book);
-    //     });
-    //   this.firebaseService
-    //     .getBook('testing@hash.com', 'reading', this.thisBook)
-    //     .pipe(take(2))
-    //     .subscribe((book) => {
-    //       console.log('here you go reading:', book);
-    //     });
-    //   this.firebaseService
-    //     .getBook('testing@hash.com', 'tbr', this.thisBook)
-    //     .pipe(take(2))
-    //     .subscribe((book) => {
-    //       console.log('here you go tbr:', book);
-    //     });
-    //   this.firebaseService
-    //     .getBook('testing@hash.com', 'dnf', this.thisBook)
-    //     .pipe(take(2))
-    //     .subscribe((book) => {
-    //       console.log('here you go dnf:', book);
-    //     });
-    // }
+    this.setSelectedBook(this.reviewData?.status || 'unread', this.reviewData);
   }
 }

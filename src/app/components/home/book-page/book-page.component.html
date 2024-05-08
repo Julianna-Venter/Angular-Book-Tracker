@@ -1,3 +1,4 @@
+@if ((searchedBook$ | async); as currentBook){
 <div class="w-full h-full absolute top-0 left-0 z-10">
   <div
     class="w-full h-full bg-grey flex justify-between lg:px-20 items-center pt-28 flex-col gap-5 overflow-y-auto overflow-x-hidden lg:flex-row"
@@ -7,7 +8,7 @@
     >
       <img
         [src]="
-          thisBook?.imageLink ||
+          currentBook?.imageLink ||
           'https://www.marytribble.com/wp-content/uploads/2020/12/book-cover-placeholder.png'
         "
         alt="Book Cover"
@@ -15,11 +16,11 @@
       />
       <div class="flex flex-col">
         <span class="text-2xl text-background-white text-center m-0">
-          {{ thisBook?.title }}
+          {{ currentBook?.title }}
         </span>
-        @if (thisBook?.subtitle){
+        @if (currentBook?.subtitle){
         <span class="text-lg font-extralight text-background-white text-center">
-          {{ thisBook?.subtitle }}
+          {{ currentBook?.subtitle }}
         </span>
         }
       </div>
@@ -67,14 +68,14 @@
         <div
           class="w-1/2 flex flex-col justify-center items-start border-r border-light-grey px-8 text-grey"
         >
-          <p class="font-semibold">{{ thisBook?.authors }}</p>
-          <p class="text-xs">{{ thisBook?.publishedDate }}</p>
+          <p class="font-semibold">{{ currentBook?.authors }}</p>
+          <p class="text-xs">{{ currentBook?.publishedDate }}</p>
         </div>
         <div
           class="w-1/2 flex flex-col justify-center items-start px-8 py-2 text-grey text-sm"
         >
           <p class="font-semibold">
-            {{ thisBook?.pageCount }}
+            {{ currentBook?.pageCount }}
             <span class="text-xs font-normal">Pages</span>
           </p>
           <p class="text-xs">English</p>
@@ -85,13 +86,13 @@
           class="w-1/2 flex flex-col justify-center items-start border-r border-light-grey px-8 text-grey"
         >
           <p class="font-light text-sm">
-            {{ thisBook?.description?.substring(0, 400) }}...
+            {{ currentBook?.description?.substring(0, 400) }}...
           </p>
         </div>
         <div
           class="w-1/2 flex flex-wrap gap-2 justify-start px-4 py-2 text-grey text-sm"
         >
-          @for (category of thisBook?.categories; track thisBook?.id) {
+          @for (category of currentBook?.categories; track category) {
           <div class="badge badge-outline">{{ category }}</div>
           }
         </div>
@@ -121,3 +122,4 @@
     </div>
   </div>
 </div>
+}

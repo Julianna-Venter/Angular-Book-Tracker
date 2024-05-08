@@ -1,8 +1,8 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { map } from 'rxjs';
+import { Observable, map } from 'rxjs';
 import { API_KEYS } from '../../../environments/api-keys';
-import { Volume } from '../interfaces/booksInterfaces';
+import { UsableBooks, Volume } from '../interfaces/booksInterfaces';
 //https://www.googleapis.com/books/v1/volumes?q=search+terms
 //https://www.googleapis.com/books/v1/volumes?q=flowers+inauthor:keyes&key=yourAPIKey
 //Notes: spaces don't matter, it gets converted in url anyway
@@ -20,5 +20,11 @@ export class BooksApiService {
     return this.http
       .get<Volume>(this.baseUrl + query)
       .pipe(map((response) => response.items));
+  }
+
+  setSearchedBooks(books: UsableBooks): Observable<UsableBooks> {
+    return new Observable((observer) => {
+      observer.next(books);
+    });
   }
 }

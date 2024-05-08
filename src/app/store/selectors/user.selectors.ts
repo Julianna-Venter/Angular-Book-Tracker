@@ -13,3 +13,13 @@ export const selectsetUserData = createSelector(
   selectFeatureUsers,
   (state) => state.users
 );
+
+export const selectAddToList = createSelector(
+  selectFeatureUsers,
+  (state) => state.users
+);
+
+export const selectRemoveFromList = createSelector(
+  selectFeatureUsers,
+  (state) => state.users
+);

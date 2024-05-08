@@ -1,6 +1,10 @@
 import { createReducer, on } from '@ngrx/store';
 import { FirestoreUser } from '../../interfaces/booksInterfaces';
-import { getUserDataComplete } from '../actions/user.actions';
+import {
+  addToListComplete,
+  getUserDataComplete,
+  removeFromListComplete,
+} from '../actions/user.actions';
 
 export const userDataFeatureKey = 'User Data Store';
 
@@ -17,5 +21,11 @@ export const userDataReducer = createReducer(
   on(getUserDataComplete, (state, { users }) => ({
     ...state,
     users,
+  })),
+  on(addToListComplete, (state) => ({
+    ...state,
+  })),
+  on(removeFromListComplete, (state) => ({
+    ...state,
   }))
 );

@@ -1,15 +1,17 @@
 import { createReducer, on } from '@ngrx/store';
 import { UsableBooks } from '../../interfaces/booksInterfaces';
-import { getBooksComplete } from '../actions/book.actions';
+import { getBooksComplete, setSearchedBook } from '../actions/book.actions';
 
 export const booksFeatureKey = 'Books API';
 
 export interface BooksState {
   books: UsableBooks[];
+  searchedBook: UsableBooks | null;
 }
 
 export const initialState: BooksState = {
   books: [],
+  searchedBook: {} as UsableBooks,
 };
 
 export const booksReducer = createReducer(
@@ -17,5 +19,9 @@ export const booksReducer = createReducer(
   on(getBooksComplete, (state, { books }) => ({
     ...state,
     books,
+  })),
+  on(setSearchedBook, (state, { searchedBook }) => ({
+    ...state,
+    searchedBook,
   }))
 );

@@ -3,7 +3,12 @@ import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { EMPTY, catchError, map, retry, switchMap } from 'rxjs';
 import { UsableBooks } from '../../interfaces/booksInterfaces';
 import { BooksApiService } from '../../services/books-api.service';
-import { getBooksAction, getBooksComplete } from '../actions/book.actions';
+import {
+  getBooksAction,
+  getBooksComplete,
+  setSearchedBook,
+  setSearchedBookComplete,
+} from '../actions/book.actions';
 
 interface queryType {
   query: string;
@@ -50,6 +55,23 @@ export class BooksEffects {
       )
     )
   );
+
+  setSearchedBook$ = createEffect(() => {
+    return this.actions$.pipe(
+      ofType(setSearchedBook.type),
+      switchMap((action: { book: UsableBooks }) =>
+        this.booksApiService.setSearchedBooks(action.book).pipe(
+          map((searchedBook: UsableBooks) => {
+            return setSearchedBookComplete({ searchedBook });
+          }),
+          catchError((error) => {
+            console.error('Error setting searched book:', error);
+            return EMPTY;
+          })
+        )
+      )
+    );
+  });
 
   constructor(
     private actions$: Actions,

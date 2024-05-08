@@ -7,3 +7,13 @@ export const selectBooks = createSelector(
   selectFeature,
   (state) => state.books
 );
+
+export const selectSearchedBook = createSelector(
+  selectFeature,
+  (state) => state.searchedBook
+);
+
+export const selectRemoveFromList = createSelector(
+  selectFeature,
+  (state) => state.searchedBook
+);

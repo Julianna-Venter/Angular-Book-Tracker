@@ -19,7 +19,10 @@ import { Store } from '@ngrx/store';
 import { take } from 'rxjs';
 import { FirestoreUser, UsableBooks } from '../../interfaces/booksInterfaces';
 import { AuthService } from '../../services/auth.service';
-import { getBooksAction } from '../../store/actions/book.actions';
+import {
+  getBooksAction,
+  setSearchedBook,
+} from '../../store/actions/book.actions';
 import { getUserData } from '../../store/actions/user.actions';
 import { BooksState } from '../../store/reducers/book.reducer';
 import { selectBooks } from '../../store/selectors/book.selectors';
@@ -46,6 +49,7 @@ import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { UsersFirebaseService } from '../../services/users-firebase.service';
+import { UserDataState } from '../../store/reducers/user.reducer';
 
 interface Book {
   id: string;
@@ -97,10 +101,10 @@ export class HomeComponent implements OnInit {
   home = false;
   stats = false;
 
-  store = inject(Store<BooksState>);
-  books$ = this.store.select(selectBooks);
-  query = 'Harry Potter';
-  userData$ = this.store.select(selectgetUserData);
+  bookStore = inject(Store<BooksState>);
+  userStore = inject(Store<UserDataState>);
+  books$ = this.bookStore.select(selectBooks);
+  userData$ = this.userStore.select(selectgetUserData);
 
   options: string[] = [];
   filteredOptions: Observable<Book[]> | undefined;
@@ -123,11 +127,11 @@ export class HomeComponent implements OnInit {
       this.stats = false;
     }
 
-    this.store.dispatch(getBooksAction({ query: this.query }));
+    // this.bookStore.dispatch(getBooksAction({ query: this.query }));
 
     authService.user$.pipe(take(1)).subscribe((user) => {
       if (user) {
-        this.store.dispatch(getUserData({ email: user.email ?? '' }));
+        this.userStore.dispatch(getUserData({ email: user.email ?? '' }));
       }
     });
 
@@ -138,16 +142,6 @@ export class HomeComponent implements OnInit {
         console.log('Current user:', this.currentUserData);
       }
     });
-
-    // this.firebaseService
-    //   .getMatchedBook('testing@hash.com', 'read', 'lG-8PjH8NFwC')
-    //   .subscribe((bookList) => {
-    //     if (bookList) {
-    //       console.log('Book list book match from home:', bookList);
-    //     } else {
-    //       console.log('No user found');
-    //     }
-    //   });
   }
 
   ngOnInit(): void {
@@ -173,7 +167,7 @@ export class HomeComponent implements OnInit {
     const filterValue = value.toLowerCase();
 
     if (filterValue !== '' && !this.options.includes(filterValue)) {
-      this.store.dispatch(getBooksAction({ query: filterValue }));
+      this.bookStore.dispatch(getBooksAction({ query: filterValue }));
       this.books$
         .pipe(debounceTime(150), distinctUntilChanged())
         .subscribe((books) => {
@@ -217,9 +211,13 @@ export class HomeComponent implements OnInit {
         const book = books.find(
           (book) => book.title === rawForm.searchTerm?.title
         );
-        localStorage.setItem('currentBook', JSON.stringify(book));
-        this.search = false;
-        this.router.navigate(['home/book/' + book?.title]);
+        //===============================Here you use setSearchedBook================================
+        if (book) {
+          this.bookStore.dispatch(setSearchedBook({ searchedBook: book }));
+
+          this.search = false;
+          this.router.navigate(['home/book/' + book?.title]);
+        }
       });
     }
   }

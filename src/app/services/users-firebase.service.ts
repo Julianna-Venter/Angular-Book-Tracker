@@ -48,10 +48,6 @@ export class UsersFirebaseService {
   }
 
   async addToList(list: string, book: UsableBooks, user: FirestoreUser) {
-    const listNames = ['reading', 'dnf', 'read', 'tbr'];
-
-    // for (const name of listNames) {
-    //   if (name === list) {
     this.getMatchedBook(user.email, list as keyof BookList, book.id).subscribe(
       async (matchedBook) => {
         if (!(matchedBook?.id === book.id)) {
@@ -64,46 +60,19 @@ export class UsersFirebaseService {
             await updateDoc(docRef, {
               [fieldPath]: arrayUnion(book),
             });
-            console.log('Book added to list:', list);
           } catch (error) {
             console.error('Error adding book to list:', error);
           }
         }
       }
     );
-    //     break;
-    //   } else {
-    //     this.getMatchedBook(
-    //       user.email,
-    //       name as keyof BookList,
-    //       book.id
-    //     ).subscribe(async (matchedBook) => {
-    //       if (matchedBook?.id === book.id) {
-    //         this.removeFromList(name, book.id, user.id);
-    //         const docRef = doc(this.firestore, 'users', user.id);
-
-    //         const fieldPath = `booklist.${list}`;
-
-    //         try {
-    //           // Append the book to the existing list
-    //           await updateDoc(docRef, {
-    //             [fieldPath]: arrayUnion(book),
-    //           });
-    //           console.log('Book added to list:', list);
-    //         } catch (error) {
-    //           console.error('Error adding book to list:', error);
-    //         }
-    //       }
-    //     });
-    //   }
-    // }
   }
 
   //REMEMBER TO CHANGE THIS
   getBookList(
     userEmail: string,
     list: keyof BookList
-  ): Observable<UsableBooks[] | null> {
+  ): Observable<UsableBooks[]> {
     return this.getUser(userEmail).pipe(
       switchMap((users: FirestoreUser[]) => {
         if (users.length > 0) {
@@ -119,11 +88,11 @@ export class UsersFirebaseService {
     userEmail: string,
     list: keyof BookList,
     bookId: string
-  ): Observable<UsableBooks | null> {
+  ): Observable<UsableBooks> {
     return this.getBookList(userEmail, list).pipe(
-      switchMap((books: UsableBooks[] | null) => {
+      switchMap((books: UsableBooks[]) => {
         if (books) {
-          return of(books.find((book) => book.id === bookId) || null);
+          return of(books.find((book) => book.id === bookId) as UsableBooks);
         } else {
           return EMPTY;
         }
@@ -132,6 +101,7 @@ export class UsersFirebaseService {
   }
 
   async removeFromList(list: string, bookId: string, userId: string) {
+    console.log('Removing from list:', list, bookId, userId);
     const docRef = doc(this.firestore, 'users', userId);
 
     const userSnapshot = await getDoc(docRef);
@@ -159,4 +129,52 @@ export class UsersFirebaseService {
       console.error('Error removing book from list:', error);
     }
   }
+
+  // try {
+  //   // Append the book to the existing list
+  //   await updateDoc(docRef, {
+  //     [fieldPath]: arrayUnion(book),
+  //   });
+  // } catch (error) {
+  //   console.error('Error adding book to list:', error);
+  // }
+  // const docRef = doc(this.firestore, 'users', userId);
+
+  // const userSnapshot = await getDoc(docRef);
+  // const userData = userSnapshot.data();
+
+  // //no user found
+  // if (!userData) {
+  //   console.error('User not found');
+  //   return;
+  // }
+
+  // //checking if there is a list by that name
+  // const books = userData['booklist'][list];
+  // if (!books) {
+  //   console.error('Book list not found:', list);
+  //   return;
+  // }
+
+  // console.log('Books:', books, 'in list:', list);
+
+  // //filter out the book with the matching id
+  // const updatedBooks = books.filter(
+  //   (book: any) => book.id !== bookId
+  // ) as UsableBooks[];
+
+  // console.log('Updated books:', updatedBooks, 'in list:', list);
+
+  // const fieldPath = `booklist.${list}`;
+
+  // try {
+  //   // Append the book to the existing list
+  //   await updateDoc(docRef, {
+  //     [fieldPath]: updatedBooks,
+  //   });
+
+  //   console.log('Book:', bookId, ' removed from list:', list);
+  // } catch (error) {
+  //   console.error('Error adding book to list:', error);
+  // }
 }
