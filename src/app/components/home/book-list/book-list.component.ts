@@ -1,3 +1,4 @@
+import { AsyncPipe } from '@angular/common';
 import { Component, inject } from '@angular/core';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { Store } from '@ngrx/store';
@@ -7,7 +8,6 @@ import {
   selectGetBookList,
   selectgetUserData,
 } from '../../../store/selectors/user.selectors';
-import { AsyncPipe } from '@angular/common';
 
 @Component({
   selector: 'app-book-list',
@@ -37,7 +37,7 @@ export class BookListComponent {
     }
 
     this.users$.subscribe((users) => {
-      if (users && users[0].email) {
+      if (users && users[0] !== undefined && users[0].email) {
         this.userStore.dispatch(
           getBookList({ user: users[0], list: this.listname })
         );

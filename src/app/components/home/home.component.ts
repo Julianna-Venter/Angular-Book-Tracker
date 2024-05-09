@@ -216,7 +216,7 @@ export class HomeComponent implements OnInit {
           this.bookStore.dispatch(setSearchedBook({ searchedBook: book }));
 
           this.search = false;
-          this.router.navigate(['home/book/' + book?.title]);
+          this.router.navigate(['home/book/' + book?.id]);
         }
       });
     }

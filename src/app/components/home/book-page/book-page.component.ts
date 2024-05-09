@@ -1,5 +1,5 @@
 import { AsyncPipe, JsonPipe } from '@angular/common';
-import { Component, inject } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatSelectModule } from '@angular/material/select';
 import { Store } from '@ngrx/store';
@@ -14,6 +14,7 @@ import { selectgetUserData } from '../../../store/selectors/user.selectors';
 import { HaveReadComponent } from './have-read/have-read.component';
 import { ReadingComponent } from './reading/reading.component';
 import { TbrComponent } from './tbr/tbr.component';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-book-page',
@@ -30,7 +31,8 @@ import { TbrComponent } from './tbr/tbr.component';
   templateUrl: './book-page.component.html',
   styleUrl: './book-page.component.scss',
 })
-export class BookPageComponent {
+export class BookPageComponent implements OnInit {
+  router = inject(Router);
   firebaseService = inject(UsersFirebaseService);
   reviewData: ReviewData | undefined;
   bookStore = inject(Store<BooksState>);
@@ -38,6 +40,8 @@ export class BookPageComponent {
   userData$ = this.userStore.select(selectgetUserData);
   searchedBook$ = this.bookStore.select(selectSearchedBook);
   selected = 'unread';
+  bookId = this.router.url.split('/')[5];
+  list = this.router.url.split('/')[3];
 
   constructor() {
     console.log('BookPageComponent created');
@@ -45,6 +49,35 @@ export class BookPageComponent {
 
   changeSelected(event: string) {
     this.selected = event;
+  }
+
+  ngOnInit(): void {
+    console.log(this.bookId, this.list);
+    this.searchedBook$.subscribe(console.log);
+    combineLatest([this.userData$, this.searchedBook$])
+      .pipe(take(1))
+      .subscribe(([users, book]) => {
+        if (
+          users &&
+          book &&
+          users[0] !== undefined &&
+          book !== ({} as UsableBooks) &&
+          this.list !== undefined &&
+          this.bookId !== undefined &&
+          users[0].id !== undefined
+        ) {
+          // this.bookStore.dispatch(
+          //   getSearchedBook({
+          //     bookId: this.bookId,
+          //     user: users[0],
+          //     list: this.list,
+          //   })
+          // );
+        }
+      });
+    this.searchedBook$.subscribe((book) => {
+      this.selected = book?.status || 'unread';
+    });
   }
 
   setSelectedBook(event: string, reviewData?: ReviewData) {
