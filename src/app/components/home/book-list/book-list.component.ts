@@ -1,7 +1,8 @@
 import { AsyncPipe } from '@angular/common';
-import { Component, inject } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { Store } from '@ngrx/store';
+import { map } from 'rxjs';
 import { getBookList } from '../../../store/actions/user.actions';
 import { UserDataState } from '../../../store/reducers/user.reducer';
 import {
@@ -16,7 +17,7 @@ import {
   templateUrl: './book-list.component.html',
   styleUrl: './book-list.component.scss',
 })
-export class BookListComponent {
+export class BookListComponent implements OnInit {
   // bookStore = inject(Store<BooksState>);
   userStore = inject(Store<UserDataState>);
   users$ = this.userStore.select(selectgetUserData);
@@ -43,6 +44,12 @@ export class BookListComponent {
         );
       }
     });
+  }
+
+  ngOnInit() {
+    this.bookList$ = this.bookList$.pipe(
+      map((bookListObject: any) => Object.values(bookListObject))
+    );
   }
 
   navChild(book: string) {

@@ -4,8 +4,10 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatSelectModule } from '@angular/material/select';
 import { Router } from '@angular/router';
 import { Store } from '@ngrx/store';
+import { combineLatest, take } from 'rxjs';
 import { ReviewData } from '../../../interfaces/booksInterfaces';
 import { UsersFirebaseService } from '../../../services/users-firebase.service';
+import { getSearchedBook } from '../../../store/actions/book.actions';
 import { BooksState } from '../../../store/reducers/book.reducer';
 import { UserDataState } from '../../../store/reducers/user.reducer';
 import { selectSearchedBook } from '../../../store/selectors/book.selectors';
@@ -13,7 +15,6 @@ import { selectgetUserData } from '../../../store/selectors/user.selectors';
 import { HaveReadComponent } from './have-read/have-read.component';
 import { ReadingComponent } from './reading/reading.component';
 import { TbrComponent } from './tbr/tbr.component';
-import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-book-page',
@@ -42,35 +43,6 @@ export class BookPageComponent implements OnInit {
   bookId = this.router.url.split('/')[5];
   list = this.router.url.split('/')[3];
 
-  ngOnInit(): void {
-    // console.log(this.bookId, this.list);
-    // this.searchedBook$.subscribe(console.log);
-    // combineLatest([this.userData$, this.searchedBook$])
-    //   .pipe(take(1))
-    //   .subscribe(([users, book]) => {
-    //     if (
-    //       users &&
-    //       book &&
-    //       users[0] !== undefined &&
-    //       book !== ({} as UsableBooks) &&
-    //       this.list !== undefined &&
-    //       this.bookId !== undefined &&
-    //       users[0].id !== undefined
-    //     ) {
-    //       this.bookStore.dispatch(
-    //         getSearchedBook({
-    //           bookId: this.bookId,
-    //           user: users[0],
-    //           list: this.list,
-    //         })
-    //       );
-    //     }
-    //   });
-    // this.searchedBook$.subscribe((book) => {
-    //   this.selected = book?.status || 'unread';
-    // });
-  }
-
   changeSelected(event: string) {
     this.selected = event;
   }
@@ -85,18 +57,17 @@ export class BookPageComponent implements OnInit {
           users &&
           book &&
           users[0] !== undefined &&
-          book !== ({} as UsableBooks) &&
           this.list !== undefined &&
           this.bookId !== undefined &&
           users[0].id !== undefined
         ) {
-          // this.bookStore.dispatch(
-          //   getSearchedBook({
-          //     bookId: this.bookId,
-          //     user: users[0],
-          //     list: this.list,
-          //   })
-          // );
+          this.bookStore.dispatch(
+            getSearchedBook({
+              bookId: this.bookId,
+              user: users[0],
+              list: this.list,
+            })
+          );
         }
       });
     this.searchedBook$.subscribe((book) => {

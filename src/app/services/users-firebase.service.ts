@@ -93,6 +93,7 @@ export class UsersFirebaseService {
     bookId: string
   ): Observable<UsableBooks> {
     console.log('Getting matched book:', user.email, list, bookId);
+
     const q = query(
       collection(this.firestore, 'users'),
       where('email', '==', user.email)
@@ -100,9 +101,23 @@ export class UsersFirebaseService {
 
     const results = from(collectionData(q, { idField: 'id' })).pipe(
       map((users) => {
-        return users[0]['booklist'][list].find(
-          (book: UsableBooks) => book.id === bookId
-        );
+        const booklist = users[0]?.['booklist']?.[list] || [];
+
+        if (Array.isArray(booklist)) {
+          // If booklist[list] is already an array, search for the book directly
+          return booklist.find((book: UsableBooks) => book.id === bookId);
+        } else if (typeof booklist === 'object' && booklist !== null) {
+          // If booklist[list] is an object, convert it into an array and search for the book
+          const booksArray = Object.values(booklist) as UsableBooks[];
+          const matchingBooks = booksArray.filter(
+            (book: UsableBooks) => book.id === bookId
+          );
+          return matchingBooks.shift();
+        } else {
+          // If booklist[list] is neither an array nor an object, handle the case accordingly
+          console.error('booklist[list] is not an array or object');
+          return null; // Or any other appropriate handling
+        }
       })
     );
 
