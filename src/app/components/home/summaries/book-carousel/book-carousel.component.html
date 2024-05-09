@@ -1,20 +1,18 @@
 <div
   class="h-[350px] lg:h-[450px] w-[262.5px] lg:w-[337.5px] carousel carousel-vertical rounded-box self-center cursor-pointer z-10"
 >
-  <div class="carousel-item h-full relative" routerLink="book/read">
-    <div class="w-full h-[5px] rounded-full bg-grey/20 absolute">
-      <div class="w-[70%] h-[5px] rounded-full bg-indigo-600"></div>
-    </div>
+  @for (book of bookList$ | async; track book){
+  <div
+    class="carousel-item h-full relative"
+    routerLink="/home/book-list/reading/book/{{ book.id }}"
+  >
     <img
-      src="https://daisyui.com/images/stock/photo-1559703248-dcaaec9fab78.jpg"
+      src="{{
+        book.imageLink ||
+          'https://www.marytribble.com/wp-content/uploads/2020/12/book-cover-placeholder.png'
+      }}"
+      class="rounded-box border border-background-white/30 h-full w-full"
     />
   </div>
-  <div class="carousel-item h-full relative" routerLink="book/read">
-    <div class="w-full h-[5px] rounded-full bg-grey/20 absolute">
-      <div class="w-[40%] h-[5px] rounded-full bg-indigo-600"></div>
-    </div>
-    <img
-      src="https://daisyui.com/images/stock/photo-1565098772267-60af42b81ef2.jpg"
-    />
-  </div>
+  }
 </div>

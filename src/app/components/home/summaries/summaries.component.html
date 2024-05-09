@@ -11,6 +11,7 @@
       <h2 class="pb-5 text-xl font-bold">CURRENT READS.</h2>
       <div class="flex justify-center relative">
         <!-- if books > 1 -->
+        @if((bookList$ | async)?.length !== 0 ){
         <div
           class="inverted-corner bg-grey/50 backdrop-blur-md h-[40px] w-[262.5px] lg:w-[337.5px] absolute self-end rounded-b-box flex justify-center items-end z-20"
         >
@@ -21,14 +22,12 @@
           ></ng-icon>
         </div>
         <!-- loop over current reads here -->
-        <!-- <app-book-carousel /> -->
+        <app-book-carousel />
+        }
       </div>
     </div>
     <div class="lg:w-2/3 lg:px-20">
       <h2 class="pt-5 lg:pb-5 lg:pt-0 text-xl font-bold">COLLECTIONS.</h2>
-      <app-book-album [listname]="'tbr'" />
-      <app-book-album [listname]="dnfVar" />
-      <app-book-album [listname]="readVar" />
     </div>
   </div>
 </div>
