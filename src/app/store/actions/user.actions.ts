@@ -36,5 +36,15 @@ export const removeFromListComplete = createAction(
 
 export const getMatchedBook = createAction(
   '[User Data] getMatchedBook',
-  props<{ userEmail: string; list: string; bookId: string }>()
+  props<{ user: FirestoreUser; list: string; bookId: string }>()
+);
+
+export const getBookList = createAction(
+  '[User Data] getBookList',
+  props<{ user: FirestoreUser; list: string }>()
+);
+
+export const getBookListComplete = createAction(
+  '[User Data] getBookListComplete',
+  props<{ books: UsableBooks[] }>()
 );

@@ -206,7 +206,7 @@ export class HomeComponent implements OnInit {
     const rawForm = this.searchForm.getRawValue();
 
     if (this.options.includes(rawForm.searchTerm?.title ?? '')) {
-      console.log('searching...', rawForm.searchTerm);
+      // console.log('searching...', rawForm.searchTerm);
       this.books$.pipe(take(1)).subscribe((books) => {
         const book = books.find(
           (book) => book.title === rawForm.searchTerm?.title

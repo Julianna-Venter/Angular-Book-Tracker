@@ -23,3 +23,8 @@ export const selectRemoveFromList = createSelector(
   selectFeatureUsers,
   (state) => state.users
 );
+
+export const selectGetBookList = createSelector(
+  selectFeatureUsers,
+  (state) => state.bookList
+);

@@ -11,6 +11,8 @@ import { UsersFirebaseService } from '../../services/users-firebase.service';
 import { setSearchedBook } from '../actions/book.actions';
 import {
   addToList,
+  getBookList,
+  getBookListComplete,
   getMatchedBook,
   getUserData,
   getUserDataComplete,
@@ -62,7 +64,6 @@ export class UsersEffects {
           book: UsableBooks;
           user: FirestoreUser;
         }) => {
-          console.log('Removing from list: ', action.list);
           await this.databaseService.removeFromList(
             action.list,
             action.book.id,
@@ -77,16 +78,38 @@ export class UsersEffects {
   getMatchedBook$ = createEffect(() =>
     this.actions$.pipe(
       ofType(getMatchedBook.type),
-      switchMap((action: { userEmail: string; list: string; bookId: string }) =>
+      switchMap(
+        (action: { user: FirestoreUser; list: string; bookId: string }) =>
+          this.databaseService
+            .getMatchedBook(
+              action.user,
+              action.list as keyof BookList,
+              action.bookId
+            )
+            .pipe(
+              map((matchedBook: UsableBooks) => {
+                return setSearchedBook({ searchedBook: matchedBook });
+              }),
+              catchError((error) => {
+                console.error('Error getting user data:', error);
+                return EMPTY;
+              })
+            )
+      )
+    )
+  );
+
+  getBookList$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(getBookList.type),
+      switchMap((action: { user: FirestoreUser; list: string }) =>
         this.databaseService
-          .getMatchedBook(
-            action.userEmail,
-            action.list as keyof BookList,
-            action.bookId
-          )
+          .getBookList(action.user, action.list as keyof BookList)
           .pipe(
-            map((matchedBook: UsableBooks) => {
-              return setSearchedBook({ searchedBook: matchedBook });
+            map((books: UsableBooks[]) => {
+              console.log('Books:', action.list, books);
+
+              return getBookListComplete({ books });
             }),
             catchError((error) => {
               console.error('Error getting user data:', error);

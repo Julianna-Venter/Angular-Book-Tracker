@@ -39,6 +39,10 @@ export class BookPageComponent {
   searchedBook$ = this.bookStore.select(selectSearchedBook);
   selected = 'unread';
 
+  constructor() {
+    console.log('BookPageComponent created');
+  }
+
   changeSelected(event: string) {
     this.selected = event;
   }

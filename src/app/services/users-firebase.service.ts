@@ -11,7 +11,7 @@ import {
   updateDoc,
   where,
 } from '@angular/fire/firestore';
-import { EMPTY, Observable, of, switchMap } from 'rxjs';
+import { Observable, from, map } from 'rxjs';
 import {
   BookList,
   FirestoreUser,
@@ -48,7 +48,7 @@ export class UsersFirebaseService {
   }
 
   async addToList(list: string, book: UsableBooks, user: FirestoreUser) {
-    this.getMatchedBook(user.email, list as keyof BookList, book.id).subscribe(
+    this.getMatchedBook(user, list as keyof BookList, book.id).subscribe(
       async (matchedBook) => {
         if (!(matchedBook?.id === book.id)) {
           const docRef = doc(this.firestore, 'users', user.id);
@@ -70,38 +70,47 @@ export class UsersFirebaseService {
 
   //REMEMBER TO CHANGE THIS
   getBookList(
-    userEmail: string,
+    user: FirestoreUser,
     list: keyof BookList
   ): Observable<UsableBooks[]> {
-    return this.getUser(userEmail).pipe(
-      switchMap((users: FirestoreUser[]) => {
-        if (users.length > 0) {
-          return of(users[0].booklist[list] as UsableBooks[]);
-        } else {
-          return EMPTY;
-        }
+    console.log('Getting book list:', list, 'for user:', user.email);
+    const q = query(
+      collection(this.firestore, 'users'),
+      where('email', '==', user.email)
+    );
+
+    const results = from(collectionData(q, { idField: 'id' })).pipe(
+      map((users) => {
+        return users[0]['booklist'][list];
       })
     );
+
+    return results as Observable<UsableBooks[]>;
   }
 
   getMatchedBook(
-    userEmail: string,
+    user: FirestoreUser,
     list: keyof BookList,
     bookId: string
   ): Observable<UsableBooks> {
-    return this.getBookList(userEmail, list).pipe(
-      switchMap((books: UsableBooks[]) => {
-        if (books) {
-          return of(books.find((book) => book.id === bookId) as UsableBooks);
-        } else {
-          return EMPTY;
-        }
+    const q = query(
+      collection(this.firestore, 'users'),
+      where('email', '==', user.email)
+    );
+
+    const results = from(collectionData(q, { idField: 'id' })).pipe(
+      map((users) => {
+        return users[0]['booklist'][list].find(
+          (book: UsableBooks) => book.id === bookId
+        );
       })
     );
+
+    return results as Observable<UsableBooks>;
   }
 
   async removeFromList(list: string, bookId: string, userId: string) {
-    console.log('Removing from list:', list, bookId, userId);
+    // console.log('Removing from list:', list, bookId, userId);
     const docRef = doc(this.firestore, 'users', userId);
 
     const userSnapshot = await getDoc(docRef);
@@ -124,57 +133,9 @@ export class UsersFirebaseService {
       await updateDoc(docRef, {
         [`booklist.${list}`]: updatedBooks,
       });
-      console.log('Book removed from list:', list);
+      // console.log('Book removed from list:', list);
     } catch (error) {
       console.error('Error removing book from list:', error);
     }
   }
-
-  // try {
-  //   // Append the book to the existing list
-  //   await updateDoc(docRef, {
-  //     [fieldPath]: arrayUnion(book),
-  //   });
-  // } catch (error) {
-  //   console.error('Error adding book to list:', error);
-  // }
-  // const docRef = doc(this.firestore, 'users', userId);
-
-  // const userSnapshot = await getDoc(docRef);
-  // const userData = userSnapshot.data();
-
-  // //no user found
-  // if (!userData) {
-  //   console.error('User not found');
-  //   return;
-  // }
-
-  // //checking if there is a list by that name
-  // const books = userData['booklist'][list];
-  // if (!books) {
-  //   console.error('Book list not found:', list);
-  //   return;
-  // }
-
-  // console.log('Books:', books, 'in list:', list);
-
-  // //filter out the book with the matching id
-  // const updatedBooks = books.filter(
-  //   (book: any) => book.id !== bookId
-  // ) as UsableBooks[];
-
-  // console.log('Updated books:', updatedBooks, 'in list:', list);
-
-  // const fieldPath = `booklist.${list}`;
-
-  // try {
-  //   // Append the book to the existing list
-  //   await updateDoc(docRef, {
-  //     [fieldPath]: updatedBooks,
-  //   });
-
-  //   console.log('Book:', bookId, ' removed from list:', list);
-  // } catch (error) {
-  //   console.error('Error adding book to list:', error);
-  // }
 }
