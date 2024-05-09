@@ -3,9 +3,6 @@ export interface FirestoreUser {
   username: string;
   email: string;
   booklist: BookList;
-  profilestats: {
-    stats: [];
-  };
 }
 
 export interface BookList {

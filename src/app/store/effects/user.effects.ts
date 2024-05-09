@@ -6,8 +6,10 @@ import {
   FirestoreUser,
   UsableBooks,
 } from '../../interfaces/booksInterfaces';
+import { UserCalcStats } from '../../interfaces/chartsInterface';
 import { AuthService } from '../../services/auth.service';
 import { UsersFirebaseService } from '../../services/users-firebase.service';
+import { UsersStatsService } from '../../services/users-stats.service';
 import { setSearchedBook } from '../actions/book.actions';
 import {
   addToList,
@@ -21,6 +23,8 @@ import {
   getBookListTBRComplete,
   getUserData,
   getUserDataComplete,
+  getUserStats,
+  getUserStatsComplete,
   removeFromList,
   removeFromListComplete,
 } from '../actions/user.actions';
@@ -156,9 +160,27 @@ export class UsersEffects {
     )
   );
 
+  getUserStats$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(getUserStats.type),
+      switchMap((action: { user: FirestoreUser }) =>
+        this.statsService.calculateStats(action.user).pipe(
+          map((stats: UserCalcStats) => {
+            return getUserStatsComplete({ stats });
+          }),
+          catchError((error) => {
+            console.error('Error getting user data:', error);
+            return EMPTY;
+          })
+        )
+      )
+    )
+  );
+
   constructor(
     private actions$: Actions,
     private firestoreService: AuthService,
-    private databaseService: UsersFirebaseService
+    private databaseService: UsersFirebaseService,
+    private statsService: UsersStatsService
   ) {}
 }

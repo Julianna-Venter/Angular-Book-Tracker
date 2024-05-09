@@ -93,7 +93,7 @@ export class BooksEffects {
             )
             .pipe(
               map((matchedBook: UsableBooks) => {
-                console.log('matchedBook:', matchedBook);
+                // console.log('matchedBook:', matchedBook);
                 return getSearchedBookComplete({ searchedBook: matchedBook });
               }),
               catchError((error) => {

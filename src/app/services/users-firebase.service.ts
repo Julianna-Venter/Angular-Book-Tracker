@@ -92,7 +92,7 @@ export class UsersFirebaseService {
     list: keyof BookList,
     bookId: string
   ): Observable<UsableBooks> {
-    console.log('Getting matched book:', user.email, list, bookId);
+    // console.log('Getting matched book:', user.email, list, bookId);
 
     const q = query(
       collection(this.firestore, 'users'),

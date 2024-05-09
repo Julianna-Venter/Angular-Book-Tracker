@@ -3,6 +3,7 @@ import { Component, OnInit, inject } from '@angular/core';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { map } from 'rxjs';
+import { UsableBooks } from '../../../interfaces/booksInterfaces';
 import { getBookList } from '../../../store/actions/user.actions';
 import { UserDataState } from '../../../store/reducers/user.reducer';
 import {
@@ -48,12 +49,12 @@ export class BookListComponent implements OnInit {
 
   ngOnInit() {
     this.bookList$ = this.bookList$.pipe(
-      map((bookListObject: any) => Object.values(bookListObject))
+      map((bookListObject: UsableBooks[]) => Object.values(bookListObject))
     );
   }
 
   navChild(book: string) {
-    console.log('Navigating to', book);
+    // console.log('Navigating to', book);
     this.router.navigate(['book', book], { relativeTo: this.route });
   }
 }

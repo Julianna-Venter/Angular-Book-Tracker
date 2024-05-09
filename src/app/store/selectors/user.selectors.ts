@@ -43,3 +43,8 @@ export const selectGetREADList = createSelector(
   selectFeatureUsers,
   (state) => state.READList
 );
+
+export const selectGetUserStats = createSelector(
+  selectFeatureUsers,
+  (state) => state.userStats
+);

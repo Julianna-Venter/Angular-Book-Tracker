@@ -1,5 +1,6 @@
 import { createReducer, on } from '@ngrx/store';
 import { FirestoreUser, UsableBooks } from '../../interfaces/booksInterfaces';
+import { UserCalcStats } from '../../interfaces/chartsInterface';
 import {
   addToListComplete,
   getBookListComplete,
@@ -7,6 +8,7 @@ import {
   getBookListREADComplete,
   getBookListTBRComplete,
   getUserDataComplete,
+  getUserStatsComplete,
   removeFromListComplete,
 } from '../actions/user.actions';
 
@@ -18,6 +20,7 @@ export interface UserDataState {
   TBRList: UsableBooks[];
   DNFList: UsableBooks[];
   READList: UsableBooks[];
+  userStats: UserCalcStats;
 }
 
 export const initialState: UserDataState = {
@@ -26,6 +29,7 @@ export const initialState: UserDataState = {
   TBRList: [],
   DNFList: [],
   READList: [],
+  userStats: {} as UserCalcStats,
 };
 
 export const userDataReducer = createReducer(
@@ -55,5 +59,9 @@ export const userDataReducer = createReducer(
   on(getBookListREADComplete, (state, { books }) => ({
     ...state,
     READList: books,
+  })),
+  on(getUserStatsComplete, (state, { stats }) => ({
+    ...state,
+    userStats: stats,
   }))
 );

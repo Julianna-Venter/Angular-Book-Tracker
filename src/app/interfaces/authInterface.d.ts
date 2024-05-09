@@ -7,7 +7,7 @@ export interface AuthUser {
 
 export interface UserResponse {
   booklist: {
-    current: UsableBooks[];
+    reading: UsableBooks[];
     dnf: UsableBooks[];
     read: UsableBooks[];
     tbr: UsableBooks[];

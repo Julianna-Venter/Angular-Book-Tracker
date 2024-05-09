@@ -1,5 +1,6 @@
 import { createAction, props } from '@ngrx/store';
 import { FirestoreUser, UsableBooks } from '../../interfaces/booksInterfaces';
+import { UserCalcStats } from '../../interfaces/chartsInterface';
 
 export interface SetUserDataError {
   message: string;
@@ -72,4 +73,14 @@ export const getBookListREAD = createAction(
 export const getBookListREADComplete = createAction(
   '[User Data] getBookListReadComplete',
   props<{ books: UsableBooks[] }>()
+);
+
+export const getUserStats = createAction(
+  '[User Data] getUserStats',
+  props<{ user: FirestoreUser }>()
+);
+
+export const getUserStatsComplete = createAction(
+  '[User Data] getUserStatsComplete',
+  props<{ stats: UserCalcStats }>()
 );

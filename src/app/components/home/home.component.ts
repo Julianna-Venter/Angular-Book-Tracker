@@ -217,11 +217,11 @@ export class HomeComponent implements OnInit {
         );
         //===============================Here you use setSearchedBook================================
         if (book) {
-          console.log('searched book:', book);
+          // console.log('searched book:', book);
           this.bookStore.dispatch(setSearchedBook({ searchedBook: book }));
-          this.searchedBook$.subscribe((searchedBook) =>
-            console.log('searchedBook:', searchedBook)
-          );
+          // this.searchedBook$.subscribe((searchedBook) =>
+          //   console.log('searchedBook:', searchedBook)
+          // );
           this.search = false;
           this.router.navigate(['home/book/' + book?.id]);
         }
