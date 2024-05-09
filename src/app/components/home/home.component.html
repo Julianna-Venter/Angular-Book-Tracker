@@ -107,7 +107,14 @@
                 [displayWith]="displayBookTitle"
               >
                 @for (option of filteredOptions | async; track option) {
-                <mat-option [value]="option">{{ option.title }}</mat-option>
+                <mat-option [value]="option"
+                  ><div class="flex flex-col">
+                    <span>{{ option.title }} </span
+                    ><span class="text-xs text-light-grey"
+                      >| {{ option.authors[0] }}</span
+                    >
+                  </div></mat-option
+                >
                 }
               </mat-autocomplete>
             </mat-form-field>
@@ -140,22 +147,5 @@
     </div>
     }
   </div>
-
-  <!-- I'm keeping this here as a guide on how to use the data later, I will remove it when I'm done -->
-  <!-- @if (currentUserData) {
-  <div>{{ currentUserData.username }}</div>
-  } -->
-  <!-- <p>Books:</p>
-  @for (book of books$ | async; track book.id) {
-  <div>==========================</div>
-  <div>{{ book.title }}</div>
-  <div>{{ book.authors }}</div>
-  <div>{{ book.description }}</div>
-  <div>{{ book.pageCount }}</div>
-  <div>{{ book.categories }}</div>
-  <div>{{ book.publishedDate }}</div>
-  <div>==========================</div>
-  } -->
   <router-outlet />
 </div>
-<!-- //this will be styled better later -->

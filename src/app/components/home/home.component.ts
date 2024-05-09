@@ -55,7 +55,7 @@ import { UsersFirebaseService } from '../../services/users-firebase.service';
 import { UserDataState } from '../../store/reducers/user.reducer';
 
 interface Book {
-  id: string;
+  authors: string[];
   title: string;
 }
 
@@ -116,7 +116,7 @@ export class HomeComponent implements OnInit {
   searchedBooks: UsableBooks[] = [];
 
   searchForm = new FormGroup({
-    searchTerm: new FormControl<Book>({ id: '', title: '' }),
+    searchTerm: new FormControl<Book>({ authors: [], title: '' }),
   });
 
   constructor(private authService: AuthService, private location: Location) {
@@ -130,8 +130,6 @@ export class HomeComponent implements OnInit {
       this.home = false;
       this.stats = false;
     }
-
-    // this.bookStore.dispatch(getBooksAction({ query: this.query }));
 
     authService.user$.pipe(take(1)).subscribe((user) => {
       if (user) {
@@ -177,7 +175,7 @@ export class HomeComponent implements OnInit {
         .subscribe((books) => {
           this.options = books.map((book) => book.title);
           this.searchCorrelation = books.map((book) => {
-            return { id: book.id, title: book.title };
+            return { authors: book.authors, title: book.title };
           });
           this.searchedBooks = books;
         });
@@ -210,18 +208,12 @@ export class HomeComponent implements OnInit {
     const rawForm = this.searchForm.getRawValue();
 
     if (this.options.includes(rawForm.searchTerm?.title ?? '')) {
-      // console.log('searching...', rawForm.searchTerm);
       this.books$.pipe(take(1)).subscribe((books) => {
         const book = books.find(
           (book) => book.title === rawForm.searchTerm?.title
         );
-        //===============================Here you use setSearchedBook================================
         if (book) {
-          // console.log('searched book:', book);
           this.bookStore.dispatch(setSearchedBook({ searchedBook: book }));
-          // this.searchedBook$.subscribe((searchedBook) =>
-          //   console.log('searchedBook:', searchedBook)
-          // );
           this.search = false;
           this.router.navigate(['home/book/' + book?.id]);
         }

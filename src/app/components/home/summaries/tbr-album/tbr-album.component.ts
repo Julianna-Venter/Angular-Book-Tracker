@@ -1,14 +1,15 @@
+import { AsyncPipe } from '@angular/common';
 import { Component, OnInit, inject } from '@angular/core';
+import { RouterLink } from '@angular/router';
 import { Store } from '@ngrx/store';
+import { map, take } from 'rxjs';
+import { UsableBooks } from '../../../../interfaces/booksInterfaces';
 import { getBookListTBR } from '../../../../store/actions/user.actions';
 import { UserDataState } from '../../../../store/reducers/user.reducer';
 import {
   selectGetTBRList,
   selectgetUserData,
 } from '../../../../store/selectors/user.selectors';
-import { AsyncPipe } from '@angular/common';
-import { take } from 'rxjs';
-import { RouterLink } from '@angular/router';
 
 @Component({
   selector: 'app-tbr-album',
@@ -38,5 +39,9 @@ export class TbrAlbumComponent implements OnInit {
         );
       }
     });
+
+    this.bookList$ = this.bookList$.pipe(
+      map((bookListObject: UsableBooks[]) => Object.values(bookListObject))
+    );
   }
 }

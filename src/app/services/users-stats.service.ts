@@ -154,7 +154,6 @@ export class UsersStatsService {
 
     //average rating
     if (totalBooks !== 0) {
-      console.log(totalRating, totalBooks);
       calcStats.averageRating = Math.ceil(totalRating / totalBooks);
     } else {
       calcStats.averageRating = 0;

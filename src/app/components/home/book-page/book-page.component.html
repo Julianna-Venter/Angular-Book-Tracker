@@ -26,7 +26,7 @@
       </div>
     </div>
     <div
-      class="bg-background-white h-fit w-full lg:w-1/2 rounded-t-3xl lg:rounded-3xl overflow-x-hidden flex-[0_0_auto] lg:overflow-y-scroll lg:max-h-[80%]"
+      class="bg-background-white no-scrollbar h-fit w-full lg:w-1/2 rounded-t-3xl lg:rounded-3xl overflow-x-hidden flex-[0_0_auto] lg:overflow-y-scroll lg:max-h-[80%]"
     >
       <div class="w-full h-fit flex m-3">
         <div
@@ -52,17 +52,6 @@
             </mat-select>
           </mat-form-field>
         </div>
-
-        <div
-          class="w-1/2 flex flex-col justify-center items-start px-8 py-2 text-grey text-sm"
-        >
-          <div class="form-control">
-            <label class="label cursor-pointer flex gap-5">
-              <span class="label-text text-lg">Owned</span>
-              <input type="checkbox" class="toggle" />
-            </label>
-          </div>
-        </div>
       </div>
       <div class="w-full h-fit flex m-3">
         <div
@@ -78,7 +67,6 @@
             {{ currentBook?.pageCount }}
             <span class="text-xs font-normal">Pages</span>
           </p>
-          <p class="text-xs">English</p>
         </div>
       </div>
       <div class="w-full h-fit flex m-3">
@@ -93,7 +81,9 @@
           class="w-1/2 flex flex-wrap gap-2 justify-start px-4 py-2 text-grey text-sm"
         >
           @for (category of currentBook?.categories; track category) {
-          <div class="badge badge-outline">{{ category }}</div>
+          <div class="badge badge-outline h-fit text-center">
+            {{ category }}
+          </div>
           }
         </div>
       </div>

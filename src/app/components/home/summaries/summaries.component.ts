@@ -4,7 +4,8 @@ import { RouterLink } from '@angular/router';
 import { NgIconComponent, provideIcons } from '@ng-icons/core';
 import { heroChevronDown } from '@ng-icons/heroicons/outline';
 import { Store } from '@ngrx/store';
-import { take } from 'rxjs';
+import { map, take } from 'rxjs';
+import { UsableBooks } from '../../../interfaces/booksInterfaces';
 import { getBookList } from '../../../store/actions/user.actions';
 import { UserDataState } from '../../../store/reducers/user.reducer';
 import {
@@ -47,5 +48,9 @@ export class SummariesComponent implements OnInit {
         );
       }
     });
+
+    this.bookList$ = this.bookList$.pipe(
+      map((bookListObject: UsableBooks[]) => Object.values(bookListObject))
+    );
   }
 }

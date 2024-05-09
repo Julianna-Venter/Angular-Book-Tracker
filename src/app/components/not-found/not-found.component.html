@@ -1,1 +1,27 @@
-<p>not-found works!</p>
+<div
+  class="w-full h-lvh overflow-hidden relative bg-[#262626] text-white flex justify-center lg:items-center"
+>
+  <div
+    class="flex flex-col gap-1 w-full h-1/2 justify-end lg:justify-start items-center z-20 p-10 absolute max-w-[400px]"
+  >
+    <div
+      class="text-[3rem] font-extralight h-[100px] flex flex-col gap-6 font-mono"
+    >
+      <span>Looking for</span>
+      <span class="text-button-color font-medium ml-20">something?</span>
+    </div>
+    <span class="self-end">Unfortunately, this is not the place.</span>
+    <div class="flex gap-1 self-end">
+      <span>Go</span
+      ><button
+        routerLink="/home"
+        class="underline font-bold hover:text-button-color"
+      >
+        home</button
+      ><span>and try again!</span>
+    </div>
+  </div>
+  <div class="w-full h-1/2 self-end flex justify-center items-center mb-10">
+    <app-spotlight-svg />
+  </div>
+</div>

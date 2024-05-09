@@ -11,7 +11,7 @@
       <h2 class="pb-5 text-xl font-bold">CURRENT READS.</h2>
       <div class="flex justify-center relative">
         <!-- if books > 1 -->
-        @if((bookList$ | async)?.length !== 0 ){
+        @if((bookList$ | async); as booklist){ @if(booklist.length > 1){
         <div
           class="inverted-corner bg-grey/50 backdrop-blur-md h-[40px] w-[262.5px] lg:w-[337.5px] absolute self-end rounded-b-box flex justify-center items-end z-20"
         >
@@ -21,6 +21,7 @@
             class="text-white"
           ></ng-icon>
         </div>
+        }
 
         <!-- loop over current reads here -->
         <app-book-carousel />
