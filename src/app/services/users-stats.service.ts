@@ -104,49 +104,63 @@ export class UsersStatsService {
         (book) => book.pageCount > 300 && book.pageCount <= 500
       ).length;
 
-      //Character_plot
-      calcStats.character += allBooks.filter(
-        (book) => book.character_plot <= 50
-      ).length;
-      calcStats.plot += allBooks.filter(
-        (book) => book.character_plot > 50
-      ).length;
+      // Character_plot
+      calcStats.character =
+        (allBooks.filter((book) => book.character_plot <= 50).length /
+          totalBooks) *
+        100;
+      calcStats.plot =
+        (allBooks.filter((book) => book.character_plot > 50).length /
+          totalBooks) *
+        100;
 
-      //Tense_lighthearted
-      calcStats.tense += allBooks.filter(
-        (book) => book.tense_lighthearted <= 50
-      ).length;
-      calcStats.lighthearted += allBooks.filter(
-        (book) => book.tense_lighthearted > 50
-      ).length;
+      // Tense_lighthearted
+      calcStats.tense =
+        (allBooks.filter((book) => book.tense_lighthearted <= 50).length /
+          totalBooks) *
+        100;
+      calcStats.lighthearted =
+        (allBooks.filter((book) => book.tense_lighthearted > 50).length /
+          totalBooks) *
+        100;
 
-      //Dark_light
-      calcStats.dark += allBooks.filter((book) => book.dark_light <= 50).length;
-      calcStats.light += allBooks.filter((book) => book.dark_light > 50).length;
+      // Dark_light
+      calcStats.dark =
+        (allBooks.filter((book) => book.dark_light <= 50).length / totalBooks) *
+        100;
+      calcStats.light =
+        (allBooks.filter((book) => book.dark_light > 50).length / totalBooks) *
+        100;
 
-      //Informative_fun
-      calcStats.informative += allBooks.filter(
-        (book) => book.informative_fun <= 50
-      ).length;
-      calcStats.fun += allBooks.filter(
-        (book) => book.informative_fun > 50
-      ).length;
+      // Informative_fun
+      calcStats.informative =
+        (allBooks.filter((book) => book.informative_fun <= 50).length /
+          totalBooks) *
+        100;
+      calcStats.fun =
+        (allBooks.filter((book) => book.informative_fun > 50).length /
+          totalBooks) *
+        100;
 
-      //Adventurous_grounded
-      calcStats.adventurous += allBooks.filter(
-        (book) => book.adventurous_grounded <= 50
-      ).length;
-      calcStats.grounded += allBooks.filter(
-        (book) => book.adventurous_grounded > 50
-      ).length;
+      // Adventurous_grounded
+      calcStats.adventurous =
+        (allBooks.filter((book) => book.adventurous_grounded <= 50).length /
+          totalBooks) *
+        100;
+      calcStats.grounded =
+        (allBooks.filter((book) => book.adventurous_grounded > 50).length /
+          totalBooks) *
+        100;
 
-      //Reflective_action
-      calcStats.reflective += allBooks.filter(
-        (book) => book.reflective_action <= 50
-      ).length;
-      calcStats.action += allBooks.filter(
-        (book) => book.reflective_action > 50
-      ).length;
+      // Reflective_action
+      calcStats.reflective =
+        (allBooks.filter((book) => book.reflective_action <= 50).length /
+          totalBooks) *
+        100;
+      calcStats.action =
+        (allBooks.filter((book) => book.reflective_action > 50).length /
+          totalBooks) *
+        100;
 
       //DNF
       calcStats.DNF += user.booklist.dnf.length;

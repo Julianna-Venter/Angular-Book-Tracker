@@ -11,7 +11,7 @@
       <h2 class="pb-5 text-xl font-bold">CURRENT READS.</h2>
       <div class="flex justify-center relative">
         <!-- if books > 1 -->
-        @if((bookList$ | async); as booklist){ @if(booklist.length > 1){
+        @if((bookList$ | async); as booklist) { @if(booklist.length > 1){
         <div
           class="inverted-corner bg-grey/50 backdrop-blur-md h-[40px] w-[262.5px] lg:w-[337.5px] absolute self-end rounded-b-box flex justify-center items-end z-20"
         >
@@ -24,13 +24,21 @@
         }
 
         <!-- loop over current reads here -->
+        @if(booklist.length !== 0){
         <app-book-carousel />
-        }
+        } @else {
+        <div class="grid grid-cols-3 gap-5 w-[70%] items-center">
+          <span class="text-[6rem] text-center">?</span>
+          <span class="col-span-2"
+            >You are not currently reading anything...</span
+          >
+        </div>
+        } }
       </div>
     </div>
     <div class="lg:w-2/3 lg:px-20">
       <h2 class="pt-5 lg:pb-5 lg:pt-0 text-xl font-bold">COLLECTIONS.</h2>
-      <div class="flex flex-col gap-10">
+      <div class="flex flex-col gap-5">
         <app-tbr-album />
         <app-dnf-album />
         <app-read-album />

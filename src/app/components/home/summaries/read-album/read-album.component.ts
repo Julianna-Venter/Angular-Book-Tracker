@@ -1,7 +1,7 @@
 import { AsyncPipe } from '@angular/common';
 import { Component, OnInit, inject } from '@angular/core';
 import { Store } from '@ngrx/store';
-import { take } from 'rxjs';
+import { map, take } from 'rxjs';
 import { getBookListREAD } from '../../../../store/actions/user.actions';
 import { UserDataState } from '../../../../store/reducers/user.reducer';
 import {
@@ -9,6 +9,7 @@ import {
   selectgetUserData,
 } from '../../../../store/selectors/user.selectors';
 import { RouterLink } from '@angular/router';
+import { UsableBooks } from '../../../../interfaces/booksInterfaces';
 
 @Component({
   selector: 'app-read-album',
@@ -38,5 +39,9 @@ export class ReadAlbumComponent implements OnInit {
         );
       }
     });
+
+    this.bookList$ = this.bookList$.pipe(
+      map((bookListObject: UsableBooks[]) => Object.values(bookListObject))
+    );
   }
 }

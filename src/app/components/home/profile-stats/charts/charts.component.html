@@ -5,68 +5,82 @@
       <div class="stats shadow">
         <div class="stat">
           <div class="stat-title text-end">Character Driven</div>
-          <div class="stat-value text-end">25.6K</div>
+          <div class="stat-value text-end">
+            {{ (userStats$ | async)?.character }}%
+          </div>
         </div>
 
         <div class="stat">
           <div class="stat-title">Plot Driven</div>
-          <div class="stat-value">2.6M</div>
+          <div class="stat-value">{{ (userStats$ | async)?.plot }}%</div>
         </div>
       </div>
 
       <div class="stats shadow">
         <div class="stat">
           <div class="stat-title text-end">Tense</div>
-          <div class="stat-value text-end">25.6K</div>
+          <div class="stat-value text-end">
+            {{ (userStats$ | async)?.tense }}%
+          </div>
         </div>
 
         <div class="stat">
           <div class="stat-title">Lighthearted</div>
-          <div class="stat-value">2.6M</div>
+          <div class="stat-value">
+            {{ (userStats$ | async)?.lighthearted }}%
+          </div>
         </div>
       </div>
       <div class="stats shadow">
         <div class="stat">
           <div class="stat-title text-end">Dark</div>
-          <div class="stat-value text-end">25.6K</div>
+          <div class="stat-value text-end">
+            {{ (userStats$ | async)?.dark }}%
+          </div>
         </div>
 
         <div class="stat">
           <div class="stat-title">Light</div>
-          <div class="stat-value">2.6M</div>
+          <div class="stat-value">{{ (userStats$ | async)?.light }}%</div>
         </div>
       </div>
       <div class="stats shadow">
         <div class="stat">
           <div class="stat-title text-end">Informative</div>
-          <div class="stat-value text-end">25.6K</div>
+          <div class="stat-value text-end">
+            {{ (userStats$ | async)?.informative }}%
+          </div>
         </div>
 
         <div class="stat">
           <div class="stat-title">Fun</div>
-          <div class="stat-value">2.6M</div>
+          <div class="stat-value">{{ (userStats$ | async)?.fun }}%</div>
         </div>
       </div>
       <div class="stats shadow">
         <div class="stat">
-          <div class="stat-title text-end">Adventure</div>
-          <div class="stat-value text-end">25.6K</div>
+          <div class="stat-title text-end">Adventurous</div>
+          <div class="stat-value text-end">
+            {{ (userStats$ | async)?.adventurous }}%
+          </div>
         </div>
 
         <div class="stat">
           <div class="stat-title">Grounded</div>
-          <div class="stat-value">2.6M</div>
+          <div class="stat-value">{{ (userStats$ | async)?.grounded }}%</div>
         </div>
       </div>
       <div class="stats shadow">
         <div class="stat">
           <div class="stat-title text-end">Reflective</div>
-          <div class="stat-value text-end">25.6K</div>
+          <div class="stat-value text-end">
+            {{ (userStats$ | async)?.reflective }}%
+          </div>
         </div>
 
         <div class="stat">
-          <div class="stat-title">Casual</div>
-          <div class="stat-value">2.6M</div>
+          <div class="stat-title">Action</div>
+          <div class="stat-value">{{ (userStats$ | async)?.action }}%</div>
         </div>
       </div>
     </div>
