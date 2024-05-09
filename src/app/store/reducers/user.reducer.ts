@@ -3,6 +3,9 @@ import { FirestoreUser, UsableBooks } from '../../interfaces/booksInterfaces';
 import {
   addToListComplete,
   getBookListComplete,
+  getBookListDNFComplete,
+  getBookListREADComplete,
+  getBookListTBRComplete,
   getUserDataComplete,
   removeFromListComplete,
 } from '../actions/user.actions';
@@ -12,11 +15,17 @@ export const userDataFeatureKey = 'User Data Store';
 export interface UserDataState {
   users: FirestoreUser[];
   bookList: UsableBooks[];
+  TBRList: UsableBooks[];
+  DNFList: UsableBooks[];
+  READList: UsableBooks[];
 }
 
 export const initialState: UserDataState = {
   users: [],
   bookList: [],
+  TBRList: [],
+  DNFList: [],
+  READList: [],
 };
 
 export const userDataReducer = createReducer(
@@ -34,5 +43,17 @@ export const userDataReducer = createReducer(
   on(getBookListComplete, (state, { books }) => ({
     ...state,
     bookList: books,
+  })),
+  on(getBookListTBRComplete, (state, { books }) => ({
+    ...state,
+    TBRList: books,
+  })),
+  on(getBookListDNFComplete, (state, { books }) => ({
+    ...state,
+    DNFList: books,
+  })),
+  on(getBookListREADComplete, (state, { books }) => ({
+    ...state,
+    READList: books,
   }))
 );

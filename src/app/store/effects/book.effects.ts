@@ -1,11 +1,18 @@
 import { Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { EMPTY, catchError, map, retry, switchMap } from 'rxjs';
-import { UsableBooks } from '../../interfaces/booksInterfaces';
+import {
+  BookList,
+  FirestoreUser,
+  UsableBooks,
+} from '../../interfaces/booksInterfaces';
 import { BooksApiService } from '../../services/books-api.service';
+import { UsersFirebaseService } from '../../services/users-firebase.service';
 import {
   getBooksAction,
   getBooksComplete,
+  getSearchedBook,
+  getSearchedBookComplete,
   setSearchedBook,
   setSearchedBookComplete,
 } from '../actions/book.actions';
@@ -73,8 +80,34 @@ export class BooksEffects {
     );
   });
 
+  getSearchedBook$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(getSearchedBook.type),
+      switchMap(
+        (action: { bookId: string; user: FirestoreUser; list: string }) =>
+          this.databaseService
+            .getMatchedBook(
+              action.user,
+              action.list as keyof BookList,
+              action.bookId
+            )
+            .pipe(
+              map((matchedBook: UsableBooks) => {
+                console.log('matchedBook:', matchedBook);
+                return getSearchedBookComplete({ searchedBook: matchedBook });
+              }),
+              catchError((error) => {
+                console.error('Error getting user data:', error);
+                return EMPTY;
+              })
+            )
+      )
+    )
+  );
+
   constructor(
     private actions$: Actions,
-    private booksApiService: BooksApiService
+    private booksApiService: BooksApiService,
+    private databaseService: UsersFirebaseService
   ) {}
 }

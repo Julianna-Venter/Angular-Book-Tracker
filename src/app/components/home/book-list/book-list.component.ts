@@ -46,6 +46,7 @@ export class BookListComponent {
   }
 
   navChild(book: string) {
+    console.log('Navigating to', book);
     this.router.navigate(['book', book], { relativeTo: this.route });
   }
 }

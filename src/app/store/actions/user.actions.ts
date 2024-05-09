@@ -34,11 +34,6 @@ export const removeFromListComplete = createAction(
   '[User Data] removeFromListComplete'
 );
 
-export const getMatchedBook = createAction(
-  '[User Data] getMatchedBook',
-  props<{ user: FirestoreUser; list: string; bookId: string }>()
-);
-
 export const getBookList = createAction(
   '[User Data] getBookList',
   props<{ user: FirestoreUser; list: string }>()
@@ -46,5 +41,35 @@ export const getBookList = createAction(
 
 export const getBookListComplete = createAction(
   '[User Data] getBookListComplete',
+  props<{ books: UsableBooks[] }>()
+);
+
+export const getBookListTBR = createAction(
+  '[User Data] getBookListTBR',
+  props<{ user: FirestoreUser; list: string }>()
+);
+
+export const getBookListTBRComplete = createAction(
+  '[User Data] getBookListTBRComplete',
+  props<{ books: UsableBooks[] }>()
+);
+
+export const getBookListDNF = createAction(
+  '[User Data] getBookListDNF',
+  props<{ user: FirestoreUser; list: string }>()
+);
+
+export const getBookListDNFComplete = createAction(
+  '[User Data] getBookListDNFComplete',
+  props<{ books: UsableBooks[] }>()
+);
+
+export const getBookListREAD = createAction(
+  '[User Data] getBookListRead',
+  props<{ user: FirestoreUser; list: string }>()
+);
+
+export const getBookListREADComplete = createAction(
+  '[User Data] getBookListReadComplete',
   props<{ books: UsableBooks[] }>()
 );

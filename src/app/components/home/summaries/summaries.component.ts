@@ -12,8 +12,10 @@ import {
   selectgetUserData,
 } from '../../../store/selectors/user.selectors';
 import { SpotlightComponent } from '../../shared-components/spotlight/spotlight.component';
-import { BookAlbumComponent } from './book-album/book-album.component';
 import { BookCarouselComponent } from './book-carousel/book-carousel.component';
+import { DnfAlbumComponent } from './dnf-album/dnf-album.component';
+import { ReadAlbumComponent } from './read-album/read-album.component';
+import { TbrAlbumComponent } from './tbr-album/tbr-album.component';
 
 @Component({
   selector: 'app-summaries',
@@ -22,8 +24,10 @@ import { BookCarouselComponent } from './book-carousel/book-carousel.component';
     RouterLink,
     NgIconComponent,
     BookCarouselComponent,
-    BookAlbumComponent,
+    TbrAlbumComponent,
     SpotlightComponent,
+    DnfAlbumComponent,
+    ReadAlbumComponent,
     AsyncPipe,
   ],
   templateUrl: './summaries.component.html',

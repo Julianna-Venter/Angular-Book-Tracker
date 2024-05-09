@@ -13,7 +13,12 @@ import {
   addToList,
   getBookList,
   getBookListComplete,
-  getMatchedBook,
+  getBookListDNF,
+  getBookListDNFComplete,
+  getBookListREAD,
+  getBookListREADComplete,
+  getBookListTBR,
+  getBookListTBRComplete,
   getUserData,
   getUserDataComplete,
   removeFromList,
@@ -75,30 +80,6 @@ export class UsersEffects {
     )
   );
 
-  getMatchedBook$ = createEffect(() =>
-    this.actions$.pipe(
-      ofType(getMatchedBook.type),
-      switchMap(
-        (action: { user: FirestoreUser; list: string; bookId: string }) =>
-          this.databaseService
-            .getMatchedBook(
-              action.user,
-              action.list as keyof BookList,
-              action.bookId
-            )
-            .pipe(
-              map((matchedBook: UsableBooks) => {
-                return setSearchedBook({ searchedBook: matchedBook });
-              }),
-              catchError((error) => {
-                console.error('Error getting user data:', error);
-                return EMPTY;
-              })
-            )
-      )
-    )
-  );
-
   getBookList$ = createEffect(() =>
     this.actions$.pipe(
       ofType(getBookList.type),
@@ -107,9 +88,64 @@ export class UsersEffects {
           .getBookList(action.user, action.list as keyof BookList)
           .pipe(
             map((books: UsableBooks[]) => {
-              console.log('Books:', action.list, books);
-
               return getBookListComplete({ books });
+            }),
+            catchError((error) => {
+              console.error('Error getting user data:', error);
+              return EMPTY;
+            })
+          )
+      )
+    )
+  );
+
+  getBookListTBR$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(getBookListTBR.type),
+      switchMap((action: { user: FirestoreUser; list: string }) =>
+        this.databaseService
+          .getBookList(action.user, action.list as keyof BookList)
+          .pipe(
+            map((books: UsableBooks[]) => {
+              return getBookListTBRComplete({ books });
+            }),
+            catchError((error) => {
+              console.error('Error getting user data:', error);
+              return EMPTY;
+            })
+          )
+      )
+    )
+  );
+
+  getBookListDNF$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(getBookListDNF.type),
+      switchMap((action: { user: FirestoreUser; list: string }) =>
+        this.databaseService
+          .getBookList(action.user, action.list as keyof BookList)
+          .pipe(
+            map((books: UsableBooks[]) => {
+              return getBookListDNFComplete({ books });
+            }),
+            catchError((error) => {
+              console.error('Error getting user data:', error);
+              return EMPTY;
+            })
+          )
+      )
+    )
+  );
+
+  getBookListREAD$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(getBookListREAD.type),
+      switchMap((action: { user: FirestoreUser; list: string }) =>
+        this.databaseService
+          .getBookList(action.user, action.list as keyof BookList)
+          .pipe(
+            map((books: UsableBooks[]) => {
+              return getBookListREADComplete({ books });
             }),
             catchError((error) => {
               console.error('Error getting user data:', error);

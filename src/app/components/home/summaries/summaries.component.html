@@ -21,6 +21,7 @@
             class="text-white"
           ></ng-icon>
         </div>
+
         <!-- loop over current reads here -->
         <app-book-carousel />
         }
@@ -28,6 +29,11 @@
     </div>
     <div class="lg:w-2/3 lg:px-20">
       <h2 class="pt-5 lg:pb-5 lg:pt-0 text-xl font-bold">COLLECTIONS.</h2>
+      <div class="flex flex-col gap-10">
+        <app-tbr-album />
+        <app-dnf-album />
+        <app-read-album />
+      </div>
     </div>
   </div>
 </div>

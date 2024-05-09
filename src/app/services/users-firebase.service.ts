@@ -73,7 +73,6 @@ export class UsersFirebaseService {
     user: FirestoreUser,
     list: keyof BookList
   ): Observable<UsableBooks[]> {
-    console.log('Getting book list:', list, 'for user:', user.email);
     const q = query(
       collection(this.firestore, 'users'),
       where('email', '==', user.email)
@@ -93,6 +92,7 @@ export class UsersFirebaseService {
     list: keyof BookList,
     bookId: string
   ): Observable<UsableBooks> {
+    console.log('Getting matched book:', user.email, list, bookId);
     const q = query(
       collection(this.firestore, 'users'),
       where('email', '==', user.email)

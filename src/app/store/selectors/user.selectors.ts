@@ -28,3 +28,18 @@ export const selectGetBookList = createSelector(
   selectFeatureUsers,
   (state) => state.bookList
 );
+
+export const selectGetTBRList = createSelector(
+  selectFeatureUsers,
+  (state) => state.TBRList
+);
+
+export const selectGetDNFList = createSelector(
+  selectFeatureUsers,
+  (state) => state.DNFList
+);
+
+export const selectGetREADList = createSelector(
+  selectFeatureUsers,
+  (state) => state.READList
+);

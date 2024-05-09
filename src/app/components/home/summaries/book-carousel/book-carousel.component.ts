@@ -9,9 +9,14 @@ import { selectGetBookList } from '../../../../store/selectors/user.selectors';
   selector: 'app-book-carousel',
   standalone: true,
   imports: [RouterLink, AsyncPipe],
+  imports: [RouterLink, AsyncPipe],
   templateUrl: './book-carousel.component.html',
   styleUrl: './book-carousel.component.scss',
 })
+export class BookCarouselComponent {
+  userStore = inject(Store<UserDataState>);
+  bookList$ = this.userStore.select(selectGetBookList);
+}
 export class BookCarouselComponent {
   userStore = inject(Store<UserDataState>);
   bookList$ = this.userStore.select(selectGetBookList);

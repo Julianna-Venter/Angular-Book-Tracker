@@ -1,5 +1,5 @@
 import { createAction, props } from '@ngrx/store';
-import { UsableBooks } from '../../interfaces/booksInterfaces';
+import { FirestoreUser, UsableBooks } from '../../interfaces/booksInterfaces';
 
 export interface SetUserDataError {
   message: string;
@@ -24,5 +24,15 @@ export const setSearchedBook = createAction(
 
 export const setSearchedBookComplete = createAction(
   '[Books API] SetSearchedBooksComplete',
+  props<{ searchedBook: UsableBooks }>()
+);
+
+export const getSearchedBook = createAction(
+  '[Books API] GetSearchedBooks',
+  props<{ bookId: string; user: FirestoreUser; list: string }>()
+);
+
+export const getSearchedBookComplete = createAction(
+  '[Books API] GetSearchedBooksComplete',
   props<{ searchedBook: UsableBooks }>()
 );

@@ -25,7 +25,10 @@ import {
 } from '../../store/actions/book.actions';
 import { getUserData } from '../../store/actions/user.actions';
 import { BooksState } from '../../store/reducers/book.reducer';
-import { selectBooks } from '../../store/selectors/book.selectors';
+import {
+  selectBooks,
+  selectSearchedBook,
+} from '../../store/selectors/book.selectors';
 import { selectgetUserData } from '../../store/selectors/user.selectors';
 import { BackgroundComponent } from '../shared-components/background/background.component';
 import { LogOutComponent } from './profile-stats/log-out/log-out.component';
@@ -105,6 +108,7 @@ export class HomeComponent implements OnInit {
   userStore = inject(Store<UserDataState>);
   books$ = this.bookStore.select(selectBooks);
   userData$ = this.userStore.select(selectgetUserData);
+  searchedBook$ = this.bookStore.select(selectSearchedBook);
 
   options: string[] = [];
   filteredOptions: Observable<Book[]> | undefined;
@@ -213,8 +217,11 @@ export class HomeComponent implements OnInit {
         );
         //===============================Here you use setSearchedBook================================
         if (book) {
+          console.log('searched book:', book);
           this.bookStore.dispatch(setSearchedBook({ searchedBook: book }));
-
+          this.searchedBook$.subscribe((searchedBook) =>
+            console.log('searchedBook:', searchedBook)
+          );
           this.search = false;
           this.router.navigate(['home/book/' + book?.id]);
         }

@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { BookAlbumComponent } from './book-album.component';
+import { DnfAlbumComponent } from './dnf-album.component';
 
-describe('BookAlbumComponent', () => {
-  let component: BookAlbumComponent;
-  let fixture: ComponentFixture<BookAlbumComponent>;
+describe('DnfAlbumComponent', () => {
+  let component: DnfAlbumComponent;
+  let fixture: ComponentFixture<DnfAlbumComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [BookAlbumComponent]
+      imports: [DnfAlbumComponent]
     })
     .compileComponents();
     
-    fixture = TestBed.createComponent(BookAlbumComponent);
+    fixture = TestBed.createComponent(DnfAlbumComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
