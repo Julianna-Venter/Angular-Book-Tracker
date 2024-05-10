@@ -157,7 +157,7 @@ export class HomeComponent implements OnInit {
     if (filterValue !== '' && !this.options.includes(filterValue)) {
       this.bookStore.dispatch(getBooksAction({ query: filterValue }));
       this.books$
-        .pipe(debounceTime(150), distinctUntilChanged())
+        .pipe(debounceTime(150), distinctUntilChanged(), take(2))
         .subscribe((books) => {
           this.options = books.map((book) => book.title);
           this.searchCorrelation = books.map((book) => {

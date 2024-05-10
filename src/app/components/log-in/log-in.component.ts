@@ -15,6 +15,7 @@ import {
 } from '@ng-icons/heroicons/outline';
 import { AuthService } from '../../services/auth.service';
 import { BackgroundComponent } from '../shared-components/background/background.component';
+import { take } from 'rxjs';
 
 @Component({
   selector: 'app-log-in',
@@ -49,6 +50,7 @@ export class LogInComponent {
 
     this.authService
       .login(rawForm.email ?? '', rawForm.password ?? '')
+      .pipe(take(2))
       .subscribe({
         next: () => {
           this.router.navigate(['/home']);

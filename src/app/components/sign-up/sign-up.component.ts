@@ -15,6 +15,7 @@ import {
   heroLockClosed,
   heroUser,
 } from '@ng-icons/heroicons/outline';
+import { take } from 'rxjs';
 import { AuthService } from '../../services/auth.service';
 import { UsersFirebaseService } from '../../services/users-firebase.service';
 import { confirmationValidator } from '../../shared/compare-validator.directive';
@@ -92,6 +93,7 @@ export class SignUpComponent {
           rawForm.username ?? '',
           rawForm.password ?? ''
         )
+        .pipe(take(2))
         .subscribe({
           next: () => {
             this.usersFirebaseService.addUser(rawForm.username, rawForm.email);

@@ -1,10 +1,10 @@
 import { AsyncPipe, JsonPipe } from '@angular/common';
-import { Component, OnInit, inject } from '@angular/core';
+import { Component, OnDestroy, OnInit, inject } from '@angular/core';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatSelectModule } from '@angular/material/select';
 import { Router } from '@angular/router';
 import { Store } from '@ngrx/store';
-import { combineLatest, take } from 'rxjs';
+import { Subscription, combineLatest, take } from 'rxjs';
 import { ReviewData, UsableBooks } from '../../../interfaces/booksInterfaces';
 import { getSearchedBook } from '../../../store/actions/book.actions';
 import { addToList, removeFromList } from '../../../store/actions/user.actions';
@@ -31,7 +31,7 @@ import { TbrComponent } from './tbr/tbr.component';
   templateUrl: './book-page.component.html',
   styleUrl: './book-page.component.scss',
 })
-export class BookPageComponent implements OnInit {
+export class BookPageComponent implements OnInit, OnDestroy {
   router = inject(Router);
   reviewData: ReviewData | undefined;
   bookStore = inject(Store<BooksState>);
@@ -41,6 +41,7 @@ export class BookPageComponent implements OnInit {
   selected = 'unread';
   bookId = localStorage.getItem('bookId') || '';
   list = localStorage.getItem('list') || 'unread';
+  selectedBookSubscriptions: Subscription | undefined;
 
   changeSelected(event: string) {
     this.selected = event;
@@ -49,20 +50,21 @@ export class BookPageComponent implements OnInit {
 
   ngOnInit(): void {
     if (this.list !== 'unread') {
-      combineLatest([this.userData$, this.searchedBook$]).subscribe(
-        ([users, book]) => {
-          this.bookStore.dispatch(
-            getSearchedBook({
-              bookId: this.bookId,
-              user: users[0],
-              list: this.list,
-            })
-          );
-        }
-      );
+      this.selectedBookSubscriptions = combineLatest([
+        this.userData$,
+        this.searchedBook$,
+      ]).subscribe(([users, book]) => {
+        this.bookStore.dispatch(
+          getSearchedBook({
+            bookId: this.bookId,
+            user: users[0],
+            list: this.list,
+          })
+        );
+      });
     }
 
-    this.searchedBook$.subscribe((book) => {
+    this.searchedBook$.pipe(take(2)).subscribe((book) => {
       this.selected = book?.status || 'unread';
     });
   }
@@ -133,5 +135,9 @@ export class BookPageComponent implements OnInit {
       status = 'read';
     }
     this.setSelectedBook(status || 'unread', this.reviewData);
+  }
+
+  ngOnDestroy(): void {
+    this.selectedBookSubscriptions?.unsubscribe();
   }
 }

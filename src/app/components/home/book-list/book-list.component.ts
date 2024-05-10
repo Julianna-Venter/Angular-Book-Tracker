@@ -2,7 +2,7 @@ import { AsyncPipe } from '@angular/common';
 import { Component, OnInit, inject } from '@angular/core';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { Store } from '@ngrx/store';
-import { map } from 'rxjs';
+import { map, take } from 'rxjs';
 import { UsableBooks } from '../../../interfaces/booksInterfaces';
 import { getBookList } from '../../../store/actions/user.actions';
 import { UserDataState } from '../../../store/reducers/user.reducer';
@@ -38,7 +38,7 @@ export class BookListComponent implements OnInit {
       this.listname = 'read';
     }
 
-    this.users$.subscribe((users) => {
+    this.users$.pipe(take(2)).subscribe((users) => {
       if (users && users[0] !== undefined && users[0].email) {
         this.userStore.dispatch(
           getBookList({ user: users[0], list: this.listname })

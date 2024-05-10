@@ -1,4 +1,4 @@
-import { Component, OnInit, inject } from '@angular/core';
+import { Component, OnDestroy, OnInit, inject } from '@angular/core';
 import { NgIconComponent, provideIcons } from '@ng-icons/core';
 import { heroStarSolid } from '@ng-icons/heroicons/solid';
 import { ChartsComponent } from './charts/charts.component';
@@ -6,7 +6,7 @@ import { ChartsComponent } from './charts/charts.component';
 import { AsyncPipe } from '@angular/common';
 import { Store } from '@ngrx/store';
 import { NgApexchartsModule } from 'ng-apexcharts';
-import { take } from 'rxjs';
+import { Subscription, take } from 'rxjs';
 import { AuthService } from '../../../services/auth.service';
 import { getUserData, getUserStats } from '../../../store/actions/user.actions';
 import { UserDataState } from '../../../store/reducers/user.reducer';
@@ -23,13 +23,14 @@ import {
   styleUrl: './profile-stats.component.scss',
   viewProviders: [provideIcons({ heroStarSolid })],
 })
-export class ProfileStatsComponent implements OnInit {
+export class ProfileStatsComponent implements OnInit, OnDestroy {
   userStore = inject(Store<UserDataState>);
   user$ = this.userStore.select(selectgetUserData);
   userStats$ = this.userStore.select(selectGetUserStats);
   username = '';
   pacePercentages: string[] = [];
   lengthPercentages: string[] = [];
+  userSubscription: Subscription | undefined;
 
   constructor(private authService: AuthService) {}
 
@@ -40,7 +41,7 @@ export class ProfileStatsComponent implements OnInit {
       }
     });
 
-    this.user$.subscribe((user) => {
+    this.userSubscription = this.user$.subscribe((user) => {
       if (user && user[0] !== undefined) {
         this.userStore.dispatch(getUserStats({ user: user[0] }));
         this.username = user[0].username;
@@ -63,5 +64,9 @@ export class ProfileStatsComponent implements OnInit {
         this.lengthPercentages = lengthArray.map((value) => `${value}%`);
       }
     });
+  }
+
+  ngOnDestroy(): void {
+    this.userSubscription?.unsubscribe();
   }
 }
