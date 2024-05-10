@@ -68,17 +68,14 @@ export class UsersEffects {
     this.actions$.pipe(
       ofType(removeFromList.type),
       switchMap(
-        async (action: {
-          list: string;
-          book: UsableBooks;
-          user: FirestoreUser;
-        }) => {
-          await this.databaseService.removeFromList(
+        (action: { list: string; book: UsableBooks; user: FirestoreUser }) => {
+          this.databaseService.removeFromList(
             action.list,
-            action.book.id,
-            action.user.id
+            action.book,
+            action.user
           );
-          return removeFromListComplete();
+
+          return of(removeFromListComplete());
         }
       )
     )

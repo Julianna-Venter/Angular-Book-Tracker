@@ -8,7 +8,6 @@ import { Store } from '@ngrx/store';
 import { NgApexchartsModule } from 'ng-apexcharts';
 import { take } from 'rxjs';
 import { AuthService } from '../../../services/auth.service';
-import { ChartsDataService } from '../../../services/charts-data.service';
 import { getUserData, getUserStats } from '../../../store/actions/user.actions';
 import { UserDataState } from '../../../store/reducers/user.reducer';
 import {
@@ -28,20 +27,9 @@ export class ProfileStatsComponent implements OnInit {
   userStore = inject(Store<UserDataState>);
   user$ = this.userStore.select(selectgetUserData);
   userStats$ = this.userStore.select(selectGetUserStats);
-  charts = inject(ChartsDataService);
-  chartOptions = this.charts.polarChartOptions;
   username = '';
   pacePercentages: string[] = [];
   lengthPercentages: string[] = [];
-
-  data = [
-    { color: 'blue', value: 20 },
-    { color: 'green', value: 30 },
-    { color: 'yellow', value: 15 },
-    { color: 'red', value: 25 },
-    { color: 'purple', value: 10 },
-    { color: 'pink', value: 15 },
-  ];
 
   constructor(private authService: AuthService) {}
 

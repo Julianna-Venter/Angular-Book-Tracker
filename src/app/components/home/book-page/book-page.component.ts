@@ -7,7 +7,7 @@ import { Store } from '@ngrx/store';
 import { combineLatest, take } from 'rxjs';
 import { ReviewData, UsableBooks } from '../../../interfaces/booksInterfaces';
 import { getSearchedBook } from '../../../store/actions/book.actions';
-import { addToList } from '../../../store/actions/user.actions';
+import { addToList, removeFromList } from '../../../store/actions/user.actions';
 import { BooksState } from '../../../store/reducers/book.reducer';
 import { UserDataState } from '../../../store/reducers/user.reducer';
 import { selectSearchedBook } from '../../../store/selectors/book.selectors';
@@ -47,7 +47,8 @@ export class BookPageComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    // console.log(this.bookId, this.list);
+    console.log(this.bookId, this.list);
+    this.searchedBook$.subscribe(console.log);
     // this.searchedBook$.subscribe(console.log);
     combineLatest([this.userData$, this.searchedBook$])
       .pipe(take(1))
@@ -82,24 +83,7 @@ export class BookPageComponent implements OnInit {
       .subscribe(([users, book]) => {
         // console.log(users[0].id, book?.id);
         //get the results form the two observables
-        // if (
-        //   users &&
-        //   users.length > 0 &&
-        //   users[0] &&
-        //   users[0].id !== undefined &&
-        //   book &&
-        //   book.id !== undefined
-        // ) {
-        //   this.userStore.dispatch(
-        //     removeFromList({
-        //       list: book.status,
-        //       bookId: book.id,
-        //       userId: users[0].id,
-        //     })
-        //   ); //remove it from the list it is moving from
-        // } else {
-        //   console.error('Error fetching books or users.');
-        // }
+
         // console.log(event, book?.status);
         const newBook = {
           ...book,
@@ -126,11 +110,25 @@ export class BookPageComponent implements OnInit {
           }
           {
             this.userStore.dispatch(
+              removeFromList({
+                list: book.status,
+                book: book,
+                user: users[0],
+              })
+            );
+            this.userStore.dispatch(
               addToList({
                 list: event,
                 book: newBook as UsableBooks,
                 user: users[0],
               }) //add the book with the updated data to the new list in the db
+            );
+            this.bookStore.dispatch(
+              getSearchedBook({
+                bookId: this.bookId,
+                user: users[0],
+                list: event,
+              })
             );
           }
         }

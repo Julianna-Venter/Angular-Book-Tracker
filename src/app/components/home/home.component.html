@@ -6,7 +6,11 @@
     <div
       class="bg-white w-fit h-fit px-3 py-3 flex gap-5 rounded-full shadow-4xl"
     >
-      <div class="flex justify-center items-center" (click)="back()">
+      <div
+        class="flex justify-center items-center cursor-pointer"
+        (click)="back()"
+        aria-label="Back"
+      >
         <ng-icon
           name="heroChevronDoubleLeft"
           size="30"
@@ -19,9 +23,10 @@
       class="bg-white w-fit h-fit px-5 py-3 flex gap-5 rounded-full shadow-4xl"
     >
       <div
-        class="flex justify-center items-center mx-1"
+        class="flex justify-center items-center mx-1 cursor-pointer"
         routerLink="/home"
         (click)="changeActive('home')"
+        aria-label="home"
       >
         <ng-icon
           name="{{ homeIcon }}"
@@ -32,9 +37,10 @@
         ></ng-icon>
       </div>
       <div
-        class="flex justify-center items-center mx-1"
+        class="flex justify-center items-center mx-1 cursor-pointer"
         routerLink="profile"
         (click)="changeActive('stats')"
+        aria-label="profile"
       >
         <ng-icon
           name="{{ pieIcon }}"
@@ -45,12 +51,15 @@
         ></ng-icon>
       </div>
       <div class="flex justify-center items-center">
-        <div class="flex justify-center items-center">
+        <div
+          class="flex justify-center items-center cursor-pointer"
+          (click)="toggleSearch()"
+          aria-label="open search"
+        >
           <ng-icon
             name="heroMagnifyingGlass"
             size="30"
             class="text-grey hover:text-button-color"
-            (click)="toggleSearch()"
           ></ng-icon>
         </div>
       </div>
@@ -62,7 +71,8 @@
         <div
           tabindex="0"
           role="button"
-          class="flex justify-center items-center"
+          class="flex justify-center items-center cursor-pointer"
+          aria-label="more"
         >
           <ng-icon
             name="heroEllipsisVerticalSolid"
@@ -121,9 +131,10 @@
           </div>
           <div class="flex justify-center items-center">
             <button
-              class="flex justify-center items-center"
+              class="flex justify-center items-center cursor-help"
               type="submit"
               [disabled]="!searchForm.controls['searchTerm'].value"
+              aria-label="search"
             >
               <ng-icon
                 name="heroMagnifyingGlass"
@@ -135,12 +146,15 @@
         </form>
       </div>
       <div class="flex justify-center items-center">
-        <div class="flex justify-center items-center">
+        <div
+          class="flex justify-center items-center cursor-pointer"
+          (click)="toggleSearch()"
+          aria-label="close search"
+        >
           <ng-icon
             name="heroXCircle"
             size="30"
             class="text-grey hover:text-button-color"
-            (click)="toggleSearch()"
           ></ng-icon>
         </div>
       </div>

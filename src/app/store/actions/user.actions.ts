@@ -24,7 +24,7 @@ export const addToListComplete = createAction('[User Data] addToListComplete');
 
 export const removeFromList = createAction(
   '[User Data] removeFromList',
-  props<{ list: string; bookId: string; userId: string }>()
+  props<{ list: string; book: UsableBooks; user: FirestoreUser }>()
 );
 
 export const removeFromListComplete = createAction(

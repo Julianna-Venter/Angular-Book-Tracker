@@ -7,10 +7,10 @@
         <app-stars [fullStars]="ratingFull" [halfStars]="ratingHalf" />
       </div>
       <div class="flex flex-col justify-center items-center">
-        @if (thisBook?.DNF_reason?.length != 0) {
+        @if ((searchedBook$ | async)?.DNF_reason?.length != 0) {
         <div class="text-2xl font-bold text-button-color">DNF</div>
         <div class="flex">
-          @for (reason of thisBook?.DNF_reason; track reason) {
+          @for (reason of (searchedBook$ | async)?.DNF_reason; track reason) {
           <div class="flex gap-1 justify-center items-center">
             <span class="font-bold text-grey/30">|</span
             ><span>{{ reason }}</span
@@ -25,7 +25,7 @@
   <div>
     <h1 class="text-3xl font-bold uppercase">Comments</h1>
     <span class="text-lg text-grey/70">
-      {{ thisBook?.comments }}
+      {{ (searchedBook$ | async)?.comments }}
     </span>
   </div>
   <div>
@@ -36,11 +36,12 @@
     <button
       class="text-xl font-bold text-white uppercase bg-button-color hover:bg-blue rounded-full py-2 px-5"
       (click)="updateReview()"
+      aria-label="Change Review"
     >
       Change Review
     </button>
     <span class="text-grey/60 font-bold self-center"
-      >Last Changed: {{ thisBook?.lastUpdated | date }}</span
+      >Last Changed: {{ (searchedBook$ | async)?.lastUpdated | date }}</span
     >
   </div>
 </div>

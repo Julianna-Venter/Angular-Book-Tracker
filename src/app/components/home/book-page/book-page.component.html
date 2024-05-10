@@ -33,7 +33,7 @@
           class="w-1/2 flex flex-col justify-center items-start px-8 text-grey"
         >
           <mat-form-field class="w-full h-[4.5rem]">
-            <mat-select [(value)]="selected">
+            <mat-select [(value)]="selected" aria-label="select list">
               <mat-option value="unread" (click)="setSelectedBook('unread')"
                 >Not Added</mat-option
               >

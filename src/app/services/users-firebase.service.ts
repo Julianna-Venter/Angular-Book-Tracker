@@ -124,7 +124,9 @@ export class UsersFirebaseService {
     return results as Observable<UsableBooks>;
   }
 
-  async removeFromList(list: string, bookId: string, userId: string) {
+  async removeFromList(list: string, book: UsableBooks, user: FirestoreUser) {
+    const userId = user.id || '';
+    const bookId = book.id || '';
     // console.log('Removing from list:', list, bookId, userId);
     const docRef = doc(this.firestore, 'users', userId);
 
