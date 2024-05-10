@@ -6,7 +6,6 @@ import { Router } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { combineLatest, take } from 'rxjs';
 import { ReviewData, UsableBooks } from '../../../interfaces/booksInterfaces';
-import { UsersFirebaseService } from '../../../services/users-firebase.service';
 import { getSearchedBook } from '../../../store/actions/book.actions';
 import { addToList } from '../../../store/actions/user.actions';
 import { BooksState } from '../../../store/reducers/book.reducer';
@@ -34,7 +33,6 @@ import { TbrComponent } from './tbr/tbr.component';
 })
 export class BookPageComponent implements OnInit {
   router = inject(Router);
-  firebaseService = inject(UsersFirebaseService);
   reviewData: ReviewData | undefined;
   bookStore = inject(Store<BooksState>);
   userStore = inject(Store<UserDataState>);

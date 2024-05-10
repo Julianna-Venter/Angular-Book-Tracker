@@ -13,11 +13,7 @@ export class UsersStatsService {
       howManyReviews: 0,
       averageRating: 0,
       totalPages: 0,
-      OneStarReviews: 0,
-      TwoStarReviews: 0,
-      ThreeStarReviews: 0,
-      FourStarReviews: 0,
-      FiveStarReviews: 0,
+      ratings: [],
       slowPaced: 0,
       fastPaced: 0,
       moderatePaced: 0,
@@ -70,39 +66,53 @@ export class UsersStatsService {
       totalRating += allBooks.reduce((acc, book) => acc + book.rating, 0);
 
       //individual ratings
-      calcStats.OneStarReviews += allBooks.filter(
+      const OneStarReviews = allBooks.filter(
         (book) => book.rating === 1 || book.rating === 0 || book.rating === 1.5
       ).length;
-      calcStats.TwoStarReviews += allBooks.filter(
+      const TwoStarReviews = allBooks.filter(
         (book) => book.rating === 2 || book.rating === 2.5
       ).length;
-      calcStats.ThreeStarReviews += allBooks.filter(
+      const ThreeStarReviews = allBooks.filter(
         (book) => book.rating === 3 || book.rating === 3.5
       ).length;
-      calcStats.FourStarReviews += allBooks.filter(
+      const FourStarReviews = allBooks.filter(
         (book) => book.rating === 4 || book.rating === 4.5
       ).length;
-      calcStats.FiveStarReviews += allBooks.filter(
+      const FiveStarReviews = allBooks.filter(
         (book) => book.rating === 5
       ).length;
 
-      //Pace
-      calcStats.slowPaced += allBooks.filter((book) => book.pace <= 33).length;
-      calcStats.fastPaced += allBooks.filter((book) => book.pace > 66).length;
-      calcStats.moderatePaced += allBooks.filter(
-        (book) => book.pace > 33 && book.pace <= 66
-      ).length;
+      calcStats.ratings = [
+        OneStarReviews,
+        TwoStarReviews,
+        ThreeStarReviews,
+        FourStarReviews,
+        FiveStarReviews,
+      ];
 
-      //Length
-      calcStats.longBooks += allBooks.filter(
-        (book) => book.pageCount > 500
-      ).length;
-      calcStats.shortBooks += allBooks.filter(
-        (book) => book.pageCount <= 300
-      ).length;
-      calcStats.mediumBooks += allBooks.filter(
-        (book) => book.pageCount > 300 && book.pageCount <= 500
-      ).length;
+      // Pace
+      calcStats.slowPaced =
+        (allBooks.filter((book) => book.pace <= 33).length / totalBooks) * 100;
+      calcStats.fastPaced =
+        (allBooks.filter((book) => book.pace > 66).length / totalBooks) * 100;
+      calcStats.moderatePaced =
+        (allBooks.filter((book) => book.pace > 33 && book.pace <= 66).length /
+          totalBooks) *
+        100;
+
+      // Length
+      calcStats.longBooks =
+        (allBooks.filter((book) => book.pageCount > 500).length / totalBooks) *
+        100;
+      calcStats.shortBooks =
+        (allBooks.filter((book) => book.pageCount <= 300).length / totalBooks) *
+        100;
+      calcStats.mediumBooks =
+        (allBooks.filter(
+          (book) => book.pageCount > 300 && book.pageCount <= 500
+        ).length /
+          totalBooks) *
+        100;
 
       // Character_plot
       calcStats.character =

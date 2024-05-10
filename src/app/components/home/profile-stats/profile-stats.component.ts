@@ -30,7 +30,18 @@ export class ProfileStatsComponent implements OnInit {
   userStats$ = this.userStore.select(selectGetUserStats);
   charts = inject(ChartsDataService);
   chartOptions = this.charts.polarChartOptions;
-  barChartOptions = this.charts.barChartOptions;
+  username = '';
+  pacePercentages: string[] = [];
+  lengthPercentages: string[] = [];
+
+  data = [
+    { color: 'blue', value: 20 },
+    { color: 'green', value: 30 },
+    { color: 'yellow', value: 15 },
+    { color: 'red', value: 25 },
+    { color: 'purple', value: 10 },
+    { color: 'pink', value: 15 },
+  ];
 
   constructor(private authService: AuthService) {}
 
@@ -44,6 +55,24 @@ export class ProfileStatsComponent implements OnInit {
     this.user$.subscribe((user) => {
       if (user && user[0] !== undefined) {
         this.userStore.dispatch(getUserStats({ user: user[0] }));
+        this.username = user[0].username;
+      }
+    });
+
+    this.userStats$.pipe(take(2)).subscribe((stats) => {
+      if (stats) {
+        const paceArray = [
+          stats.fastPaced,
+          stats.moderatePaced,
+          stats.slowPaced,
+        ];
+        const lengthArray = [
+          stats.longBooks,
+          stats.mediumBooks,
+          stats.shortBooks,
+        ];
+        this.pacePercentages = paceArray.map((value) => `${value}%`);
+        this.lengthPercentages = lengthArray.map((value) => `${value}%`);
       }
     });
   }

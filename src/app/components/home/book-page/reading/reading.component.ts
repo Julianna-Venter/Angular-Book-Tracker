@@ -44,7 +44,6 @@ export class ReadingComponent {
 
   dnfReasons: string[] = [];
   pace: string = '';
-  step = 14.28;
 
   constructor() {
     this.dnfReasons = [];

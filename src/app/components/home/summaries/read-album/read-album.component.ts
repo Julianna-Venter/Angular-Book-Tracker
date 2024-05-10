@@ -19,17 +19,11 @@ import { UsableBooks } from '../../../../interfaces/booksInterfaces';
   styleUrl: './read-album.component.scss',
 })
 export class ReadAlbumComponent implements OnInit {
-  listname = 'read';
+
   userStore = inject(Store<UserDataState>);
   users$ = this.userStore.select(selectgetUserData);
   bookList$ = this.userStore.select(selectGetREADList);
   listTitle: string = 'Have Read';
-
-  navigateTo(route: string) {
-    console.log('Navigating to', route);
-  }
-
-  constructor() {}
 
   ngOnInit(): void {
     this.users$.pipe(take(2)).subscribe((users) => {

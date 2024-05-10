@@ -1,18 +1,3 @@
-export type BarChartOptions = {
-  series: ApexAxisChartSeries;
-  chart: ApexChart;
-  dataLabels: ApexDataLabels;
-  plotOptions: ApexPlotOptions;
-  xaxis: ApexXAxis;
-  yaxis: ApexYAxis;
-  stroke: ApexStroke;
-  title: ApexTitleSubtitle;
-  tooltip: ApexTooltip;
-  fill: ApexFill;
-  legend: ApexLegend;
-  dataLabels: ApexDataLabels;
-  legend: ApexLegend;
-};
 
 export type PolarChartOptions = {
   series: ApexNonAxisChartSeries;
@@ -27,7 +12,6 @@ export type PolarChartOptions = {
   legend: ApexLegend;
   plotOptions: ApexPlotOptions;
   dataLabels: ApexDataLabels;
-  legend: ApexLegend;
 };
 
 export interface UserCalcStats {
@@ -35,11 +19,7 @@ export interface UserCalcStats {
   howManyReviews: number;
   averageRating: number;
   totalPages: number;
-  OneStarReviews: number;
-  TwoStarReviews: number;
-  ThreeStarReviews: number;
-  FourStarReviews: number;
-  FiveStarReviews: number;
+  ratings: number[];
   slowPaced: number;
   fastPaced: number;
   moderatePaced: number;

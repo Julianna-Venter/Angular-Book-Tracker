@@ -7,7 +7,6 @@ import { UsableBooks } from '../../../../interfaces/booksInterfaces';
 import { UserDataState } from '../../../../store/reducers/user.reducer';
 import {
   selectGetBookList,
-  selectgetUserData,
 } from '../../../../store/selectors/user.selectors';
 
 @Component({
@@ -19,7 +18,6 @@ import {
 })
 export class BookCarouselComponent implements OnInit {
   userStore = inject(Store<UserDataState>);
-  users$ = this.userStore.select(selectgetUserData);
   bookList$ = this.userStore.select(selectGetBookList);
 
   ngOnInit() {

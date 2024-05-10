@@ -1,4 +1,4 @@
-const { or } = require("ajv/dist/compile/codegen");
+
 
 /** @type {import('tailwindcss').Config} */
 module.exports = {

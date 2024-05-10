@@ -27,7 +27,6 @@ import { getUserData } from '../../store/actions/user.actions';
 import { BooksState } from '../../store/reducers/book.reducer';
 import {
   selectBooks,
-  selectSearchedBook,
 } from '../../store/selectors/book.selectors';
 import { selectgetUserData } from '../../store/selectors/user.selectors';
 import { BackgroundComponent } from '../shared-components/background/background.component';
@@ -51,7 +50,6 @@ import {
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
-import { UsersFirebaseService } from '../../services/users-firebase.service';
 import { UserDataState } from '../../store/reducers/user.reducer';
 
 interface Book {
@@ -100,7 +98,6 @@ export class HomeComponent implements OnInit {
 
   router = inject(Router);
   currentUserData: FirestoreUser | null = null;
-  firebaseService = inject(UsersFirebaseService);
   home = false;
   stats = false;
 
@@ -108,7 +105,6 @@ export class HomeComponent implements OnInit {
   userStore = inject(Store<UserDataState>);
   books$ = this.bookStore.select(selectBooks);
   userData$ = this.userStore.select(selectgetUserData);
-  searchedBook$ = this.bookStore.select(selectSearchedBook);
 
   options: string[] = [];
   filteredOptions: Observable<Book[]> | undefined;

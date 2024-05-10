@@ -7,7 +7,9 @@
   >
     <div class="flex flex-col mt-10">
       <h1 class="pt-5 text-3xl font-bold uppercase">PROFILE STATS.</h1>
-      <h2 class="text-3xl font-bold uppercase mb-4">{{ user[0].username }}</h2>
+      <h2 class="text-3xl font-bold uppercase mb-4">
+        {{ username }}
+      </h2>
       <div class="flex gap-5 justify-center items-center">
         <div
           class="stats stats-vertical shadow overflow-hidden w-1/3 h-[250px]"
@@ -18,7 +20,9 @@
           </div>
           <div class="stat flex justify-center items-center flex-col p-0">
             <div class="stat-value">{{ userStats.howManyReviews }}</div>
-            <div class="stat-desc">Reviews</div>
+            <div class="stat-desc">
+              @if (userStats.howManyReviews > 1) { Reviews } @else { Review }
+            </div>
           </div>
           <div class="stat flex justify-center items-center flex-col p-0">
             <div class="stat-value text-[2rem]">{{ userStats.totalPages }}</div>
@@ -26,20 +30,26 @@
           </div>
         </div>
         <div class="flex flex-col justify-center items-center gap-4 w-2/3">
-          <div id="chart">
-            <apx-chart
-              [series]="chartOptions.series"
-              [chart]="chartOptions.chart"
-              [labels]="chartOptions.labels"
-              [title]="chartOptions.title"
-              [theme]="chartOptions.theme"
-              [fill]="chartOptions.fill"
-              [yaxis]="chartOptions.yaxis"
-              [stroke]="chartOptions.stroke"
-              [legend]="chartOptions.legend"
-              [plotOptions]="chartOptions.plotOptions"
-            ></apx-chart>
+          <div id="chart" class="h-[200px]">
+            <div class="wrapper">
+              <div class="d1">
+                <div><span>60%</span></div>
+              </div>
+              <div class="d2">
+                <div><span>22%</span></div>
+              </div>
+              <div class="d3">
+                <div><span>8%</span></div>
+              </div>
+              <div class="d4">
+                <div><span>7%</span></div>
+              </div>
+              <div class="d5">
+                <div><span>3%</span></div>
+              </div>
+            </div>
           </div>
+          <!-- ratings -->
           <div class="flex gap-4">
             <span class="text-xl font-bold uppercase">Average Rating:</span>
             <span class="text-xl font-bold uppercase">{{
@@ -50,21 +60,77 @@
       </div>
     </div>
     <div>
-      <h2 class="text-3xl font-bold uppercase">Pace.</h2>
-      <div id="barChart" class="flex justify-center items-center">
-        <apx-chart
-          [series]="barChartOptions.series"
-          [chart]="barChartOptions.chart"
-          [dataLabels]="barChartOptions.dataLabels"
-          [plotOptions]="barChartOptions.plotOptions"
-          [xaxis]="barChartOptions.xaxis"
-          [stroke]="barChartOptions.stroke"
-          [fill]="barChartOptions.fill"
-          [yaxis]="barChartOptions.yaxis"
-          [title]="barChartOptions.title"
-          [tooltip]="barChartOptions.tooltip"
-          [legend]="barChartOptions.legend"
-        ></apx-chart>
+      <div id="barChart" class="w-full">
+        <div class="flex flex-col gap-8">
+          <!-- Pace -->
+          <div class="flex flex-col gap-3">
+            <h2 class="text-3xl font-bold uppercase">Pace.</h2>
+            <div
+              class="w-full h-8 bg-gray-200 rounded-full flex overflow-hidden"
+            >
+              <div
+                class="h-full bg-brown-grey border-r border-grey flex justify-center items-center"
+                [style.width]="pacePercentages[0]"
+              ></div>
+              <div
+                class="h-full bg-muted-red flex justify-center items-center"
+                [style.width]="pacePercentages[1]"
+              ></div>
+              <div
+                class="h-full bg-button-color border-l border-grey flex justify-center items-center"
+                [style.width]="pacePercentages[2]"
+              ></div>
+            </div>
+            <div class="flex gap-5 justify-center items-center">
+              <div class="flex gap-2 justify-center items-center">
+                <div class="h-2 w-2 bg-brown-grey"></div>
+                <span>fast</span>
+              </div>
+              <div class="flex gap-2 justify-center items-center">
+                <div class="h-2 w-2 bg-muted-red"></div>
+                <span>moderate</span>
+              </div>
+              <div class="flex gap-2 justify-center items-center">
+                <div class="h-2 w-2 bg-button-color"></div>
+                <span>slow</span>
+              </div>
+            </div>
+          </div>
+          <!-- Length -->
+          <div class="flex flex-col gap-3">
+            <h2 class="text-3xl font-bold uppercase">Book Length.</h2>
+            <div
+              class="w-full h-8 bg-gray-200 rounded-full flex overflow-hidden"
+            >
+              <div
+                class="h-full bg-brown-grey border-r border-grey flex justify-center items-center"
+                [style.width]="lengthPercentages[0]"
+              ></div>
+              <div
+                class="h-full bg-muted-red flex justify-center items-center"
+                [style.width]="lengthPercentages[1]"
+              ></div>
+              <div
+                class="h-full bg-button-color border-l border-grey flex justify-center items-center"
+                [style.width]="lengthPercentages[2]"
+              ></div>
+            </div>
+            <div class="flex gap-5 justify-center items-center">
+              <div class="flex gap-2 justify-center items-center">
+                <div class="h-2 w-2 bg-brown-grey"></div>
+                <span>long</span>
+              </div>
+              <div class="flex gap-2 justify-center items-center">
+                <div class="h-2 w-2 bg-muted-red"></div>
+                <span>medium</span>
+              </div>
+              <div class="flex gap-2 justify-center items-center">
+                <div class="h-2 w-2 bg-button-color"></div>
+                <span>short</span>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   </div>

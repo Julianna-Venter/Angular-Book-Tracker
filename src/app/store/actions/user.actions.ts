@@ -2,10 +2,6 @@ import { createAction, props } from '@ngrx/store';
 import { FirestoreUser, UsableBooks } from '../../interfaces/booksInterfaces';
 import { UserCalcStats } from '../../interfaces/chartsInterface';
 
-export interface SetUserDataError {
-  message: string;
-}
-
 //Application Actions
 
 //get data

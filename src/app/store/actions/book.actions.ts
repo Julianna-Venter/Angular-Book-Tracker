@@ -1,10 +1,6 @@
 import { createAction, props } from '@ngrx/store';
 import { FirestoreUser, UsableBooks } from '../../interfaces/booksInterfaces';
 
-export interface SetUserDataError {
-  message: string;
-}
-
 //API Actions
 
 export const getBooksAction = createAction(

@@ -19,17 +19,11 @@ import {
   styleUrl: './tbr-album.component.scss',
 })
 export class TbrAlbumComponent implements OnInit {
-  listname = 'tbr';
   userStore = inject(Store<UserDataState>);
   users$ = this.userStore.select(selectgetUserData);
   bookList$ = this.userStore.select(selectGetTBRList);
   listTitle: string = 'To Be Read';
 
-  navigateTo(route: string) {
-    console.log('Navigating to', route);
-  }
-
-  constructor() {}
 
   ngOnInit(): void {
     this.users$.pipe(take(2)).subscribe((users) => {

@@ -26,7 +26,7 @@ export class UsersFirebaseService {
   // usersCollection = collection(this.firestore, 'users');
 
   async addUser(username: string, email: string) {
-    const docRef = await addDoc(collection(this.firestore, 'users'), {
+    await addDoc(collection(this.firestore, 'users'), {
       username,
       email,
       booklist: {

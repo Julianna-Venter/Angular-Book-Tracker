@@ -18,17 +18,10 @@ import { UsableBooks } from '../../../../interfaces/booksInterfaces';
   styleUrl: './dnf-album.component.scss',
 })
 export class DnfAlbumComponent implements OnInit {
-  listname = 'dnf';
   userStore = inject(Store<UserDataState>);
   users$ = this.userStore.select(selectgetUserData);
   bookList$ = this.userStore.select(selectGetDNFList);
   listTitle: string = 'Did Not Finish';
-
-  navigateTo(route: string) {
-    console.log('Navigating to', route);
-  }
-
-  constructor() {}
 
   ngOnInit(): void {
     this.users$.pipe(take(2)).subscribe((users) => {
