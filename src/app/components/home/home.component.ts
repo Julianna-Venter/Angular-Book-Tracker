@@ -25,9 +25,7 @@ import {
 } from '../../store/actions/book.actions';
 import { getUserData } from '../../store/actions/user.actions';
 import { BooksState } from '../../store/reducers/book.reducer';
-import {
-  selectBooks,
-} from '../../store/selectors/book.selectors';
+import { selectBooks } from '../../store/selectors/book.selectors';
 import { selectgetUserData } from '../../store/selectors/user.selectors';
 import { BackgroundComponent } from '../shared-components/background/background.component';
 import { LogOutComponent } from './profile-stats/log-out/log-out.component';
@@ -132,14 +130,6 @@ export class HomeComponent implements OnInit {
         this.userStore.dispatch(getUserData({ email: user.email ?? '' }));
       }
     });
-
-    this.userData$.pipe(take(2)).subscribe((users) => {
-      if (users && users.length > 0) {
-        // get the first matched user, since email and password pairs are unique the array will only have one user anyway
-        this.currentUserData = users[0];
-        console.log('Current user:', this.currentUserData);
-      }
-    });
   }
 
   ngOnInit(): void {
@@ -201,6 +191,8 @@ export class HomeComponent implements OnInit {
   }
 
   searchBooks() {
+    localStorage.setItem('list', 'unread');
+
     const rawForm = this.searchForm.getRawValue();
 
     if (this.options.includes(rawForm.searchTerm?.title ?? '')) {
@@ -210,8 +202,11 @@ export class HomeComponent implements OnInit {
         );
         if (book) {
           this.bookStore.dispatch(setSearchedBook({ searchedBook: book }));
+          localStorage.setItem('bookId', book.id);
           this.search = false;
-          this.router.navigate(['home/book/' + book?.id]);
+          if (localStorage.getItem('bookId') === book.id) {
+            this.router.navigate(['home/book/' + book?.id]);
+          }
         }
       });
     }

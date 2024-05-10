@@ -3,6 +3,7 @@ import { Component, EventEmitter, OnInit, Output, inject } from '@angular/core';
 import { NgIconComponent, provideIcons } from '@ng-icons/core';
 import { heroStarSolid } from '@ng-icons/heroicons/solid';
 import { Store } from '@ngrx/store';
+import { take } from 'rxjs';
 import { BooksState } from '../../../../store/reducers/book.reducer';
 import { selectSearchedBook } from '../../../../store/selectors/book.selectors';
 import { StarsComponent } from './stars/stars.component';
@@ -31,15 +32,17 @@ export class HaveReadComponent implements OnInit {
   tags: number[] = [];
 
   updateReview() {
+    localStorage.setItem('list', 'read');
     this.updateReviewEvent.emit('reading');
   }
 
   ngOnInit() {
-    this.searchedBook$.subscribe((thisBook) => {
+    this.searchedBook$.pipe(take(2)).subscribe((thisBook) => {
       if (thisBook) {
         if (thisBook.rating % 2 !== 0) {
           this.ratingHalf = 1;
         }
+        const dnf_reasons = thisBook.DNF_reason?.entries();
         this.ratingFull = Math.floor(thisBook.rating);
         this.tags.push(thisBook.character_plot);
         this.tags.push(thisBook.tense_lighthearted);

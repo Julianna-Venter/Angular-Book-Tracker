@@ -186,34 +186,3 @@ export class UsersStatsService {
     return of(calcStats);
   }
 }
-
-// export interface UserCalcStats {
-//   booksread: number; done
-//   howManyReviews: number; done
-//   averageRating: number; done
-//   totalPages: number; done
-//   OneStarReviews: number;done
-//   TwoStarReviews: number;done
-//   ThreeStarReviews: number;done
-//   FourStarReviews: number;done
-//   FiveStarReviews: number;done
-//   slowPaced: number;
-//   fastPaced: number;
-//   moderatePaced: number;
-//   longBooks: number;
-//   shortBooks: number;
-//   mediumBooks: number;
-//   character: number;
-//   plot: number;
-//   tense: number;
-//   lighthearted: number;
-//   dark: number;
-//   light: number;
-//   informative: number;
-//   fun: number;
-//   adventurous: number;
-//   grounded: number;
-//   reflective: number;
-//   action: number;
-//   DNF: number;
-// }

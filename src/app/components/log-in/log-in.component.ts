@@ -45,7 +45,6 @@ export class LogInComponent {
 
   onSubmit() {
     // TODO: when this is implememted you need to have a spinner to indicate that the form is being submitted
-    console.log(this.loginForm.value);
     const rawForm = this.loginForm.getRawValue();
 
     this.authService

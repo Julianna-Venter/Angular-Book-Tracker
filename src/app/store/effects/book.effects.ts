@@ -84,8 +84,8 @@ export class BooksEffects {
     this.actions$.pipe(
       ofType(getSearchedBook.type),
       switchMap(
-        (action: { bookId: string; user: FirestoreUser; list: string }) =>
-          this.databaseService
+        (action: { bookId: string; user: FirestoreUser; list: string }) => {
+          return this.databaseService
             .getMatchedBook(
               action.user,
               action.list as keyof BookList,
@@ -99,7 +99,8 @@ export class BooksEffects {
                 console.error('Error getting user data:', error);
                 return EMPTY;
               })
-            )
+            );
+        }
       )
     )
   );

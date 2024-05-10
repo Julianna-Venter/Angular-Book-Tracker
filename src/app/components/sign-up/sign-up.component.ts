@@ -84,8 +84,6 @@ export class SignUpComponent {
 
   onSubmit(): void {
     if (this.signupForm.valid) {
-      //   // TODO: when this is implememted you need to have a spinner to indicate that the form is being submitted
-      console.warn(this.signupForm.value);
       const rawForm = this.signupForm.getRawValue();
 
       this.authService

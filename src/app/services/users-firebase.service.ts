@@ -23,7 +23,6 @@ import {
 })
 export class UsersFirebaseService {
   firestore = inject(Firestore);
-  // usersCollection = collection(this.firestore, 'users');
 
   async addUser(username: string, email: string) {
     await addDoc(collection(this.firestore, 'users'), {
@@ -56,7 +55,6 @@ export class UsersFirebaseService {
           const fieldPath = `booklist.${list}`;
 
           try {
-            // Append the book to the existing list
             await updateDoc(docRef, {
               [fieldPath]: arrayUnion(book),
             });
@@ -92,8 +90,6 @@ export class UsersFirebaseService {
     list: keyof BookList,
     bookId: string
   ): Observable<UsableBooks> {
-    // console.log('Getting matched book:', user.email, list, bookId);
-
     const q = query(
       collection(this.firestore, 'users'),
       where('email', '==', user.email)
@@ -104,19 +100,16 @@ export class UsersFirebaseService {
         const booklist = users[0]?.['booklist']?.[list] || [];
 
         if (Array.isArray(booklist)) {
-          // If booklist[list] is already an array, search for the book directly
           return booklist.find((book: UsableBooks) => book.id === bookId);
         } else if (typeof booklist === 'object' && booklist !== null) {
-          // If booklist[list] is an object, convert it into an array and search for the book
           const booksArray = Object.values(booklist) as UsableBooks[];
           const matchingBooks = booksArray.filter(
             (book: UsableBooks) => book.id === bookId
           );
           return matchingBooks.shift();
         } else {
-          // If booklist[list] is neither an array nor an object, handle the case accordingly
           console.error('booklist[list] is not an array or object');
-          return null; // Or any other appropriate handling
+          return null;
         }
       })
     );
@@ -127,7 +120,6 @@ export class UsersFirebaseService {
   async removeFromList(list: string, book: UsableBooks, user: FirestoreUser) {
     const userId = user.id || '';
     const bookId = book.id || '';
-    // console.log('Removing from list:', list, bookId, userId);
     const docRef = doc(this.firestore, 'users', userId);
 
     const userSnapshot = await getDoc(docRef);
@@ -143,14 +135,14 @@ export class UsersFirebaseService {
       return;
     }
 
-    const updatedBooks = books.filter((book: any) => book.id !== bookId);
+    const updatedBooks = books.filter(
+      (book: UsableBooks) => book.id !== bookId
+    );
 
     try {
-      // Update the list without the book with the matching id
       await updateDoc(docRef, {
         [`booklist.${list}`]: updatedBooks,
       });
-      // console.log('Book removed from list:', list);
     } catch (error) {
       console.error('Error removing book from list:', error);
     }

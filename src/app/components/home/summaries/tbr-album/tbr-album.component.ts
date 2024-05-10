@@ -24,7 +24,6 @@ export class TbrAlbumComponent implements OnInit {
   bookList$ = this.userStore.select(selectGetTBRList);
   listTitle: string = 'To Be Read';
 
-
   ngOnInit(): void {
     this.users$.pipe(take(2)).subscribe((users) => {
       if (users && users[0] !== undefined && users[0].email) {

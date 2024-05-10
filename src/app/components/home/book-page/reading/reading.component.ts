@@ -58,6 +58,7 @@ export class ReadingComponent {
   }
 
   completeReview() {
+    localStorage.setItem('list', 'read');
     this.completeReviewEvent.emit('read');
     const rawForm = this.readingForm.getRawValue();
 

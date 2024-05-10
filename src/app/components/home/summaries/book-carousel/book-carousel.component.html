@@ -5,6 +5,7 @@
   <div
     class="carousel-item h-full relative"
     routerLink="/home/book-list/reading/book/{{ book.id }}"
+    (click)="setLocal(book.id)"
   >
     <img
       src="{{

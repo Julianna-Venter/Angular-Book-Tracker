@@ -54,7 +54,8 @@ export class BookListComponent implements OnInit {
   }
 
   navChild(book: string) {
-    // console.log('Navigating to', book);
+    localStorage.setItem('list', this.listname);
+    localStorage.setItem('bookId', book);
     this.router.navigate(['book', book], { relativeTo: this.route });
   }
 }

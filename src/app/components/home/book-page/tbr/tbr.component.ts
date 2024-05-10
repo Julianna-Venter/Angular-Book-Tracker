@@ -27,6 +27,7 @@ export class TbrComponent {
   });
 
   startReview() {
+    localStorage.setItem('list', 'reading');
     this.startReviewEvent.emit('reading');
     const rawForm = this.tbrForm.getRawValue();
 

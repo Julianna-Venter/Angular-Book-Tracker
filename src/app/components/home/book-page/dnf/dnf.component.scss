@@ -1,0 +1,16 @@
+.badge {
+  cursor: pointer;
+  border: 1px solid #ccc;
+  transition: background-color 0.3s, color 0.3s;
+  border-radius: 99999px;
+}
+
+.badge:hover {
+  background-color: #aa343c;
+  color: #fff;
+}
+
+.highlighted {
+  background-color: #aa343c;
+  color: #fff;
+}

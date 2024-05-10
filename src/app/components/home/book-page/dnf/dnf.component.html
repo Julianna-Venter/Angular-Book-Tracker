@@ -4,62 +4,72 @@
     class="w-full flex flex-wrap gap-2 text-grey justify-center items-center"
   >
     <div
-      class="badge badge-outline p-3 text-lg hover:bg-green hover:text-white"
-      (click)="addReason('Characters')"
+      class="badge p-3 text-lg"
+      [ngClass]="{ highlighted: dnfreasons.includes('Characters') }"
+      (click)="toggleReason('Characters')"
     >
-      Charcaters
+      Characters
     </div>
     <div
-      class="badge badge-outline p-3 text-lg hover:bg-green hover:text-white"
-      (click)="addReason('Plot')"
+      class="badge badge-outline p-3 text-lg"
+      [ngClass]="{ highlighted: dnfreasons.includes('Plot') }"
+      (click)="toggleReason('Plot')"
     >
       Plot
     </div>
     <div
-      class="badge badge-outline p-3 text-lg hover:bg-green hover:text-white"
-      (click)="addReason('Writing Style')"
+      class="badge badge-outline p-3 text-lg"
+      [ngClass]="{ highlighted: dnfreasons.includes('Writing Style') }"
+      (click)="toggleReason('Writing Style')"
     >
       Writing Style
     </div>
     <div
-      class="badge badge-outline p-3 text-lg hover:bg-green hover:text-white"
-      (click)="addReason('Themes')"
+      class="badge badge-outline p-3 text-lg"
+      [ngClass]="{ highlighted: dnfreasons.includes('Themes') }"
+      (click)="toggleReason('Themes')"
     >
       Themes
     </div>
     <div
-      class="badge badge-outline p-3 text-lg hover:bg-green hover:text-white"
-      (click)="addReason('Pacing')"
+      class="badge badge-outline p-3 text-lg"
+      [ngClass]="{ highlighted: dnfreasons.includes('Pacing') }"
+      (click)="toggleReason('Pacing')"
     >
       Pacing
     </div>
     <div
-      class="badge badge-outline p-3 text-lg hover:bg-green hover:text-white"
-      (click)="addReason('Dialogue')"
+      class="badge badge-outline p-3 text-lg"
+      [ngClass]="{ highlighted: dnfreasons.includes('Dialogue') }"
+      (click)="toggleReason('Dialogue')"
     >
       Dialogue
     </div>
     <div
-      class="badge badge-outline p-3 text-lg hover:bg-green hover:text-white"
-      (click)="addReason('World Building')"
+      class="badge badge-outline p-3 text-lg"
+      [ngClass]="{ highlighted: dnfreasons.includes('World Building') }"
+      (click)="toggleReason('World Building')"
     >
       World Building
     </div>
     <div
-      class="badge badge-outline p-3 text-lg hover:bg-green hover:text-white"
-      (click)="addReason('Length')"
+      class="badge badge-outline p-3 text-lg"
+      [ngClass]="{ highlighted: dnfreasons.includes('Length') }"
+      (click)="toggleReason('Length')"
     >
       Length
     </div>
     <div
-      class="badge badge-outline p-3 text-lg hover:bg-green hover:text-white"
-      (click)="addReason('Conflict')"
+      class="badge badge-outline p-3 text-lg"
+      [ngClass]="{ highlighted: dnfreasons.includes('Conflict') }"
+      (click)="toggleReason('Conflict')"
     >
       Conflict
     </div>
     <div
-      class="badge badge-outline p-3 text-lg hover:bg-green hover:text-white"
-      (click)="addReason('Mature Content')"
+      class="badge badge-outline p-3 text-lg"
+      [ngClass]="{ highlighted: dnfreasons.includes('Mature Content') }"
+      (click)="toggleReason('Mature Content')"
     >
       Mature Content
     </div>

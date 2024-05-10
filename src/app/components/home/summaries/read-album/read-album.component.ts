@@ -19,7 +19,6 @@ import { UsableBooks } from '../../../../interfaces/booksInterfaces';
   styleUrl: './read-album.component.scss',
 })
 export class ReadAlbumComponent implements OnInit {
-
   userStore = inject(Store<UserDataState>);
   users$ = this.userStore.select(selectgetUserData);
   bookList$ = this.userStore.select(selectGetREADList);

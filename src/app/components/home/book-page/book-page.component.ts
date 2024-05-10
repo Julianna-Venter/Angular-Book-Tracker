@@ -39,28 +39,18 @@ export class BookPageComponent implements OnInit {
   userData$ = this.userStore.select(selectgetUserData);
   searchedBook$ = this.bookStore.select(selectSearchedBook);
   selected = 'unread';
-  bookId = this.router.url.split('/')[5];
-  list = this.router.url.split('/')[3];
+  bookId = localStorage.getItem('bookId') || '';
+  list = localStorage.getItem('list') || 'unread';
 
   changeSelected(event: string) {
     this.selected = event;
+    this.setSelectedBook(event);
   }
 
   ngOnInit(): void {
-    console.log(this.bookId, this.list);
-    this.searchedBook$.subscribe(console.log);
-    // this.searchedBook$.subscribe(console.log);
-    combineLatest([this.userData$, this.searchedBook$])
-      .pipe(take(1))
-      .subscribe(([users, book]) => {
-        if (
-          users &&
-          book &&
-          users[0] !== undefined &&
-          this.list !== undefined &&
-          this.bookId !== undefined &&
-          users[0].id !== undefined
-        ) {
+    if (this.list !== 'unread') {
+      combineLatest([this.userData$, this.searchedBook$]).subscribe(
+        ([users, book]) => {
           this.bookStore.dispatch(
             getSearchedBook({
               bookId: this.bookId,
@@ -69,26 +59,23 @@ export class BookPageComponent implements OnInit {
             })
           );
         }
-      });
+      );
+    }
+
     this.searchedBook$.subscribe((book) => {
       this.selected = book?.status || 'unread';
     });
   }
 
   setSelectedBook(event: string, reviewData?: ReviewData) {
-    // this.userData$.subscribe(console.log);
-    // this.searchedBook$.subscribe(console.log);
+    this.list = event;
+    localStorage.setItem('list', event);
     combineLatest([this.userData$, this.searchedBook$])
       .pipe(take(2))
       .subscribe(([users, book]) => {
-        // console.log(users[0].id, book?.id);
-        //get the results form the two observables
-
-        // console.log(event, book?.status);
         const newBook = {
           ...book,
         };
-        //get the results form the two observables
         if (users && book && users[0] !== undefined) {
           newBook.status = event; //chnage the book's status to the list it is moving to
           if (reviewData) {
@@ -109,20 +96,24 @@ export class BookPageComponent implements OnInit {
             }
           }
           {
-            this.userStore.dispatch(
-              removeFromList({
-                list: book.status,
-                book: book,
-                user: users[0],
-              })
-            );
-            this.userStore.dispatch(
-              addToList({
-                list: event,
-                book: newBook as UsableBooks,
-                user: users[0],
-              }) //add the book with the updated data to the new list in the db
-            );
+            if (book.status !== 'unread') {
+              this.userStore.dispatch(
+                removeFromList({
+                  list: book.status,
+                  book: book,
+                  user: users[0],
+                })
+              );
+            }
+            if (event !== 'unread') {
+              this.userStore.dispatch(
+                addToList({
+                  list: event,
+                  book: newBook as UsableBooks,
+                  user: users[0],
+                }) //add the book with the updated data to the new list in the db
+              );
+            }
             this.bookStore.dispatch(
               getSearchedBook({
                 bookId: this.bookId,
@@ -137,6 +128,10 @@ export class BookPageComponent implements OnInit {
 
   sendReviewData(event: ReviewData) {
     this.reviewData = event;
-    this.setSelectedBook(this.reviewData?.status || 'unread', this.reviewData);
+    let status = this.reviewData.status;
+    if (this.reviewData.status === 'dnf') {
+      status = 'read';
+    }
+    this.setSelectedBook(status || 'unread', this.reviewData);
   }
 }

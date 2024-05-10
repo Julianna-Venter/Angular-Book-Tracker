@@ -11,7 +11,6 @@ export const authGuard: CanActivateFn = (route, state) => {
   authService.user$.pipe(take(1)).subscribe((user) => {
     if (user) {
       authService.currentUserSig.set({
-        //! is added because it is pretty much guaranteed that the user is logged in at this point
         email: user.email ?? '',
         username: user.displayName ?? '',
       });

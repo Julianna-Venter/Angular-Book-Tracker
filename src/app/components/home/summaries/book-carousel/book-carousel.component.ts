@@ -5,9 +5,7 @@ import { Store } from '@ngrx/store';
 import { map } from 'rxjs';
 import { UsableBooks } from '../../../../interfaces/booksInterfaces';
 import { UserDataState } from '../../../../store/reducers/user.reducer';
-import {
-  selectGetBookList,
-} from '../../../../store/selectors/user.selectors';
+import { selectGetBookList } from '../../../../store/selectors/user.selectors';
 
 @Component({
   selector: 'app-book-carousel',
@@ -24,5 +22,9 @@ export class BookCarouselComponent implements OnInit {
     this.bookList$ = this.bookList$.pipe(
       map((bookListObject: UsableBooks[]) => Object.values(bookListObject))
     );
+  }
+  setLocal(bookId: string) {
+    localStorage.setItem('list', 'reading');
+    localStorage.setItem('bookId', bookId);
   }
 }

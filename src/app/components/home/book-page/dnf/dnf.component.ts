@@ -1,9 +1,10 @@
+import { CommonModule } from '@angular/common';
 import { Component, EventEmitter, Output } from '@angular/core';
 
 @Component({
   selector: 'app-dnf',
   standalone: true,
-  imports: [],
+  imports: [CommonModule],
   templateUrl: './dnf.component.html',
   styleUrl: './dnf.component.scss',
 })
@@ -11,10 +12,13 @@ export class DnfComponent {
   @Output() DNFEvent = new EventEmitter<string[]>();
   dnfreasons: string[] = [];
 
-  addReason(reason: string) {
-    if (!this.dnfreasons.includes(reason)) {
+  toggleReason(reason: string) {
+    const index = this.dnfreasons.indexOf(reason);
+    if (index === -1) {
       this.dnfreasons.push(reason);
-      this.DNFEvent.emit(this.dnfreasons);
+    } else {
+      this.dnfreasons = this.dnfreasons.filter((item) => item !== reason);
     }
+    this.DNFEvent.emit(this.dnfreasons);
   }
 }
